@@ -1,0 +1,32 @@
+{
+  "name": "gun-cypher",
+  "version": "0.1.0",
+  "description": "GUN DB query engine for Cypher (CQL)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "test": "jest",
+    "build": "rm -rf ./dist && tsc",
+    "gun:server": "gun --host 127.0.0.1"
+  },
+  "keywords": [
+    "gun",
+    "gunDB",
+    "graph",
+    "graphdb",
+    "query",
+    "neo4j",
+    "cypher"
+  ],
+  "author": "Kristian Mandrup <kmandrup@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "gun": "^0.2020.1235"
+  },
+  "devDependencies": {
+    "@types/gun": "^0.9.3"
+  }
+}
