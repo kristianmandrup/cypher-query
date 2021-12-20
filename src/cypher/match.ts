@@ -7,7 +7,7 @@ export class Match extends Predicate {
   }
 
   // MATCH (n:Person:Swedish)
-  node(alias: string, opts: ObjSetArgs, merge = true) {
+  protected node(alias: string, opts: ObjSetArgs, merge = true) {
     const node = this.ctx.matchNode(opts);
     const map = {
       [alias]: node,
@@ -27,6 +27,32 @@ export class Match extends Predicate {
       };
       return acc;
     }, {});
+    return this.mergeMap(map);
+  }
+
+  rel(alias: string, opts: ObjSetArgs) {
+    const node = this.ctx.matchNode(opts);
+    const map = {
+      [alias]: node,
+    };
+    return this.mergeMap(map);
+  }
+
+  to(alias: string, opts: ObjSetArgs) {
+    const direction = "to";
+    const node = this.ctx.matchNode(opts, { direction });
+    const map = {
+      [alias]: node,
+    };
+    return this.mergeMap(map);
+  }
+
+  from(alias: string, opts: ObjSetArgs) {
+    const direction = "to";
+    const node = this.ctx.matchNode(opts, { direction });
+    const map = {
+      [alias]: node,
+    };
     return this.mergeMap(map);
   }
 }

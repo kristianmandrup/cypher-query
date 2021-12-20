@@ -8,6 +8,10 @@ export interface Props {
   [key: string]: any;
 }
 
+export type RelSetArgs = {
+  direction?: "from" | "to";
+};
+
 export type ObjSetArgs = {
   labels?: string[];
   label?: string;

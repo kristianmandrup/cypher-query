@@ -1,4 +1,4 @@
-import { Match } from ".";
+import { Match, Where } from ".";
 import { Create, GunSchema, Props } from "..";
 import { Return } from "./return";
 
@@ -26,6 +26,10 @@ export class Query {
 
   get $match() {
     return new Match(this);
+  }
+
+  get $where() {
+    return new Where(this);
   }
 
   get $return() {

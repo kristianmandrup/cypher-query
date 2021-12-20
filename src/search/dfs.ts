@@ -53,6 +53,8 @@ export class DFS {
     return edges;
   }
 
+  async searchAsync(soul: any, lbl: any, lim?: any) {}
+
   search(soul: any, lbl: any, lim?: any) {
     console.log("Starting with:", soul);
     if (lbl) {

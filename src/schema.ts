@@ -1,6 +1,6 @@
 import Gun from "gun";
 import "gun/lib/then";
-import { ObjSetArgs } from ".";
+import { ObjSetArgs, RelSetArgs } from ".";
 
 /* Abstraction Layer to GunDB
  * Functions to abstract the creation of a schema
@@ -110,8 +110,12 @@ can now see whatever was added latest collaboration
   };
 
   // TODO: support matching multiple labels and props
-  async matchNode(opts: ObjSetArgs) {
-    return await this.dfs.search(this.gun, opts.label);
+  matchNode(opts: ObjSetArgs, relOpts: RelSetArgs = {}) {
+    return this.dfs.search(this.gun, opts.label);
+  }
+
+  async matchNodeAsync(opts: ObjSetArgs, relOpts: RelSetArgs) {
+    return await this.dfs.searchAsync(this.gun, opts.label);
   }
 
   /* Tuple function */
