@@ -109,6 +109,11 @@ can now see whatever was added latest collaboration
     return this.$edges;
   };
 
+  // TODO: support matching multiple labels and props
+  async matchNode(opts: ObjSetArgs) {
+    return await this.dfs.search(this.gun, opts.label);
+  }
+
   /* Tuple function */
   /* Takes objects or references from Gun to create nodes */
   tuple(node: any, verb: any, object: any) {

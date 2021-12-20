@@ -19,10 +19,41 @@ const bobData = {
   lastname: "Martin",
 };
 
-const $q = query(gun);
+const q = query(gun);
+const create = q.$create;
+create.node("mike");
+create.node("mike", { label: "michael" });
+create.node("bob", { labels: ["bobby"], props: bobData });
+create.node("ava", { label: "avaria", props: { x: 2 } });
+create.nodes({
+  ava1: { label: "avaria", props: bobData },
+  bob1: { labels: "bobby", props: { x: 3 } },
+});
+```
 
-$q.create.node("mike");
-$q.create.node("mike", { label: "michael" });
-$q.create.node("bob", { labels: ["bobby"], props: bobData });
-$q.create.node("ava", { label: "avaria", props: bobData });
+### Match
+
+```js
+const q = query(gun);
+const match = q.$match;
+match.node("mike");
+match.node("mike", { label: "michael" });
+```
+
+WIP: Support async promise based search with `await`
+
+```js
+const result = await match.node("mike");
+console.log(result);
+```
+
+### Return
+
+Looks up in matches alias map generated via match queries
+
+```js
+const q = query(gun);
+const match = q.$match;
+match.node("mike");
+return q.return.node("mike");
 ```
