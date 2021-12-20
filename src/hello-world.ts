@@ -15,8 +15,8 @@ export function sayGoodbye() {
   console.log("goodbye");
 }
 
-export const tryQueries = () => {
-  const gun = Gun();
+// create a Gun instance using Gun('localhost') or Gun('127.0.0.1')
+export const tryQueries = (gun: any) => {
   const schema = new GunSchema(gun);
   const triple = { subject: "?p", predicate: "type", object: "Artist" };
   const trav = new TripTrav(triple);

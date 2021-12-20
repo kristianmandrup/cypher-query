@@ -1,5 +1,6 @@
 import Gun from "gun";
 import "gun/lib/then";
+import { ObjSetArgs } from ".";
 
 /* Abstraction Layer to GunDB
  * Functions to abstract the creation of a schema
@@ -53,17 +54,43 @@ can now see whatever was added latest collaboration
     return Gun.node.soul(me.data); //, bob.data);
   }
 
+  protected validateLabel(label: string) {
+    return label.trim().length;
+  }
+
+  protected filterLabels(labels: string[]) {
+    return labels.filter(this.validateLabel);
+  }
+
+  createNode(opts: ObjSetArgs) {
+    const object = this.gun.get("node");
+    return this.setNode(object, opts);
+  }
+
+  createEdge(opts: ObjSetArgs) {
+    const object = this.gun.get("edge");
+    return this.setEdge(object, opts);
+  }
+
+  protected setObj(object: any, opts: ObjSetArgs) {
+    const label = opts.label && [opts.label];
+    const labels = label || opts.labels || [];
+    const props = opts.props || {};
+    object.__labels = this.filterLabels(labels);
+    object.__props = props;
+  }
+
   /* Schema for Nodes */
-  newNode(object: any, label: string) {
-    object.__label = label;
+  setNode(object: any, opts: ObjSetArgs) {
+    this.setObj(object, opts);
     object.__type = "node";
     const gunRef = this.nodes().set(object);
     return gunRef;
   }
 
   /* Schema for Edges */
-  newEdge(object: any, label: string) {
-    object.__label = label;
+  setEdge(object: any, opts: ObjSetArgs) {
+    this.setObj(object, opts);
     object.__type = "edge";
     const gunRef = this.edges().set(object);
     return gunRef;
@@ -89,15 +116,15 @@ can now see whatever was added latest collaboration
     verb.get("source").put(node);
     verb.get("target").put(object);
     object.get("in").set(verb);
-    setTimeout(() => this.dfs.search("nodes", "__label"), 1000);
+    setTimeout(() => this.dfs.search("nodes", "__labels"), 1000);
   }
 
-  addNode(label: string, edgeR: any, nodeR: any) {
-    const obj = { label: label, edge: edgeR, node: nodeR };
+  addNode(edgeR: any, nodeR: any, ...labels: string[]) {
+    const obj = { labels: labels, edge: edgeR, node: nodeR };
     this.nodes()
       .map()
       .once((obj: any, data: any, key: string) => {
-        if (data.__label == obj.label) {
+        if (data.__labels.find(obj.label)) {
           const soul = Gun.node.soul(data);
           let node = this.gun.get(soul).get("out").set(obj.edge);
           console.log(node._.soul);

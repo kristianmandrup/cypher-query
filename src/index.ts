@@ -1,3 +1,4 @@
+export * from "./cypher";
 export * from "./abstraction";
 export * from "./search";
 export * from "./schema";

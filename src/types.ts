@@ -1,5 +1,19 @@
 import { IGunChainReference } from "gun/types/chain";
 
+export interface AliasMap {
+  [alias: string]: ObjSetArgs;
+}
+
+export interface Props {
+  [key: string]: any;
+}
+
+export type ObjSetArgs = {
+  labels?: string[];
+  label?: string;
+  props?: Props;
+};
+
 type ArrayOf<T> = T extends Array<infer U> ? U : never;
 type ArrayAsRecord<DataType> = ArrayOf<DataType> extends never
   ? DataType
