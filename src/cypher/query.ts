@@ -1,6 +1,7 @@
-import { Match, Where } from ".";
-import { Create, GunSchema, Props } from "..";
-import { Return } from "./return";
+import { Match, Where } from "./read/match";
+import { GunSchema, Props } from "..";
+import { Return } from "./read";
+import { Create } from "./write";
 
 export const query = (ctx: GunSchema) => new Query(ctx);
 

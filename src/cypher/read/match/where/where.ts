@@ -1,7 +1,7 @@
-import { Predicate } from "../predicate";
-import { AndExpr, OrExpr } from "./boolean";
+import { Clause } from "../../../clause";
+import { AndExpr, NotExpr, OrExpr } from "./boolean";
 
-export class Where extends Predicate {
+export class Where extends Clause {
   nodePropMatches(
     node: any,
     propName: string,
@@ -22,5 +22,9 @@ export class Where extends Predicate {
 
   get $and() {
     return new AndExpr(this);
+  }
+
+  get $not() {
+    return new NotExpr(this);
   }
 }

@@ -1,7 +1,7 @@
-import { AliasMap, ObjSetArgs, Props } from "..";
-import { Predicate } from "./predicate";
+import { AliasMap, ObjSetArgs, Props } from "../../..";
+import { Clause } from "../../clause";
 
-export class Match extends Predicate {
+export class Match extends Clause {
   mergeMap(aliasMap: Props) {
     return this.q.mergeAliasMap(aliasMap, "matches");
   }

@@ -1,6 +1,6 @@
-import { Predicate } from "./predicate";
+import { Clause } from "../../clause";
 
-export class Return extends Predicate {
+export class Return extends Clause {
   node(alias: string, prop?: string) {
     const node = this.aliasMap["matches"][alias];
     if (node.__type !== "node") {

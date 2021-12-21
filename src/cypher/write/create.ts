@@ -1,11 +1,11 @@
-import { Query } from ".";
-import { AliasMap, ObjSetArgs } from "..";
-import { Predicate } from "./predicate";
+import { Query } from "..";
+import { AliasMap, ObjSetArgs } from "../..";
+import { Clause } from "../clause";
 
-export class Create extends Predicate {
+export class Create extends Clause {
   // CREATE (n:Person:Swedish)
   // https://neo4j.com/docs/cypher-manual/current/clauses/create/#create-create-a-node-with-multiple-labels
-  node(alias: string, opts: ObjSetArgs, merge = true) {
+  node(alias: string, opts: ObjSetArgs = {}, merge = true) {
     const node = this.ctx.createNode(opts);
     const map = {
       [alias]: node,

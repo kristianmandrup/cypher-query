@@ -1,7 +1,7 @@
 import { Query } from ".";
 import { Props } from "..";
 
-export class Predicate {
+export class Clause {
   q: Query;
 
   constructor(q: Query) {
