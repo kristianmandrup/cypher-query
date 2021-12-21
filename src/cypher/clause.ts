@@ -8,6 +8,14 @@ export class Clause {
     this.q = q;
   }
 
+  get results() {
+    return this.q.results;
+  }
+
+  propValue(node: any, propName: string) {
+    return node["__props"][propName];
+  }
+
   get ctx() {
     return this.q.ctx;
   }

@@ -1,4 +1,4 @@
-import { Clause } from "../../clause";
+import { Clause } from "./clause";
 
 export class Return extends Clause {
   node(alias: string, prop?: string) {

@@ -1,7 +1,7 @@
 import { IGunChainReference } from "gun/types/chain";
 
 export interface AliasMap {
-  [alias: string]: ObjSetArgs;
+  [alias: string]: NodeDef;
 }
 
 export interface Props {
@@ -12,11 +12,14 @@ export type RelSetArgs = {
   direction?: "from" | "to";
 };
 
-export type ObjSetArgs = {
+export type NodeDef = {
+  alias?: string;
   labels?: string[];
   label?: string;
   props?: Props;
 };
+
+export interface RelationDef extends NodeDef {}
 
 type ArrayOf<T> = T extends Array<infer U> ? U : never;
 type ArrayAsRecord<DataType> = ArrayOf<DataType> extends never

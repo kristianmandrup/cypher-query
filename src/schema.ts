@@ -1,6 +1,6 @@
 import Gun from "gun";
 import "gun/lib/then";
-import { ObjSetArgs, RelSetArgs } from ".";
+import { NodeDef, RelSetArgs } from ".";
 
 /* Abstraction Layer to GunDB
  * Functions to abstract the creation of a schema
@@ -62,17 +62,17 @@ can now see whatever was added latest collaboration
     return labels.filter(this.validateLabel);
   }
 
-  createNode(opts: ObjSetArgs) {
+  createNode(opts: NodeDef) {
     const object = this.gun.get("node");
     return this.setNode(object, opts);
   }
 
-  createEdge(opts: ObjSetArgs) {
+  createEdge(opts: NodeDef) {
     const object = this.gun.get("edge");
     return this.setEdge(object, opts);
   }
 
-  protected setObj(object: any, opts: ObjSetArgs) {
+  protected setObj(object: any, opts: NodeDef) {
     const label = opts.label && [opts.label];
     const labels = label || opts.labels || [];
     const props = opts.props || {};
@@ -81,7 +81,7 @@ can now see whatever was added latest collaboration
   }
 
   /* Schema for Nodes */
-  setNode(object: any, opts: ObjSetArgs) {
+  setNode(object: any, opts: NodeDef) {
     this.setObj(object, opts);
     object.__type = "node";
     const gunRef = this.nodes().set(object);
@@ -89,7 +89,7 @@ can now see whatever was added latest collaboration
   }
 
   /* Schema for Edges */
-  setEdge(object: any, opts: ObjSetArgs) {
+  setEdge(object: any, opts: NodeDef) {
     this.setObj(object, opts);
     object.__type = "edge";
     const gunRef = this.edges().set(object);
@@ -110,11 +110,11 @@ can now see whatever was added latest collaboration
   };
 
   // TODO: support matching multiple labels and props
-  matchNode(opts: ObjSetArgs, relOpts: RelSetArgs = {}) {
+  matchNode(opts: NodeDef, relOpts: RelSetArgs = {}) {
     return this.dfs.search(this.gun, opts.label);
   }
 
-  async matchNodeAsync(opts: ObjSetArgs, relOpts: RelSetArgs) {
+  async matchNodeAsync(opts: NodeDef, relOpts: RelSetArgs) {
     return await this.dfs.searchAsync(this.gun, opts.label);
   }
 

@@ -1,14 +1,21 @@
 import { Query } from "..";
-import { AliasMap, ObjSetArgs } from "../..";
+import { AliasMap, NodeDef, RelationDef } from "../..";
 import { Clause } from "../clause";
 
 export class Create extends Clause {
+  relation(fromNode: NodeDef, relation: RelationDef, toNode: NodeDef) {
+    this.node(fromNode);
+    this.node(toNode);
+    // this._relationship();
+  }
+
   // CREATE (n:Person:Swedish)
   // https://neo4j.com/docs/cypher-manual/current/clauses/create/#create-create-a-node-with-multiple-labels
-  node(alias: string, opts: ObjSetArgs = {}, merge = true) {
+  node(opts: NodeDef = {}, merge = true) {
     const node = this.ctx.createNode(opts);
+    if (!opts.alias) return {};
     const map = {
-      [alias]: node,
+      [opts.alias]: node,
     };
     if (!merge) return map;
     return this.mergeAliasMap(map);
@@ -16,10 +23,9 @@ export class Create extends Clause {
 
   // CREATE (n:Person:Swedish), (m:Person:Danish)
   // https://neo4j.com/docs/cypher-manual/current/clauses/create/#create-create-multiple-nodes
-  nodes(aliasMap: AliasMap) {
-    const map = Object.keys(aliasMap).reduce((acc, key) => {
-      const opts = aliasMap[key];
-      const mapping = this.node(key, opts, false);
+  nodes(nodeDefs: NodeDef[]) {
+    const map = nodeDefs.reduce((acc, nodeDef) => {
+      const mapping = this.node(nodeDef, false);
       acc = {
         ...mapping,
       };

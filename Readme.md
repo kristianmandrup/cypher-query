@@ -21,14 +21,14 @@ const bobData = {
 
 const q = query(gun);
 const create = q.$create;
-create.node("mike");
-create.node("mike", { label: "michael" });
-create.node("bob", { labels: ["bobby"], props: bobData });
-create.node("ava", { label: "avaria", props: { x: 2 } });
-create.nodes({
-  ava1: { label: "avaria", props: bobData },
-  bob1: { labels: "bobby", props: { x: 3 } },
-});
+create.node({ alias: "mike" });
+create.node({ alias: "mike", label: "michael" });
+create.node({ alias: "bob", labels: ["bobby"], props: bobData });
+create.node({ alias: "ava", label: "avaria", props: { x: 2 } });
+create.nodes([
+  { alias: "ava", label: "avaria", props: bobData },
+  { alias: "bob", labels: "bobby", props: { x: 3 } },
+]);
 ```
 
 ### Match
@@ -38,14 +38,14 @@ WIP: TODO - combine with `Where` before executing
 ```js
 const q = query(gun);
 const match = q.$match;
-match.node("mike");
-match.node("mike", { label: "michael" });
+match.node({ alias: "mike" });
+match.node({ alias: "mike", label: "michael" });
 ```
 
 WIP: Support async promise based search with `await`
 
 ```js
-const result = await match.node("mike");
+const result = await match.node({ alias: "mike" });
 console.log(result);
 ```
 
@@ -64,7 +64,7 @@ Looks up in `matches` alias map in query, generated via `match` queries
 
 ```js
 const q = query(gun);
-const match = q.$match;
-match.node("mike");
-return q.return.node("mike");
+const match = q.match;
+match.node({ alias: "mike" });
+return q.return.node({ alias: "mike" });
 ```

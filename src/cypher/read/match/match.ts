@@ -1,16 +1,24 @@
-import { AliasMap, ObjSetArgs, Props } from "../../..";
+import { AliasMap, NodeDef, Props } from "../../..";
 import { Clause } from "../../clause";
 
 export class Match extends Clause {
+  $optional = false;
+
   mergeMap(aliasMap: Props) {
     return this.q.mergeAliasMap(aliasMap, "matches");
   }
 
+  optional() {
+    this.$optional = true;
+    return this;
+  }
+
   // MATCH (n:Person:Swedish)
-  protected node(alias: string, opts: ObjSetArgs, merge = true) {
-    const node = this.ctx.matchNode(opts);
+  protected node(nodeDef: NodeDef, merge = true) {
+    const node = this.ctx.matchNode(nodeDef);
+    if (!nodeDef.alias) return {};
     const map = {
-      [alias]: node,
+      [nodeDef.alias]: node,
     };
     if (!merge) return map;
     return this.mergeMap(map);
@@ -18,10 +26,9 @@ export class Match extends Clause {
 
   // MATCH (n:Person:Swedish), (m:Person:Danish)
   // https://neo4j.com/docs/cypher-manual/current/clauses/create/#create-create-multiple-nodes
-  nodes(aliasMap: AliasMap) {
-    const map = Object.keys(aliasMap).reduce((acc, key) => {
-      const opts = aliasMap[key];
-      const mapping = this.node(key, opts, false);
+  nodes(nodeDefs: NodeDef[]) {
+    const map = nodeDefs.reduce((acc, nodeDef) => {
+      const mapping = this.node(nodeDef, false);
       acc = {
         ...mapping,
       };
@@ -30,29 +37,21 @@ export class Match extends Clause {
     return this.mergeMap(map);
   }
 
-  rel(alias: string, opts: ObjSetArgs) {
-    const node = this.ctx.matchNode(opts);
+  rel(nodeDef: NodeDef, opts = {}) {
+    const node = this.ctx.matchNode(nodeDef, opts);
+    if (!nodeDef.alias) return {};
     const map = {
-      [alias]: node,
+      [nodeDef.alias]: node,
     };
-    return this.mergeMap(map);
   }
 
-  to(alias: string, opts: ObjSetArgs) {
+  to(nodeDef: NodeDef) {
     const direction = "to";
-    const node = this.ctx.matchNode(opts, { direction });
-    const map = {
-      [alias]: node,
-    };
-    return this.mergeMap(map);
+    return this.rel(nodeDef, { direction });
   }
 
-  from(alias: string, opts: ObjSetArgs) {
-    const direction = "to";
-    const node = this.ctx.matchNode(opts, { direction });
-    const map = {
-      [alias]: node,
-    };
-    return this.mergeMap(map);
+  from(nodeDef: NodeDef) {
+    const direction = "from";
+    return this.rel(nodeDef, { direction });
   }
 }

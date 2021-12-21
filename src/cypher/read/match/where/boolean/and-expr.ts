@@ -2,7 +2,7 @@ import { NotExpr } from ".";
 import { BaseExpr } from "./base-expr";
 
 export class AndExpr extends BaseExpr {
-  get $not() {
+  get not() {
     return new NotExpr(this.whereExpr);
   }
 

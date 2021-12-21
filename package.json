@@ -25,12 +25,15 @@
   "license": "ISC",
   "dependencies": {
     "@types/jest": "^27.0.3",
+    "csvtojson": "^2.0.10",
     "gun": "^0.2020.1235",
     "jest": "^27.4.5",
+    "request": "^2.88.2",
     "ts-jest": "^27.1.2",
     "typescript": "^4.5.4"
   },
   "devDependencies": {
-    "@types/gun": "^0.9.3"
+    "@types/gun": "^0.9.3",
+    "@types/request": "^2.48.7"
   }
 }

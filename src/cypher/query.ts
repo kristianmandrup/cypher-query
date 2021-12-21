@@ -1,13 +1,15 @@
 import { Match, Where } from "./read/match";
 import { GunSchema, Props } from "..";
-import { Return } from "./read";
-import { Create } from "./write";
+import { Return } from "./return";
+import { Create, Delete } from "./write";
+import { Csv } from ".";
 
 export const query = (ctx: GunSchema) => new Query(ctx);
 
 export class Query {
   ctx: GunSchema;
   aliasMap: Props = {};
+  results: any[] = [];
 
   constructor(ctx: GunSchema) {
     this.ctx = ctx;
@@ -21,19 +23,27 @@ export class Query {
     return aliasMap;
   }
 
-  get $create() {
+  get loadCsv() {
+    return new Csv(this);
+  }
+
+  get create() {
     return new Create(this);
   }
 
-  get $match() {
+  get delete() {
+    return new Delete(this);
+  }
+
+  get match() {
     return new Match(this);
   }
 
-  get $where() {
+  get where() {
     return new Where(this);
   }
 
-  get $return() {
+  get return() {
     return new Return(this);
   }
 }

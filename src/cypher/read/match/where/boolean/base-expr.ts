@@ -23,11 +23,11 @@ export class BaseExpr {
     this.whereExpr = whereExpr;
   }
 
-  get $or() {
+  get or() {
     return new OrExpr(this.whereExpr);
   }
 
-  get $and() {
+  get and() {
     return new AndExpr(this.whereExpr);
   }
 }
