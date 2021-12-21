@@ -1,6 +1,6 @@
 import Gun from "gun";
 import "gun/lib/then";
-import { GraphObjDef, NodeDef, RelationDef, RelSetArgs } from ".";
+import { GraphObjDef, NodeDef, NodeRelOpts, RelationDef, RelSetArgs } from ".";
 
 /* Abstraction Layer to GunDB
  * Functions to abstract the creation of a schema
@@ -115,8 +115,12 @@ can now see whatever was added latest collaboration
   };
 
   // TODO: support matching multiple labels and props
-  matchNode(opts: NodeDef, relOpts: RelSetArgs = {}) {
-    return this.dfs.search(this.gun, opts.label);
+  matchNode(node: NodeDef, relOpts: RelSetArgs = {}) {
+    return this.dfs.search(this.gun, node.label);
+  }
+
+  matchRel(node: NodeDef, nodeRelOpts: NodeRelOpts = {}) {
+    return this.dfs.search(this.gun, node.label, nodeRelOpts);
   }
 
   async matchNodeAsync(opts: NodeDef, relOpts: RelSetArgs) {

@@ -1,6 +1,8 @@
 import { Query, GunSchema } from "../../../../src";
 import Gun from "gun";
 
+const context = describe;
+
 describe("Query", () => {
   let query, ctx, gun;
   beforeEach(() => {
@@ -28,7 +30,7 @@ describe("Query", () => {
         const alias = "X";
         const label = "x";
         const result = query.create.node({});
-        expect(keysFor(result)).toEqual([]);
+        expect(keyFor(result)).toEqual("_");
       });
 
       it("creates node with a label", () => {
@@ -89,21 +91,37 @@ describe("Query", () => {
       });
     });
 
-    describe("relation", () => {
-      it("creates nodes with a relationship between them", () => {
-        const fromNode = {
-          alias: "X",
-          label: "x",
-        };
-        const toNode = {
-          alias: "Y",
-          label: "y",
-        };
-        const friendRelation = {
-          alias: "FRIEND",
-          label: "friend",
-        };
-        query.create.relation(fromNode, friendRelation, toNode);
+    context("node relationships", () => {
+      const sourceNode = {
+        alias: "X",
+        label: "x",
+      };
+      const targetNode = {
+        alias: "Y",
+        label: "y",
+      };
+
+      const friendRelation = {
+        alias: "FRIEND",
+        label: "friend",
+      };
+
+      describe("relation", () => {
+        it("creates nodes with a relationship between them", () => {
+          query.create.relation(sourceNode, friendRelation, targetNode);
+        });
+      });
+
+      describe("relationTo", () => {
+        it("creates nodes with a directed relationship from source to target node", () => {
+          query.create.relationTo(sourceNode, friendRelation, targetNode);
+        });
+      });
+
+      describe("relationFrom", () => {
+        it("creates nodes with a directed relationship from target to source node", () => {
+          query.create.relationFrom(sourceNode, friendRelation, targetNode);
+        });
       });
     });
   });

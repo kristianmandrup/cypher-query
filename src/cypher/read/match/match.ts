@@ -1,8 +1,16 @@
-import { AliasMap, NodeDef, Props } from "../../..";
+import {
+  AliasMap,
+  GraphObjDef,
+  NodeDef,
+  NodeRelOpts,
+  Props,
+  RelationDef,
+} from "../../..";
 import { Clause } from "../../clause";
 
 export class Match extends Clause {
   $optional = false;
+  currentNode: any;
 
   mergeMap(aliasMap: Props) {
     return this.q.mergeAliasMap(aliasMap, "matches");
@@ -37,21 +45,33 @@ export class Match extends Clause {
     return this.mergeMap(map);
   }
 
-  rel(nodeDef: NodeDef, opts = {}) {
-    const node = this.ctx.matchNode(nodeDef, opts);
-    if (!nodeDef.alias) return {};
+  pattern(...graphObjs: GraphObjDef[]) {
+    let objType = "";
+    const map = graphObjs.reduce((acc, obj) => {
+      if (objType && obj.type === objType) {
+        const nextType = objType === "edge" ? "node" : "edge";
+        throw new Error(`Invalid object in this position, must be ${nextType}`);
+      }
+      // ...
+      objType = obj.type || "";
+      return acc;
+    }, {});
+    return map;
+  }
+
+  rel(nodeDef: NodeDef, opts: NodeRelOpts = {}) {
+    const rel: any = this.ctx.matchRel(nodeDef, opts);
+    if (!rel.alias) return {};
     const map = {
-      [nodeDef.alias]: node,
+      [rel.alias]: rel,
     };
   }
 
-  to(nodeDef: NodeDef) {
-    const direction = "to";
-    return this.rel(nodeDef, { direction });
+  to(nodeDef: NodeDef, relation?: RelationDef) {
+    return this.rel(nodeDef, { to: nodeDef, relation });
   }
 
-  from(nodeDef: NodeDef) {
-    const direction = "from";
-    return this.rel(nodeDef, { direction });
+  from(nodeDef: NodeDef, relation?: RelationDef) {
+    return this.rel(this.currentNode, { from: nodeDef, relation });
   }
 }
