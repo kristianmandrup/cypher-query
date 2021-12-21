@@ -8,6 +8,10 @@ export class Clause {
     this.q = q;
   }
 
+  firstFromMap(map: Props) {
+    return map.values()[0];
+  }
+
   get results() {
     return this.q.results;
   }
@@ -29,6 +33,6 @@ export class Clause {
   }
 
   mergeAliasMap(aliasMap: Props, name?: string) {
-    this.q.mergeAliasMap(aliasMap, name);
+    return this.q.mergeAliasMap(aliasMap, name);
   }
 }

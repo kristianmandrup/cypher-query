@@ -1,6 +1,6 @@
 import Gun from "gun";
 import "gun/lib/then";
-import { NodeDef, RelSetArgs } from ".";
+import { GraphObjDef, NodeDef, RelationDef, RelSetArgs } from ".";
 
 /* Abstraction Layer to GunDB
  * Functions to abstract the creation of a schema
@@ -72,12 +72,13 @@ can now see whatever was added latest collaboration
     return this.setEdge(object, opts);
   }
 
-  protected setObj(object: any, opts: NodeDef) {
+  protected setObj(object: any, opts: GraphObjDef) {
     const label = opts.label && [opts.label];
     const labels = label || opts.labels || [];
     const props = opts.props || {};
     object.__labels = this.filterLabels(labels);
     object.__props = props;
+    return object;
   }
 
   /* Schema for Nodes */
@@ -86,6 +87,10 @@ can now see whatever was added latest collaboration
     object.__type = "node";
     const gunRef = this.nodes().set(object);
     return gunRef;
+  }
+
+  createRel(fromNode: any, relation: RelationDef, toNode: any) {
+    return this.tuple(fromNode, relation, toNode);
   }
 
   /* Schema for Edges */
@@ -120,12 +125,26 @@ can now see whatever was added latest collaboration
 
   /* Tuple function */
   /* Takes objects or references from Gun to create nodes */
-  tuple(node: any, verb: any, object: any) {
-    node.get("out").set(verb);
-    verb.get("source").put(node);
-    verb.get("target").put(object);
-    object.get("in").set(verb);
-    setTimeout(() => this.dfs.search("nodes", "__labels"), 1000);
+  tuple(fromNode: any, relationship: any, toNode: any) {
+    const relNode = relationship.__labels
+      ? relationship
+      : this.gun.get(relationship);
+    const { direction } = relationship;
+    if (direction !== "from") {
+      fromNode.get("out").set(relNode);
+    }
+
+    relNode.get("source").put(fromNode);
+    relNode.get("target").put(toNode);
+    if (direction !== "to") {
+      toNode.get("in").set(relNode);
+    }
+    return {
+      from: fromNode,
+      to: toNode,
+      relation: relNode,
+    };
+    // setTimeout(() => this.dfs.search("nodes", "__labels"), 1000);
   }
 
   addNode(edgeR: any, nodeR: any, ...labels: string[]) {

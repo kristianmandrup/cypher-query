@@ -4,16 +4,19 @@ import { Clause } from "../clause";
 
 export class Create extends Clause {
   relation(fromNode: NodeDef, relation: RelationDef, toNode: NodeDef) {
-    this.node(fromNode);
-    this.node(toNode);
-    // this._relationship();
+    const from = this.firstFromMap(this.node(fromNode));
+    const to = this.firstFromMap(this.node(toNode));
+    this.ctx.createRel(from, relation, to);
   }
 
   // CREATE (n:Person:Swedish)
   // https://neo4j.com/docs/cypher-manual/current/clauses/create/#create-create-a-node-with-multiple-labels
   node(opts: NodeDef = {}, merge = true) {
     const node = this.ctx.createNode(opts);
-    if (!opts.alias) return {};
+    if (!opts.alias)
+      return {
+        _: node,
+      };
     const map = {
       [opts.alias]: node,
     };

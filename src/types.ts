@@ -12,14 +12,20 @@ export type RelSetArgs = {
   direction?: "from" | "to";
 };
 
-export type NodeDef = {
+export type GraphObjDef = {
   alias?: string;
   labels?: string[];
   label?: string;
   props?: Props;
 };
 
-export interface RelationDef extends NodeDef {}
+export interface NodeDef extends GraphObjDef {
+  type?: "node";
+}
+
+export interface RelationDef extends GraphObjDef {
+  type?: "edge";
+}
 
 type ArrayOf<T> = T extends Array<infer U> ? U : never;
 type ArrayAsRecord<DataType> = ArrayOf<DataType> extends never
