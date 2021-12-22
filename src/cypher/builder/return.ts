@@ -16,4 +16,10 @@ export class Return extends Clause {
     }
     return prop ? rel[prop] : rel;
   }
+
+  count(num: number, distinct: boolean) {}
+
+  min(num: number, distinct: boolean) {}
+
+  max(num: number, distinct: boolean) {}
 }

@@ -6,7 +6,23 @@ Based on abstraction layer from [visualgraph](https://github.com/dletta/visualgr
 
 WIP
 
+## Cypher Query Engine Architecture
+
+The Cypher Query Engine is architected as a decoupled set of composable units that can be tested independently, re-architected or replaced.
+
+The `Query` is responsible for exposing a builder object which can build a strategy that can be run from the query instance to return query results.
+
+### CypherBuilder
+
+The `QueryBuilder` is responsible for exposing a DSL for creating a Query strategy to be executed on a GraphQL connection
+
+### CypherStrategy
+
+The `CypherStrategy` is responsible for executing a startegy on a Graph and returning matching results.
+
 ## Cypher API
+
+TODO: Refactor to adhere to new architecture outline
 
 ### Create
 

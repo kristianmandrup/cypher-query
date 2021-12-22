@@ -1,4 +1,4 @@
-import { Query } from "..";
+import { Query } from "../..";
 import {
   AliasMap,
   DirectedRelationDef,
@@ -6,7 +6,7 @@ import {
   Props,
   RelationDef,
   StrMap,
-} from "../..";
+} from "../../..";
 import { Clause } from "../clause";
 
 export class Create extends Clause {

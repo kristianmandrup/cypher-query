@@ -1,27 +1,15 @@
-import { Query } from ".";
-import { Props } from "..";
+import { Props } from "../cypher-types";
+import { IQueryBuilder } from "./builder";
 
 export class Clause {
-  q: Query;
+  q: IQueryBuilder;
 
-  constructor(q: Query) {
+  constructor(q: IQueryBuilder) {
     this.q = q;
   }
 
   firstFromMap(map: Props) {
     return map.values()[0];
-  }
-
-  get results() {
-    return this.q.results;
-  }
-
-  propValue(node: any, propName: string) {
-    return node["__props"][propName];
-  }
-
-  get ctx() {
-    return this.q.ctx;
   }
 
   get aliasMap() {

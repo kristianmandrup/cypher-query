@@ -1,12 +1,13 @@
 import csvtojson from "csvtojson";
 import request from "request";
 import { Clause } from "../clause";
-import { Query } from "..";
+import { Query } from "../..";
+import { IQueryBuilder } from "../builder";
 
 export class Csv extends Clause {
   csv: any;
 
-  constructor(q: Query) {
+  constructor(q: IQueryBuilder) {
     super(q);
     this.csv = csvtojson();
   }

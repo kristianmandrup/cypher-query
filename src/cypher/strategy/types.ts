@@ -1,0 +1,3 @@
+interface IStrategy {
+  run(): any;
+}

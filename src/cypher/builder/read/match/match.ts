@@ -5,7 +5,7 @@ import {
   NodeRelOpts,
   Props,
   RelationDef,
-} from "../../..";
+} from "../../../..";
 import { Clause } from "../../clause";
 
 export class Match extends Clause {
