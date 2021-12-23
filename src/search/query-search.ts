@@ -1,5 +1,5 @@
 import Gun from "gun";
-import { GunSchema } from "..";
+import { GunAPI } from "..";
 import { DFS } from "./dfs";
 
 /* BFS Search for Pattern (Query) */
@@ -17,11 +17,11 @@ export class QuerySearch {
   log: boolean = false;
   tObj: any = {};
   gun: any;
-  schema: GunSchema;
+  schema: GunAPI;
   dfs: DFS;
   resultReceiver?: ResultReceiver;
 
-  constructor(schema: GunSchema, opts: SearchCreateOpts = {}) {
+  constructor(schema: GunAPI, opts: SearchCreateOpts = {}) {
     this.schema = schema;
     this.gun = schema.gun;
     this.dfs = new DFS(schema);
@@ -34,7 +34,7 @@ export class QuerySearch {
     return this;
   }
 
-  static search(schema: GunSchema, obj: any) {
+  static search(schema: GunAPI, obj: any) {
     return new QuerySearch(schema).search(obj);
   }
 

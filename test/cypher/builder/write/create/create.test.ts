@@ -1,4 +1,4 @@
-import { Query, GunSchema } from "../../../../src";
+import { Query, GunSchema } from "../../../../../src";
 import Gun from "gun";
 
 const context = describe;

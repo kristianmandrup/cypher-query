@@ -1,12 +1,12 @@
-import { GunSchema } from "..";
+import { GunAPI } from "..";
 
-export const query = (ctx: GunSchema) => new Query(ctx);
+export const query = (ctx: GunAPI) => new Query(ctx);
 
 export class Query {
-  ctx: GunSchema;
+  ctx: GunAPI;
   results: any[] = [];
 
-  constructor(ctx: GunSchema) {
+  constructor(ctx: GunAPI) {
     this.ctx = ctx;
   }
 }

@@ -1,12 +1,9 @@
 import Gun from "gun";
-import {
-  LocalGraph,
-  QueryFind,
-  QuerySearch,
-  SelectTrav,
-  TripTrav,
-} from "./abstraction";
-import { GunSchema } from "./schema";
+import { GunAPI, LocalGraph, SelectTrav, TripTrav } from "./adapters/gun";
+
+import { QueryFind, QuerySearch } from "./search";
+
+import {} from "./adapters/gun/api";
 
 export function sayHello() {
   console.log("hi");
@@ -17,7 +14,7 @@ export function sayGoodbye() {
 
 // create a Gun instance using Gun('localhost') or Gun('127.0.0.1')
 export const tryQueries = (gun: any) => {
-  const schema = new GunSchema(gun);
+  const schema = new GunAPI(gun);
   const triple = { subject: "?p", predicate: "type", object: "Artist" };
   const trav = new TripTrav(triple);
   QuerySearch.search(schema, trav);

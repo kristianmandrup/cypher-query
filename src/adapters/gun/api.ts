@@ -1,13 +1,19 @@
 import Gun from "gun";
 import "gun/lib/then";
-import { GraphObjDef, NodeDef, NodeRelOpts, RelationDef, RelSetArgs } from ".";
+import {
+  GraphObjDef,
+  NodeDef,
+  NodeRelOpts,
+  RelationDef,
+  RelSetArgs,
+} from "../../cypher/cypher-types";
 
 /* Abstraction Layer to GunDB
  * Functions to abstract the creation of a schema
  */
 
-import { DFS } from "./search";
-import { IPromisedChain } from "./types";
+import { DFS } from "../../search";
+import { IPromisedChain } from "../../types";
 
 /* Schema definitions:
  * Metadata should start with double-underscore
@@ -17,7 +23,7 @@ import { IPromisedChain } from "./types";
  *   when querying happens
  */
 
-export class GunSchema {
+export class GunAPI {
   gun: any;
   $nodes: any;
   $edges: any;

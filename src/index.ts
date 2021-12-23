@@ -1,5 +1,5 @@
 export * from "./cypher";
-export * from "./abstraction";
+export * from "./adapters/utils";
 export * from "./search";
-export * from "./schema";
+export * from "./adapters/gun/api";
 export * from "./types";

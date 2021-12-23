@@ -18,7 +18,13 @@ The `QueryBuilder` is responsible for exposing a DSL for creating a Query strate
 
 ### CypherStrategy
 
-The `CypherStrategy` is responsible for executing a startegy on a Graph and returning matching results.
+The `CypherStrategy` is responsible for encapsulating the strategy being built by the builder.
+
+## Executer
+
+The `Executer` is responsible for executing a strategy on a given graph API, such as an API for an in-memory graph or a Graph API abstraction on GunDB.
+
+The executer returns the Cypher query results either as a stream or as a `Promise` (ie. `async`).
 
 ## Cypher API
 

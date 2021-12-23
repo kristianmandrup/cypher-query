@@ -1,13 +1,13 @@
 import { DFS } from ".";
-import { GunSchema } from "..";
+import { GunAPI } from "..";
 
 export class QueryFind {
   tObj: any;
 
-  schema: GunSchema;
+  schema: GunAPI;
   dfs: DFS;
 
-  constructor(schema: GunSchema) {
+  constructor(schema: GunAPI) {
     this.schema = schema;
     this.dfs = new DFS(schema);
   }
@@ -30,7 +30,7 @@ export class QueryFind {
     this.dfs.search("nodes", "__labels");
   }
 
-  static find(schema: GunSchema, obj: any) {
+  static find(schema: GunAPI, obj: any) {
     return new QueryFind(schema).find(obj);
   }
 
