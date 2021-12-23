@@ -26,6 +26,19 @@ The `Executer` is responsible for executing a strategy on a given graph API, suc
 
 The executer returns the Cypher query results either as a stream or as a `Promise` (ie. `async`).
 
+## GraphDB Adapters
+
+The Cypher query engine will be designed to support an adapter for a GraphDB
+
+Currently we aim to support:
+
+- [graphology](https://graphology.github.io/)
+- [gun](https://www.npmjs.com/package/gun)
+
+Graphology already comes with some baked-in [Neo4J support](https://www.npmjs.com/package/graphology-neo4j)
+
+Graphology has a number of extensions such as [graphology-operators](https://www.npmjs.com/package/graphology-operators)
+
 ## Cypher API
 
 TODO: Refactor to adhere to new architecture outline

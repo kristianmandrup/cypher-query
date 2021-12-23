@@ -1,17 +1,35 @@
-import {
-  GraphObjDef,
-  NodeDef,
-  NodeRelOpts,
-  RelationDef,
-  RelSetArgs,
-} from "../../cypher/cypher-types";
+import Graph from "graphology";
+
+import { GraphObjDef, NodeDef, RelationDef } from "../../cypher/cypher-types";
 
 import { uuidv4 } from "../utils";
 
+export class MemDB {
+  graph: Graph;
+
+  constructor(graph?: Graph) {
+    this.graph = graph || new Graph();
+  }
+
+  addNode(id: string) {
+    return this.graph.addNode({ id });
+  }
+
+  addEdge(fromId: string, toId: string, edgeDef: any) {
+    return this.graph.addEdge(fromId, toId, edgeDef);
+  }
+
+  edges() {
+    return this.graph.edges();
+  }
+
+  nodes() {
+    return this.graph.nodes();
+  }
+}
+
 export class InMemoryApi {
-  memdb: any;
-  $nodes: any;
-  $edges: any;
+  memdb: MemDB;
 
   constructor(memdb: any) {
     this.memdb = memdb;
@@ -27,14 +45,13 @@ export class InMemoryApi {
 
   createNode(opts: NodeDef) {
     const id = uuidv4();
-    const object = this.memdb.createNode(id);
+    const object = this.memdb.addNode(id);
     return this.setNode(object, opts);
   }
 
-  createEdge(opts: NodeDef) {
+  createEdge(fromId: string, toId: string, edgeDef: RelationDef) {
     const id = uuidv4();
-    const object = this.memdb.createEdge(id);
-    return this.setEdge(object, opts);
+    return this.memdb.addEdge(fromId, toId, edgeDef);
   }
 
   protected setObj(object: any, opts: GraphObjDef) {
@@ -47,11 +64,10 @@ export class InMemoryApi {
   }
 
   /* Schema for Nodes */
-  setNode(object: any, opts: NodeDef) {
-    this.setObj(object, opts);
+  setNode(object: any, nodeDef: NodeDef) {
+    this.setObj(object, nodeDef);
     object.__type = "node";
-    const ref = this.nodes().set(object);
-    return ref;
+    return nodeDef;
   }
 
   createRel(fromNode: any, relation: RelationDef, toNode: any) {
@@ -59,21 +75,18 @@ export class InMemoryApi {
   }
 
   /* Schema for Edges */
-  setEdge(object: any, opts: NodeDef) {
-    this.setObj(object, opts);
+  setEdge(object: any, relDef: RelationDef) {
+    this.setObj(object, relDef);
     object.__type = "edge";
-    const ref = this.edges().set(object);
-    return ref;
+    return relDef;
   }
 
   nodes = () => {
-    this.$nodes = this.$nodes || this.memdb.nodes;
-    return this.$nodes;
+    return this.memdb.nodes();
   };
 
   //.put({'__type':'index','__label':'edgesIndex'}); //same here
   edges = () => {
-    this.$edges = this.$edges || this.memdb.edges;
-    return this.$edges;
+    return this.memdb.edges();
   };
 }
