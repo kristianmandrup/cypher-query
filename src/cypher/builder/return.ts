@@ -17,9 +17,22 @@ export class Return extends Clause {
     return prop ? rel[prop] : rel;
   }
 
-  count(num: number, distinct: boolean) {}
+  countNodes(alias: string, distinct: boolean) {}
 
-  min(num: number, distinct: boolean) {}
+  countEdges(alias: string, distinct: boolean) {}
 
-  max(num: number, distinct: boolean) {}
+  count(expr: any, distinct: boolean) {}
+
+  // count(*)
+  countAll() {}
+
+  min(expr: any) {}
+
+  max(expr: any) {}
+
+  // numerical
+  sum(expr: any) {}
+
+  // numerical
+  avg(expr: any) {}
 }
