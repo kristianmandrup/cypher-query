@@ -1,3 +1,4 @@
 export * from "./gun";
-export * from "./in-memory/in-memory-api";
+export * from "./graph-api";
+export * from "./in-memory";
 export * from "./utils";

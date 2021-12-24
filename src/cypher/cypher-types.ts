@@ -1,3 +1,18 @@
+export interface IQueryResult {
+  header: string[];
+  rows: any[];
+  count: number;
+}
+
+export interface IResultExpr {
+  results: IQueryResult;
+}
+
+export interface IStrategyResult {
+  setFiltered(filtered: GraphObjDef[]): IStrategyResult;
+  addExpr(expr: IResultExpr): IStrategyResult;
+}
+
 export interface AliasMap {
   [alias: string]: NodeDef;
 }

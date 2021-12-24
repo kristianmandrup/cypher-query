@@ -1,19 +1,16 @@
+import { IQueryResult, IStrategyResult } from "../../../cypher-types";
+import { createLimitExpr, LimitExpr } from "../../../strategy/result";
 import { Clause } from "../../clause";
 
-export interface IQueryResult {
-  header: string[];
-  rows: any[];
-  count: number;
-}
-
 export class Limit extends Clause {
-  results?: IQueryResult;
+  result?: IStrategyResult;
 
   number(num: number) {
-    if (!this.results) {
+    if (!this.result) {
       this.error("Missing results to limit");
+      return;
     }
-    this.results && this.results.rows.splice(0, num);
+    this.result.addExpr(createLimitExpr(num));
     return this;
   }
 }
