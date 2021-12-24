@@ -1,7 +1,7 @@
 import Gun from "gun";
 import { GunAPI, LocalGraph, SelectTrav, TripTrav } from "./adapters/gun";
 
-import { QueryFind, QuerySearch } from "./search";
+import { QueryFind, QuerySearch } from "./adapters/gun/search";
 
 import {} from "./adapters/gun/api";
 

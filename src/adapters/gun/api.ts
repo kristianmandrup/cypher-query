@@ -12,7 +12,7 @@ import {
  * Functions to abstract the creation of a schema
  */
 
-import { DFS } from "../../search";
+import { DFS } from "./search";
 import { IPromisedChain } from "../../types";
 
 /* Schema definitions:

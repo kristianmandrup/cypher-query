@@ -20,9 +20,9 @@ The `QueryBuilder` is responsible for exposing a DSL for creating a Query strate
 
 The `CypherStrategy` is responsible for encapsulating the strategy being built by the builder.
 
-## Executer
+## CypherStrategyExecuter
 
-The `Executer` is responsible for executing a strategy on a given graph API, such as an API for an in-memory graph or a Graph API abstraction on GunDB.
+The `CypherStrategyExecuter` is responsible for executing a strategy on a given graph API, such as an API for an in-memory graph or a Graph API abstraction on GunDB.
 
 The executer returns the Cypher query results either as a stream or as a `Promise` (ie. `async`).
 
@@ -40,6 +40,14 @@ Graphology already comes with some baked-in [Neo4J support](https://www.npmjs.co
 Graphology has a number of extensions such as [graphology-operators](https://www.npmjs.com/package/graphology-operators)
 
 ## Cypher API
+
+The Cypher Query Engine should be developed starting from result limiting and step by stack back to match.
+
+It should be developed interface first, starting with the executer, then startegy and finally the builder to build the strategy.
+
+See the `Limit` class and work backwards from there.
+
+## APIs under development
 
 TODO: Refactor to adhere to new architecture outline
 

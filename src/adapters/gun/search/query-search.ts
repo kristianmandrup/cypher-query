@@ -1,5 +1,5 @@
 import Gun from "gun";
-import { GunAPI } from "..";
+import { GunAPI } from "../../..";
 import { DFS } from "./dfs";
 
 /* BFS Search for Pattern (Query) */

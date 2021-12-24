@@ -4,6 +4,14 @@ import Gun from "gun";
  * then update D3 data and the force-layout from the html
  */
 
+export type ItemMatchFn = (item: any) => boolean;
+
+export const defaults = {
+  matches: (item: any, ctx: any) => {
+    return item == ctx.label;
+  },
+};
+
 export class DFS {
   gun: any;
   stack: any[] = [];
@@ -94,7 +102,7 @@ export class DFS {
     this.edge(this.u, this.edges);
   }
 
-  edge(node: any, edges: any) {
+  edge(node: any, edges: any, matches = defaults.matches) {
     if (this.stop) {
       console.log("stopped");
       return;
@@ -105,7 +113,7 @@ export class DFS {
     let arr = Object.keys(node);
     for (let item of arr) {
       //save label if the prop meets the label
-      if (item == this.label) {
+      if (matches(item, this)) {
         tLabel = node[item];
       }
       //console.log(tLabel);

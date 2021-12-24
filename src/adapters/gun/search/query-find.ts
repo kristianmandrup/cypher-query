@@ -1,5 +1,5 @@
 import { DFS } from ".";
-import { GunAPI } from "..";
+import { GunAPI } from "../../..";
 
 export class QueryFind {
   tObj: any;
