@@ -1,3 +1,4 @@
-import { Clause } from "../../clause";
+import { IQueryResult } from "../../../cypher-types";
+import { ResultClause } from "./result-clause";
 
-export class Union extends Clause {}
+export class Union extends ResultClause {}

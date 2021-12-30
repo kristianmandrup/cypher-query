@@ -1,11 +1,11 @@
 import { ResultExpr } from "./result-expr";
 
-export const createLimitExpr = (num?: number) => new LimitExpr().setLimit(num);
+export const createSkipExpr = (num?: number) => new SkipExpr().setSkip(num);
 
-export class LimitExpr extends ResultExpr {
-  num?: number;
+export class SkipExpr extends ResultExpr {
+  num: number = 0;
 
-  setLimit(num?: number) {
+  setSkip(num: number = 0) {
     this.num = num;
     return this;
   }
@@ -14,7 +14,7 @@ export class LimitExpr extends ResultExpr {
     if (!this.hasValidResults(this.results)) {
       return this.results;
     }
-    this.results.data.splice(0, this.num);
+    this.results.data.splice(this.num);
     return this.results;
   }
 }

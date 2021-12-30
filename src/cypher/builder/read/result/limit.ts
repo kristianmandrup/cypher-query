@@ -1,10 +1,7 @@
-import { IQueryResult, IStrategyResult } from "../../../cypher-types";
-import { createLimitExpr, LimitExpr } from "../../../strategy/result";
-import { Clause } from "../../clause";
+import { createLimitExpr } from "../../../strategy/result";
+import { ResultClause } from "./result-clause";
 
-export class Limit extends Clause {
-  result?: IStrategyResult;
-
+export class Limit extends ResultClause {
   number(num: number) {
     if (!this.result) {
       this.error("Missing results to limit");

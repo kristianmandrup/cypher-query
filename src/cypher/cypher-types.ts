@@ -1,7 +1,8 @@
 export interface IQueryResult {
-  header: string[];
-  rows: any[];
-  count: number;
+  headers: string[];
+  data: any[];
+  rows: number;
+  columns: number;
 }
 
 export interface IResultExpr {

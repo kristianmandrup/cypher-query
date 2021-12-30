@@ -1,11 +1,11 @@
-import { Query, GunSchema } from "../../src";
+import { Query, GunAPI } from "../../src";
 import Gun from "gun";
 
 describe("Query", () => {
   let query, ctx, gun;
   beforeEach(() => {
     gun = Gun();
-    ctx = new GunSchema(gun);
+    ctx = new GunAPI(gun);
     query = new Query(ctx);
   });
 
