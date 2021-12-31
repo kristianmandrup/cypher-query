@@ -1,4 +1,6 @@
-import { GraphObjDef } from "../../cypher-types";
+import { IFilterResult } from ".";
+import { emptyResults } from "..";
+import { GraphObjDef, IQueryResult } from "../../cypher-types";
 
 type FilterExpr = (obj: GraphObjDef) => boolean;
 
@@ -10,7 +12,7 @@ export interface IStrategyFilter extends IStrategy {
 export class StrategyFilter implements IStrategy {
   filters: FilterExpr[] = [];
   objs: GraphObjDef[] = [];
-  result: GraphObjDef[] = [];
+  result: IFilterResult = {};
 
   constructor(filters: FilterExpr[]) {
     this.filters = filters;
@@ -24,8 +26,11 @@ export class StrategyFilter implements IStrategy {
     this.filters.push(...filters);
   }
 
-  filterAll(objs: GraphObjDef[]) {
-    return objs.filter(this.filter.bind(this));
+  // TODO: connect with Match and alias maps
+  filterAll(objs: GraphObjDef[]): IFilterResult {
+    return {
+      _: objs.filter(this.filter.bind(this)),
+    };
   }
 
   filter(obj: GraphObjDef) {

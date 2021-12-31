@@ -5,20 +5,6 @@ import { AndExpr, NotExpr, OrExpr } from "./boolean";
 export type NodeMatchFn = (node: any) => boolean;
 
 export class Where extends Clause {
-  pattern(...graphObjs: GraphObjDef[]) {
-    let objType = "";
-    const map = graphObjs.reduce((acc, obj) => {
-      if (objType && obj.type === objType) {
-        const nextType = objType === "edge" ? "node" : "edge";
-        throw new Error(`Invalid object in this position, must be ${nextType}`);
-      }
-      // ...
-      objType = obj.type || "";
-      return acc;
-    }, {});
-    return map;
-  }
-
   nodeMatches(fn: NodeMatchFn) {}
 
   get or() {
