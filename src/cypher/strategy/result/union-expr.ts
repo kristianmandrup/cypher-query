@@ -1,7 +1,7 @@
 import { IQueryResult } from "../../cypher-types";
 import { emptyResults, ResultExpr } from "./result-expr";
 
-export const createSkipExpr = (results: IQueryResult) =>
+export const createUnionExpr = (results: IQueryResult) =>
   new UnionExpr().setUnionResults(results);
 
 export class UnionExpr extends ResultExpr {

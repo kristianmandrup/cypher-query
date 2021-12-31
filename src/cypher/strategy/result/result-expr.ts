@@ -1,5 +1,18 @@
 import { IQueryResult, IResultExpr } from "../../cypher-types";
 
+const createData = (num: number): any[] =>
+  [...Array(num)].map((e, i) => ({ id: i }));
+
+const createHeaders = (num: number): string[] =>
+  [...Array(num)].map((e, i) => String.fromCharCode(i + 65));
+
+export const createResults = (num: number): IQueryResult => {
+  const results = emptyResults();
+  results.headers = createHeaders(num);
+  results.data = createData(num);
+  return results;
+};
+
 export const emptyResults = (): IQueryResult => ({
   headers: [],
   data: [],
