@@ -1,12 +1,16 @@
 import { Props } from "../cypher-types";
 import { IQueryBuilder } from "./builder";
+import { ErrorHandler } from "./error-handler";
+import { Handler } from "./handler";
 
-export class Clause {
+export class Clause extends Handler {
   q: IQueryBuilder;
 
   constructor(q: IQueryBuilder) {
+    super();
     this.q = q;
   }
+
   firstFromMap(map: Props) {
     return map.values()[0];
   }

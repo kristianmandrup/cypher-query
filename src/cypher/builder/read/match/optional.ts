@@ -1,4 +1,4 @@
-import { AliasMap, Match, NodeDef, Props } from "../../../..";
+import { Match } from "../../../..";
 import { Clause } from "../../clause";
 
 export class Optional extends Clause {

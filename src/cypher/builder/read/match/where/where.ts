@@ -21,42 +21,6 @@ export class Where extends Clause {
 
   nodeMatches(fn: NodeMatchFn) {}
 
-  nodePropEql(node: any, propName: string, propValue: any) {
-    return this.nodeMatches(
-      (node) => this.propValue(node, propName) === propValue
-    );
-  }
-
-  nodePropNotEql(node: any, propName: string, propValue: any) {
-    return this.nodeMatches(
-      (node) => this.propValue(node, propName) !== propValue
-    );
-  }
-
-  nodePropLt(node: any, propName: string, propValue: any) {
-    return this.nodeMatches(
-      (node) => this.propValue(node, propName) < propValue
-    );
-  }
-
-  nodePropLte(node: any, propName: string, propValue: any) {
-    return this.nodeMatches(
-      (node) => this.propValue(node, propName) <= propValue
-    );
-  }
-
-  nodePropGt(node: any, propName: string, propValue: any) {
-    return this.nodeMatches(
-      (node) => this.propValue(node, propName) > propValue
-    );
-  }
-
-  nodePropGte(node: any, propName: string, propValue: any) {
-    return this.nodeMatches(
-      (node) => this.propValue(node, propName) >= propValue
-    );
-  }
-
   get or() {
     return new OrExpr(this);
   }

@@ -1,26 +1,32 @@
+import { NodeCompareConfigObj } from ".";
 import { IGraphApi } from "../../..";
-
-export type NodeMatchFn = (node: any) => boolean;
+import { Handler } from "../../builder/handler";
 
 export interface IFilterResult {
   [key: string]: any[];
 }
 
-export class FilterExpr {
+export class FilterExpr extends Handler {
   api: IGraphApi;
+  alias: string;
   node?: any;
   results: IFilterResult = {};
 
-  constructor(api: IGraphApi) {
+  constructor(api: IGraphApi, config?: { alias: string }) {
+    super();
     this.api = api;
+    this.alias = config ? config.alias : "_";
+  }
+
+  setAlias(alias: string) {
+    this.alias = alias;
+    return this;
   }
 
   setNode(node: any) {
     this.node = node;
     return this;
   }
-
-  nodeMatches(fn: NodeMatchFn) {}
 
   propValue(node: any, propName: string) {
     return this.api.propValue(node, propName);
