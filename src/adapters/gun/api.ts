@@ -107,6 +107,11 @@ can now see whatever was added latest collaboration
     return gunRef;
   }
 
+  propValue(node: any, propName: string) {
+    const props = node["__props"] || {};
+    return props[propName];
+  }
+
   /* Create Index for Nodes and Edges */
   //.put({'__type':'index','__label':'nodesIndex'}); //creates global nodes index, but not write protected
   nodes = () => {

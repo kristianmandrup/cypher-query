@@ -7,7 +7,6 @@ export class Clause {
   constructor(q: IQueryBuilder) {
     this.q = q;
   }
-
   firstFromMap(map: Props) {
     return map.values()[0];
   }

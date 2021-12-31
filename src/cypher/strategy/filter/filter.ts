@@ -1,4 +1,4 @@
-import { GraphObjDef } from "../cypher-types";
+import { GraphObjDef } from "../../cypher-types";
 
 type FilterExpr = (obj: GraphObjDef) => boolean;
 

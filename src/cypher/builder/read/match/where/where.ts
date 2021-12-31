@@ -1,4 +1,4 @@
-import { GraphObjDef } from "../../../../..";
+import { GraphObjDef } from "../../../../cypher-types";
 import { Clause } from "../../../clause";
 import { AndExpr, NotExpr, OrExpr } from "./boolean";
 
