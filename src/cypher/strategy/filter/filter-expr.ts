@@ -32,6 +32,10 @@ export class FilterExpr extends Handler {
     return this.api.propValue(node, propName);
   }
 
+  nodeLabels(node: any) {
+    return this.api.nodeLabels(node);
+  }
+
   isValid() {
     return this.node;
   }

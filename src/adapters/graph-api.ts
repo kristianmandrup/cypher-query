@@ -5,4 +5,5 @@ export interface IGraphApi {
   createEdge(fromId: string, toId: string, edgeDef: RelationDef): any;
 
   propValue(node: any, propName: string): any;
+  nodeLabels(node: any): string[];
 }

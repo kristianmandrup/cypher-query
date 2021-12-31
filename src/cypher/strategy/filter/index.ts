@@ -6,3 +6,7 @@ export * from "./node-prop-eql-expr";
 export * from "./node-prop-noteql-expr";
 export * from "./node-prop-gt-expr";
 export * from "./node-prop-lt-expr";
+export * from "./node-label-eql-expr";
+export * from "./node-label-noteql-expr";
+export * from "./node-labels-include-expr";
+export * from "./node-labels-exclude-expr";
