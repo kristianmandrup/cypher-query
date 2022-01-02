@@ -1,7 +1,7 @@
 {
   "name": "gun-cypher",
   "version": "0.1.0",
-  "description": "GUN DB query engine for Cypher (CQL)",
+  "description": "Graph DB query engine for Cypher (CQL) that aims to support Graphology and Gun",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -13,13 +13,16 @@
     "gun:server": "gun --host 127.0.0.1"
   },
   "keywords": [
-    "gun",
-    "gunDB",
-    "graph",
-    "graphdb",
-    "query",
+    "cypher",
     "neo4j",
-    "cypher"
+    "graphdb",
+    "graph",        
+    "query",
+    "builder",
+    "engine",
+    "graphology",
+    "gun",
+    "web3"
   ],
   "author": "Kristian Mandrup <kmandrup@gmail.com>",
   "license": "ISC",

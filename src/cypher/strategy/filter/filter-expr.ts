@@ -8,7 +8,7 @@ export interface IFilterResult {
   [key: string]: any[];
 }
 
-export class FilterExpr extends Handler {
+export abstract class FilterExpr extends Handler {
   api: IGraphApi;
   alias: string;
   node?: any;
@@ -44,5 +44,9 @@ export class FilterExpr extends Handler {
 
   isDefined(value: any) {
     return value !== undefined && value !== null;
+  }
+
+  run(): IFilterResult {
+    return {};
   }
 }

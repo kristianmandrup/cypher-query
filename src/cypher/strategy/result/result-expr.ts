@@ -1,3 +1,4 @@
+import { Handler } from "../../builder/handler";
 import { IQueryResult, IResultExpr } from "../../cypher-types";
 
 const createData = (num: number): any[] =>
@@ -24,10 +25,12 @@ export const emptyResults = (): IQueryResult => ({
   },
 });
 
-export class ResultExpr implements IResultExpr {
+export class ResultExpr extends Handler implements IResultExpr {
   results: IQueryResult = emptyResults();
 
-  constructor() {}
+  constructor() {
+    super();
+  }
 
   setResults(results: IQueryResult) {
     this.results = results;

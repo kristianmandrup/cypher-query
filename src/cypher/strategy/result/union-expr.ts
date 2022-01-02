@@ -12,12 +12,19 @@ export class UnionExpr extends ResultExpr {
     return this;
   }
 
+  hasSameHeaders(results: IQueryResult, results2: IQueryResult) {
+    return results.headers.every((header) => results2.headers.includes(header));
+  }
+
   run() {
     if (!this.hasValidResults(this.results)) {
-      return this.results;
+      this.error("Source results to unite is invalid");
     }
     if (!this.hasValidResults(this.results2)) {
-      return this.results2;
+      this.error("Target results to unite is invalid");
+    }
+    if (!this.hasSameHeaders(this.results, this.results2)) {
+      this.error("Results to unite must have same headers");
     }
     this.results.data.push(...this.results2.data);
     return this.results;
