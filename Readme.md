@@ -90,6 +90,14 @@ where.node.props({ age: gte(18), gender: eq("male") });
 where.edge.labels({ include: "owns" });
 ```
 
+Where `eq` and `gte` are simply convenience helpers for a more complex JSON structure:
+
+`{ age: {gte: 18}, gender: {eq: "male"} }`
+
+Not that more complex comnparison statements like not equal, can be expressed either as `neq` or `{not: eq: }`
+
+`{ age: {gte: 18}, gender: {eq: "male"} }`
+
 The Where builders should build a `Filter` with filter expressions (`FilterExpr`).
 The `Filter` is a composite. Any `FilterExpr` can itself be a composite, such as `AndExpr` and `OrExpr`. Each `FilterExpr` implementation must have a `run` method that runs the filter on a graph object (node or edge)
 
@@ -174,6 +182,61 @@ Filter epxression should subclass this abstract baseclass and provide a run meth
 Note: When we get to support the GunDB API, this API will need to be promise based.
 
 As the filters are run, a results list will be returned on each tree node in the filter hierarchy, which must then be assembled into the final flat result format, each set of results linked to a match alias.
+
+A complex filter may be structured in a tree like structure, like the following, which is evaluated depth first left to right.
+
+```js
+{
+  filter: [{
+    not: [{
+      and: [{
+        age: {gte: { ...}},
+        name: {eq: { ... }}
+      }],
+    }],
+    or: [{
+      level: {gte: { ...}},
+      status: {eq: { ... }}
+    }]
+  }]
+}
+```
+
+So that the leaf expressions for the `and` expression would be evaluated first.
+
+```js
+  and: [{
+    true (matching nodes),
+    false (no matching nodes)
+  }],
+```
+
+Logical `and` for `true` and `false` is `false`
+
+```js
+  not: [{
+    false (ie. no matching nodes)
+  }],
+```
+
+`not` on `false` (no matching nodes) means the inverse set, ie. all nodes in the graph
+
+```js
+  true (ie. return matching nodes NOT)
+```
+
+Then `or` expression is evaluated, resulting in first the leaf expressions
+
+```js
+  or: [{
+    false (no matching nodes)
+    true (matching nodes OR2)
+  }]
+```
+
+Logical `or` for `false` and `true` is `true` returning the set labeled `OR2`
+
+Resulting in a combined (union) result set of all nodes combined with `OR2`, ie. all nodes in the graph.
 
 ##### Label filters
 
