@@ -1,6 +1,6 @@
-import { FilterExpr, IFilterResult } from "./filter-expr";
+import { FilterExpr, IFilterResult } from "../filter-expr";
 
-export type NodeMatchFn = (obj: NodeLabelConfigObj) => boolean;
+export type NodeLabelMatchFn = (obj: NodeLabelConfigObj) => boolean;
 
 export type LabelCompareFn = (
   labels: string[],
@@ -26,7 +26,7 @@ export class NodeLabelCompareExpr extends FilterExpr {
     return this;
   }
 
-  nodeMatches(fn: NodeMatchFn): IFilterResult {
+  nodeMatches(fn: NodeLabelMatchFn): IFilterResult {
     const { node, label, alias } = this;
     const matches = fn({ node, label });
     return matches ? { [alias]: [node] } : {};
@@ -36,7 +36,7 @@ export class NodeLabelCompareExpr extends FilterExpr {
     return this.label && this.label.trim().length;
   }
 
-  runCompare(compareFn: NodeMatchFn): IFilterResult {
+  runCompare(compareFn: NodeLabelMatchFn): IFilterResult {
     if (!this.isValid()) {
       return this.results;
     }

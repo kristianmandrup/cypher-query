@@ -1,14 +1,14 @@
-import { IGraphApi } from "../../..";
+import { IGraphApi } from "../../../..";
 import {
   NodeLabelCompareExpr,
   NodeLabelConfigObj,
 } from "./node-label-compare-expr";
 
-export const createNodeLabelsIncludeExpr =
+export const createNodeLabelEqlExpr =
   (api: IGraphApi) => (configObj: NodeLabelConfigObj) =>
-    new NodeLabelsIncludeExpr(api).config(configObj);
+    new NodeLabelEqlExpr(api).config(configObj);
 
-export class NodeLabelsIncludeExpr extends NodeLabelCompareExpr {
+export class NodeLabelEqlExpr extends NodeLabelCompareExpr {
   compareLabel(nodeLabels: string[], compareLabel: string): boolean {
     return nodeLabels.includes(compareLabel);
   }

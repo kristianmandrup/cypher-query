@@ -1,6 +1,5 @@
-import { FilterExpr, IFilterResult } from "./filter-expr";
-
-export type NodeMatchFn = (obj: NodeCompareConfigObj) => boolean;
+import { NodeMatchFn } from "..";
+import { FilterExpr, IFilterResult } from "../filter-expr";
 
 export type PropValueCompareFn = (nodeVal: any, compareVal: any) => boolean;
 
@@ -8,16 +7,22 @@ export type NodeCompareConfigObj = {
   node: any;
   propName: string;
   propValue: any;
+  equal?: boolean;
+  not?: boolean;
 };
 
 export class NodePropCompareExpr extends FilterExpr {
   propName: string = "*";
   propValue: any;
+  equal?: boolean;
+  not?: boolean;
 
   config(configObj: NodeCompareConfigObj) {
     super.setNode(configObj.node);
     this.setPropName(configObj.propName);
     this.setPropValue(configObj.propValue);
+    this.setEqual(!!configObj.equal);
+    this.setNot(!!configObj.not);
     return this;
   }
 
@@ -28,6 +33,16 @@ export class NodePropCompareExpr extends FilterExpr {
 
   setPropValue(propValue: string) {
     this.propValue = propValue;
+    return this;
+  }
+
+  setEqual(equal: boolean) {
+    this.equal = equal;
+    return this;
+  }
+
+  setNot(not: boolean) {
+    this.not = not;
     return this;
   }
 

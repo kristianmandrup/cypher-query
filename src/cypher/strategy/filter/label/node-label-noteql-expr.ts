@@ -1,4 +1,4 @@
-import { IGraphApi } from "../../..";
+import { IGraphApi } from "../../../../";
 import {
   NodeLabelCompareExpr,
   NodeLabelConfigObj,

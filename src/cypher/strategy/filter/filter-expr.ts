@@ -2,6 +2,8 @@ import { NodeCompareConfigObj } from ".";
 import { IGraphApi } from "../../..";
 import { Handler } from "../../builder/handler";
 
+export type NodeMatchFn = (obj: NodeCompareConfigObj) => boolean;
+
 export interface IFilterResult {
   [key: string]: any[];
 }
