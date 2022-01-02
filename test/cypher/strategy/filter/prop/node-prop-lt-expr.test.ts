@@ -1,6 +1,6 @@
-import { createNodePropEqlExpr, NodePropEqlExpr } from "../../../../../src";
+import { createNodePropLtExpr, NodePropLtExpr } from "../../../../../src";
 
-describe("NodePropEqlExpr", () => {
+describe("NodePropLtExpr", () => {
   let expr;
   let api: any;
   let configObj: any;
@@ -11,13 +11,13 @@ describe("NodePropEqlExpr", () => {
       propName: "a",
       propValue: "1",
     };
-    expr = createNodePropEqlExpr(api)(configObj);
+    expr = createNodePropLtExpr(api)(configObj);
   });
 
   describe("compareValue: 5", () => {
-    describe("eql", () => {
+    describe("not equal", () => {
       beforeEach(() => {
-        expr.setPropValue(5).setNot(false);
+        expr.setPropValue(5).setEqual(false);
       });
       it("5 to 5 - true", () => {
         const result = expr.compareValue(5, 5);
@@ -30,9 +30,9 @@ describe("NodePropEqlExpr", () => {
       });
     });
 
-    describe("not", () => {
+    describe("equal", () => {
       beforeEach(() => {
-        expr.setPropValue(5).setNot(true);
+        expr.setPropValue(5).setEqual(true);
       });
       it("5 to 5 - true", () => {
         const result = expr.compareValue(5, 5);

@@ -9,7 +9,13 @@ export const createNodeLabelsIncludeExpr =
     new NodeLabelsIncludeExpr(api).config(configObj);
 
 export class NodeLabelsIncludeExpr extends NodeLabelCompareExpr {
-  compareLabel(nodeLabels: string[], compareLabel: string): boolean {
+  compareValue(nodeLabels: string[], compareLabel: string): boolean {
+    return this.not
+      ? !this.compareEqual(nodeLabels, compareLabel)
+      : this.compareEqual(nodeLabels, compareLabel);
+  }
+
+  compareEqual(nodeLabels: string[], compareLabel: string): boolean {
     return nodeLabels.includes(compareLabel);
   }
 }

@@ -10,19 +10,27 @@ export type LabelCompareFn = (
 export type NodeLabelConfigObj = {
   node: any;
   label: string;
+  not?: boolean;
 };
 
 export class NodeLabelCompareExpr extends FilterExpr {
   label: string = "*";
+  not?: boolean;
 
   setLabel(alias: string) {
     this.alias = alias;
     return this;
   }
 
+  setNot(not: boolean) {
+    this.not = not;
+    return this;
+  }
+
   config(configObj: NodeLabelConfigObj) {
     super.setNode(configObj.node);
     this.setLabel(configObj.label);
+    this.setNot(!!configObj.not);
     return this;
   }
 
