@@ -187,6 +187,21 @@ Sample result:
 
 ## Strategy API
 
+The Builder must be configured with an `IStrategyMap` object which contains a map of the factory maethods to create each type of strategy for the chainable builder DSL methods.
+
+This makes the strategy completely configurable and composable, so that you can override, customize and extend with a strategy to fit your particular needs.
+
+By default it calls `defaultStrategyMap` to generate a default strategy based on the default filter and result expressions provided.
+
+```ts
+export const defaultStrategyMap = (): IStrategyMap => {
+  return {
+    filter: defaultFilterMap(),
+    result: defaultResultMap(),
+  };
+};
+```
+
 ### Matches
 
 The matches should constitute a rough filter that is executed on the graph to build a rough `IFilterResult` result to be optionally further filtered with where.
