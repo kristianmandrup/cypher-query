@@ -1,3 +1,5 @@
+import { IFilterResult } from ".";
+
 export interface IQueryResult {
   headers: string[];
   data: any[];
@@ -10,7 +12,7 @@ export interface IResultExpr {
 }
 
 export interface IStrategyResult {
-  setFiltered(filtered: GraphObjDef[]): IStrategyResult;
+  setFiltered(filtered: IFilterResult): IStrategyResult;
   addExpr(expr: IResultExpr): IStrategyResult;
 }
 

@@ -1,11 +1,17 @@
-import { IQueryResult } from "../../cypher-types";
+import { IQueryResult, IStrategyResult } from "../../cypher-types";
 import { emptyResults, ResultExpr } from "./result-expr";
 
-export const createUnionExpr = (results: IQueryResult) =>
-  new UnionExpr().setUnionResults(results);
+export const createUnionExpr = (result: IStrategyResult, config: any) =>
+  new UnionExpr(result).config(config);
 
 export class UnionExpr extends ResultExpr {
   results2: IQueryResult = emptyResults();
+
+  config(config: any) {
+    super.config(config);
+    this.setUnionResults(config.results);
+    return this;
+  }
 
   setUnionResults(results: IQueryResult) {
     this.results2 = results;

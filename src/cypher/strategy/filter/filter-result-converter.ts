@@ -2,7 +2,11 @@ import { IFilterResult } from ".";
 import { emptyResults } from "..";
 import { IQueryResult } from "../../cypher-types";
 
-export class FilterResultConverter {
+export interface IFilterResultConverter {
+  toQueryResult(filtered: IFilterResult): IQueryResult;
+}
+
+export class FilterResultConverter implements IFilterResultConverter {
   result: IFilterResult = {};
 
   constructor() {}

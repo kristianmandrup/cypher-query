@@ -1,20 +1,15 @@
+import { IStrategyResult } from "../../cypher-types";
 import { ResultExpr } from "./result-expr";
 
-export const createLimitExpr = (num?: number) => new LimitExpr().setLimit(num);
+export const createLimitExpr = (result: IStrategyResult, config?: any) =>
+  new LimitExpr(result).config(config);
 
 export class LimitExpr extends ResultExpr {
-  num?: number;
-
-  setLimit(num?: number) {
-    this.num = num;
-    return this;
-  }
-
   run() {
     if (!this.hasValidResults(this.results)) {
       return this.results;
     }
-    this.results.data.splice(0, this.num);
+    this.num && this.results.data.splice(0, this.num);
     return this.results;
   }
 }

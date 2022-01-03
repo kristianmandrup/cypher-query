@@ -1,5 +1,4 @@
-import { GraphObjDef } from "../../../../cypher-types";
-import { Clause } from "../../../clause";
+import { Clause } from "../../clause";
 import { AndExpr, NotExpr, OrExpr } from "./boolean";
 
 export type NodeMatchFn = (node: any) => boolean;

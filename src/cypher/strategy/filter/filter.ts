@@ -1,7 +1,6 @@
 import { IFilterResult } from ".";
-import { emptyResults } from "..";
 import { IGraphApi } from "../../..";
-import { GraphObjDef, IQueryResult } from "../../cypher-types";
+import { GraphObjDef } from "../../cypher-types";
 
 type FilterExpr = (obj: GraphObjDef) => boolean;
 
@@ -14,11 +13,15 @@ export type IGraphObjApi = {
 export interface IStrategyFilter extends IStrategy {
   api?: IGraphApi;
   graphObjApi: IGraphObjApi;
-  filterAll(objs: GraphObjDef[]): GraphObjDef[];
+  filterAll(objs: GraphObjDef[]): IFilterResult;
   filter(obj: GraphObjDef): boolean;
 }
 
-export class StrategyFilter implements IStrategy {
+export const createStrategyFilter = (
+  graphObjApi: IGraphObjApi
+): IStrategyFilter => new StrategyFilter(graphObjApi);
+
+export class StrategyFilter implements IStrategyFilter {
   graphObjApi: IGraphObjApi;
   filters: FilterExpr[] = [];
   objs: GraphObjDef[] = [];

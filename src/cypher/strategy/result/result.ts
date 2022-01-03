@@ -1,16 +1,31 @@
 import { emptyResults, ResultExpr } from ".";
-import { GraphObjDef, IQueryResult } from "../../cypher-types";
+import { GraphObjDef, IQueryResult, IStrategyResult } from "../../cypher-types";
 import { IFilterResult } from "../filter";
-import { FilterResultConverter } from "../filter/filter-result-converter";
+import {
+  FilterResultConverter,
+  IFilterResultConverter,
+} from "../filter/filter-result-converter";
+
+export const createStrategyResult = (
+  config: IStrategyResultConfig = {}
+): IStrategyResult => new StrategyResult(config);
+
+export interface IStrategyResultConfig {
+  converter?: IFilterResultConverter;
+}
 
 export class StrategyResult {
   filtered: IFilterResult = {};
   results: IQueryResult = emptyResults();
   expressions: ResultExpr[] = [];
-  converter: FilterResultConverter;
+  converter: IFilterResultConverter;
 
-  constructor() {
-    this.converter = new FilterResultConverter();
+  constructor(config: IStrategyResultConfig = {}) {
+    this.converter = config.converter || this.createFilterResultConverter();
+  }
+
+  createFilterResultConverter() {
+    return new FilterResultConverter();
   }
 
   setFiltered(filtered: IFilterResult) {

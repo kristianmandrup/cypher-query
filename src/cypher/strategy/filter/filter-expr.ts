@@ -1,11 +1,12 @@
 import { NodeCompareConfigObj } from ".";
 import { IStrategyFilter } from "..";
 import { Handler } from "../../builder/handler";
+import { GraphObjDef } from "../../cypher-types";
 
 export type NodeMatchFn = (obj: NodeCompareConfigObj) => boolean;
 
 export interface IFilterResult {
-  [key: string]: any[];
+  [key: string]: GraphObjDef[];
 }
 
 export interface IFilterExpr {
