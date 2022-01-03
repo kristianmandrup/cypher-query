@@ -1,21 +1,31 @@
 import { IFilterResult } from ".";
 import { emptyResults } from "..";
+import { IGraphApi } from "../../..";
 import { GraphObjDef, IQueryResult } from "../../cypher-types";
 
 type FilterExpr = (obj: GraphObjDef) => boolean;
 
+export type IGraphObjApi = {
+  api?: IGraphApi;
+  propValue(obj: any, propName: string): any;
+  nodeLabels(obj: any): string[];
+};
+
 export interface IStrategyFilter extends IStrategy {
+  api?: IGraphApi;
+  graphObjApi: IGraphObjApi;
   filterAll(objs: GraphObjDef[]): GraphObjDef[];
   filter(obj: GraphObjDef): boolean;
 }
 
 export class StrategyFilter implements IStrategy {
+  graphObjApi: IGraphObjApi;
   filters: FilterExpr[] = [];
   objs: GraphObjDef[] = [];
   result: IFilterResult = {};
 
-  constructor(filters: FilterExpr[]) {
-    this.filters = filters;
+  constructor(graphObjApi: IGraphObjApi) {
+    this.graphObjApi = graphObjApi;
   }
 
   addFilter(filter: FilterExpr) {
@@ -24,6 +34,7 @@ export class StrategyFilter implements IStrategy {
 
   addFilters(filters: FilterExpr[]) {
     this.filters.push(...filters);
+    return this;
   }
 
   // TODO: connect with Match and alias maps

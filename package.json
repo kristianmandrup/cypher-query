@@ -1,5 +1,5 @@
 {
-  "name": "gun-cypher",
+  "name": "cypher-query",
   "version": "0.1.0",
   "description": "Graph DB query engine for Cypher (CQL) that aims to support Graphology and Gun",
   "main": "dist/index.js",

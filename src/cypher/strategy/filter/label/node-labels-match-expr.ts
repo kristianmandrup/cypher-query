@@ -1,12 +1,14 @@
+import { IStrategyFilter } from "..";
 import { IGraphApi } from "../../../..";
 import {
   NodeLabelCompareExpr,
   NodeLabelConfigObj,
 } from "./node-label-compare-expr";
 
-export const createNodeLabelMatchesExpr =
-  (api: IGraphApi) => (configObj: NodeLabelConfigObj) =>
-    new NodeLabelMatchesExpr(api).config(configObj);
+export const createNodeLabelMatchesExpr = (
+  filter: IStrategyFilter,
+  configObj: NodeLabelConfigObj
+) => new NodeLabelMatchesExpr(filter).config(configObj);
 
 export class NodeLabelMatchesExpr extends NodeLabelCompareExpr {
   compareValue(nodeLabels: string[], compareLabel: string | RegExp): boolean {

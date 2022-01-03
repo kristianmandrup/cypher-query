@@ -1,20 +1,27 @@
 import {
   createNodeLabelsIncludeExpr,
   NodeLabelsIncludeExpr,
+  StrategyFilter,
+  GraphologyObjApi,
+  IGraphObjApi,
 } from "../../../../../src";
 
 describe("NodeLabelsIncludeExpr", () => {
   let expr: NodeLabelsIncludeExpr;
   let api: any;
   let configObj: any;
+  let filter;
+  let graphObjApi: IGraphObjApi;
   beforeEach(() => {
     api = {};
+    graphObjApi = new GraphologyObjApi(); //
+    filter = new StrategyFilter(graphObjApi);
     configObj = {
       node: {},
       propName: "a",
       propValue: "1",
     };
-    expr = createNodeLabelsIncludeExpr(api)(configObj);
+    expr = createNodeLabelsIncludeExpr(filter, configObj);
   });
 
   describe("compareValue: 5", () => {

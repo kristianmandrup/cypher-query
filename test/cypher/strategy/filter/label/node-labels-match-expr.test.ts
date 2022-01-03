@@ -1,20 +1,25 @@
 import {
   createNodeLabelMatchesExpr,
   NodeLabelMatchesExpr,
+  StrategyFilter,
+  GraphologyObjApi,
 } from "../../../../../src";
 
 describe("NodeLabelMatchesExpr", () => {
   let expr: NodeLabelMatchesExpr;
   let api: any;
   let configObj: any;
+  let graphObjApi, filter;
   beforeEach(() => {
     api = {};
+    graphObjApi = new GraphologyObjApi(); //
+    filter = new StrategyFilter(graphObjApi);
     configObj = {
       node: {},
       propName: "a",
       propValue: "1",
     };
-    expr = createNodeLabelMatchesExpr(api)(configObj);
+    expr = createNodeLabelMatchesExpr(filter, configObj);
   });
 
   describe("compareValue: 5", () => {

@@ -1,4 +1,5 @@
 import Graph from "graphology";
+import { IGraphApi } from "..";
 
 import { GraphObjDef, NodeDef, RelationDef } from "../../cypher/cypher-types";
 
@@ -28,7 +29,7 @@ export class MemDB {
   }
 }
 
-export class InMemoryApi {
+export class GraphologyGraphApi implements IGraphApi {
   memdb: MemDB;
 
   constructor(memdb: any) {

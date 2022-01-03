@@ -1,5 +1,5 @@
 import { NodeCompareConfigObj } from ".";
-import { IGraphApi } from "../../..";
+import { IStrategyFilter } from "..";
 import { Handler } from "../../builder/handler";
 
 export type NodeMatchFn = (obj: NodeCompareConfigObj) => boolean;
@@ -9,15 +9,19 @@ export interface IFilterResult {
 }
 
 export abstract class FilterExpr extends Handler {
-  api: IGraphApi;
+  filter: IStrategyFilter;
   alias: string;
   node?: any;
   results: IFilterResult = {};
 
-  constructor(api: IGraphApi, config?: { alias: string }) {
+  constructor(filter: IStrategyFilter, config?: { alias: string }) {
     super();
-    this.api = api;
+    this.filter = filter;
     this.alias = config ? config.alias : "_";
+  }
+
+  get graphObjApi() {
+    return this.filter.graphObjApi;
   }
 
   setAlias(alias: string) {
@@ -30,12 +34,12 @@ export abstract class FilterExpr extends Handler {
     return this;
   }
 
-  propValue(node: any, propName: string) {
-    return this.api.propValue(node, propName);
+  propValue(obj: any, propName: string) {
+    return this.graphObjApi.propValue(obj, propName);
   }
 
-  nodeLabels(node: any) {
-    return this.api.nodeLabels(node);
+  nodeLabels(obj: any) {
+    return this.graphObjApi.nodeLabels(obj);
   }
 
   isValid() {

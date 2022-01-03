@@ -1,2 +1,2 @@
-export * from "./api";
+export * from "./graph-api";
 export * from "../utils";

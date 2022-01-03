@@ -14,6 +14,7 @@ import {
 
 import { DFS } from "./search";
 import { IPromisedChain } from "../../types";
+import { IGraphApi } from "..";
 
 /* Schema definitions:
  * Metadata should start with double-underscore
@@ -23,7 +24,7 @@ import { IPromisedChain } from "../../types";
  *   when querying happens
  */
 
-export class GunAPI {
+export class GunAPI implements IGraphApi {
   gun: any;
   $nodes: any;
   $edges: any;
@@ -73,9 +74,8 @@ can now see whatever was added latest collaboration
     return this.setNode(object, opts);
   }
 
-  createEdge(opts: NodeDef) {
-    const object = this.gun.get("edge");
-    return this.setEdge(object, opts);
+  createEdge(fromId: string, toId: string, edgeDef: RelationDef) {
+    return {};
   }
 
   protected setObj(object: any, opts: GraphObjDef) {
@@ -105,11 +105,6 @@ can now see whatever was added latest collaboration
     object.__type = "edge";
     const gunRef = this.edges().set(object);
     return gunRef;
-  }
-
-  propValue(node: any, propName: string) {
-    const props = node["__props"] || {};
-    return props[propName];
   }
 
   /* Create Index for Nodes and Edges */

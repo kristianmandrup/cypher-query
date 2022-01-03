@@ -1,17 +1,25 @@
-import { createNodePropLtExpr, NodePropLtExpr } from "../../../../../src";
+import {
+  createNodePropLtExpr,
+  GraphologyObjApi,
+  NodePropLtExpr,
+  StrategyFilter,
+} from "../../../../../src";
 
 describe("NodePropLtExpr", () => {
   let expr;
   let api: any;
   let configObj: any;
+  let graphObjApi, filter;
   beforeEach(() => {
     api = {};
+    graphObjApi = new GraphologyObjApi(); //
+    filter = new StrategyFilter(graphObjApi);
     configObj = {
       node: {},
       propName: "a",
       propValue: "1",
     };
-    expr = createNodePropLtExpr(api)(configObj);
+    expr = createNodePropLtExpr(filter, configObj);
   });
 
   describe("compareValue: 5", () => {

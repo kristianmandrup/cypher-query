@@ -1,4 +1,4 @@
-# Gun DB query engine for Cypher (CQL)
+# DB query engine for Cypher (CQL)
 
 Based on abstraction layer from [visualgraph](https://github.com/dletta/visualgraph/)
 
@@ -6,29 +6,29 @@ Based on abstraction layer from [visualgraph](https://github.com/dletta/visualgr
 
 WIP
 
-## Cypher Query Engine Architecture
+## Query Engine Architecture
 
-The Cypher Query Engine is architected as a decoupled set of composable units that can be tested independently, re-architected or replaced.
+The Query Engine is architected as a decoupled set of composable units that can be tested independently, re-architected or replaced.
 
 The `Query` is responsible for exposing a builder object which can build a strategy that can be run from the query instance to return query results.
 
-### CypherBuilder
+### Query Builder
 
-The `QueryBuilder` is responsible for exposing a DSL for creating a Query strategy to be executed on a GraphQL connection
+The `QueryBuilder` is responsible for exposing a DSL for creating a Query Strategy to be executed on a GraphQL connection
 
-### CypherStrategy
+### Query Strategy
 
-The `CypherStrategy` is responsible for encapsulating the strategy being built by the builder.
+The `QueryStrategy` is responsible for encapsulating the strategy being built by the builder.
 
-## CypherStrategyExecuter
+## QueryStrategyExecuter
 
-The `CypherStrategyExecuter` is responsible for executing a strategy on a given graph API, such as an API for an in-memory graph or a Graph API abstraction on GunDB.
+The `QueryStrategyExecuter` is responsible for executing a strategy on a given graph API, such as an API for an in-memory graph or a Graph API abstraction on GunDB.
 
 The executer returns the Cypher query results either as a stream or as a `Promise` (ie. `async`).
 
 ## GraphDB Adapters
 
-The Cypher query engine will be designed to support an adapter for a GraphDB
+The query engine is be designed to support adapter for various GraphDBs
 
 Currently this library aims to support:
 
@@ -39,7 +39,50 @@ The initial implementation will support a small subset of Cypher which can be ex
 
 The DSL query chain builder could further be extended with full string query support using [Chevrotain](https://github.com/Chevrotain/chevrotain) with a Cypher grammar, parser and generator.
 
-## Cypher API
+### Creating adapters
+
+To create an adapter for a given graph DB, the following APIs must be implemented
+
+- `IGraphApi`
+- `IGraphObjectApi`
+
+Adapters for these interfaces are being developed for Graphology (in-memory) and GunDB (distributed graphs for Dapps) under `src/adapters`
+
+#### Graph API
+
+This API is used to operate on a the graph as a whole
+
+- create graph objects (nodes, edges)
+- traverse the graph
+- find relationship patterns in the graph
+- ...
+
+The current API is designed for creating nodes and edges but will be extended
+
+```ts
+export interface IGraphApi {
+  createNode(opts: NodeDef): any;
+  createEdge(fromId: string, toId: string, edgeDef: RelationDef): any;
+}
+```
+
+#### Graph Object API
+
+This API is used to operate on a particular graph object (node or edge)
+
+- access values
+- update node values
+
+The current API is read-only information gathering but will be extended
+
+```ts
+export interface IGraphObjApi {
+  propValue(node: any, propName: string): any;
+  nodeLabels(node: any): string[];
+}
+```
+
+## Developing the API
 
 The Cypher Query Engine will be developed starting from result and step by step back to match.
 
@@ -144,17 +187,30 @@ Sample result:
 
 ## Strategy API
 
+### Matches
+
+The matches should constitute a rough filter that is executed on the graph to build a rough `IFilterResult` result to be optionally further filtered with where.
+
+```ts
+export interface IFilterResult {
+  [key: string]: GraphObjDef[];
+}
+```
+
+Each key entry contains a list of matching graph objects for that key.
+Matches filter on matching relationship patterns and matching labels and property values.
+
 ### Filters
 
 The core of the Query engine is the concept of filters. Filters can be composed into a hierarchical structure of leafs and composites. Any filter must have a `run` method. Any filter filters on a single graph object (node or edge).
 
-To filter the entire graph, a traversal strategy must be used to traverse the graph objects (such as Depth first or Breadth first) and themn for each object encountered, it must be run through the filter to determine if this graph object should be part of the filter result set.
+To filter the entire graph, a traversal strategy must be used to traverse the graph objects (such as Depth first or Breadth first) and them for each object encountered, it must be run through the filter to determine if this graph object should be part of the filter result set.
 
 Each filter must prduce a filter result of type `IFilterResult`
 
 ```ts
 export interface IFilterResult {
-  [key: string]: any[];
+  [key: string]: GraphObjDef[];
 }
 ```
 
