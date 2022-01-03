@@ -103,13 +103,13 @@ const bobData = {
 
 const q = query(gun);
 const create = q.$create;
-create.node({ alias: "mike" });
-create.node({ alias: "mike", label: "michael" });
-create.node({ alias: "bob", labels: ["bobby"], props: bobData });
-create.node({ alias: "ava", label: "avaria", props: { x: 2 } });
+create.node({ alias: "m" });
+create.node({ alias: "m", label: "michael" });
+create.node({ alias: "b", labels: ["bobby"], props: bobData });
+create.node({ alias: "a", label: "avaria", props: { x: 2 } });
 create.nodes([
-  { alias: "ava", label: "avaria", props: bobData },
-  { alias: "bob", labels: "bobby", props: { x: 3 } },
+  { alias: "a", label: "avaria", props: bobData },
+  { alias: "b", labels: "bobby", props: { x: 3 } },
 ]);
 ```
 
@@ -118,8 +118,8 @@ create.nodes([
 ```js
 const q = query(gun);
 const match = q.$match;
-match.node({ alias: "mike" });
-match.node({ alias: "mike", label: "michael" });
+match.node({ alias: "a" });
+match.node({ alias: "m", label: "michael" });
 ```
 
 ### Where
@@ -127,10 +127,10 @@ match.node({ alias: "mike", label: "michael" });
 ```js
 const q = query(gun);
 const where = q.$where;
-where.node("mike").labels({ include: "Michael" });
-where.node.labels({ include: "person" });
-where.node.props({ age: gte(18), gender: eq("male") });
-where.edge.labels({ include: "owns" });
+where.obj("m").labels({ include: "Michael" });
+where.obj("b").labels({ include: "person" });
+where.obj("b").props({ age: gte(18), gender: eq("male") });
+where.obj("a").labels({ include: "owns" });
 ```
 
 Where `eq` and `gte` are simply convenience helpers for a more complex JSON structure:
@@ -139,10 +139,10 @@ Where `eq` and `gte` are simply convenience helpers for a more complex JSON stru
 
 Not that more complex comnparison statements like not equal, can be expressed either as `neq` or `{not: eq: }`
 
-`{ age: {gte: 18}, gender: {eq: "male"} }`
+Similarly `{ age: {ngte: 18}` or `{ age: {not: {gte: 18}}` is the same as `{ age: {lt: 18}`
 
-The Where builders should build a `Filter` with filter expressions (`FilterExpr`).
-The `Filter` is a composite. Any `FilterExpr` can itself be a composite, such as `AndExpr` and `OrExpr`. Each `FilterExpr` implementation must have a `run` method that runs the filter on a graph object (node or edge)
+The `Where` builders should build a `StrategyFilter` with filter expressions (`FilterExpr`).
+The `StrategyFilter` is a composite. Any `FilterExpr` can itself be a composite, such as `AndExpr` and `OrExpr`. Each `FilterExpr` implementation must have a `run` method that runs the filter on a graph object (node or edge)
 
 Any alias referenced (such as `mike` in the above example) must be matched in the alias map created using a previous `Match` builder.
 

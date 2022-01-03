@@ -8,6 +8,10 @@ export interface IFilterResult {
   [key: string]: any[];
 }
 
+export interface IFilterExpr {
+  run(): IFilterResult;
+}
+
 export abstract class FilterExpr extends Handler {
   filter: IStrategyFilter;
   alias: string;
