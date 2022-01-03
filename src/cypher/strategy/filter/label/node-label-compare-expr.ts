@@ -1,3 +1,4 @@
+import { GraphObjDef } from "../../../cypher-types";
 import { FilterExpr, IFilterResult } from "../filter-expr";
 
 export type NodeLabelMatchFn = (obj: NodeLabelConfigObj) => boolean;
@@ -34,17 +35,17 @@ export class NodeLabelCompareExpr extends FilterExpr {
     return this;
   }
 
-  nodeMatches(fn: NodeLabelMatchFn): IFilterResult {
-    const { node, label, alias } = this;
+  nodeMatches(fn: NodeLabelMatchFn): GraphObjDef[] {
+    const { node, label } = this;
     const matches = fn({ node, label });
-    return matches ? { [alias]: [node] } : {};
+    return matches ? [node] : [];
   }
 
   isValid() {
     return this.label && this.label.trim().length;
   }
 
-  runCompare(compareFn: NodeLabelMatchFn): IFilterResult {
+  runCompare(compareFn: NodeLabelMatchFn): GraphObjDef[] {
     if (!this.isValid()) {
       return this.results;
     }
@@ -55,15 +56,15 @@ export class NodeLabelCompareExpr extends FilterExpr {
     return label == compareLabel;
   }
 
-  run(): IFilterResult {
+  run(): GraphObjDef[] {
     return this.runCompareValue(this.compareLabel);
   }
 
-  runCompareValue(compareLabelFn?: LabelCompareFn): IFilterResult {
+  runCompareValue(compareLabelFn?: LabelCompareFn): GraphObjDef[] {
     compareLabelFn = compareLabelFn || this.compareLabel;
     if (!compareLabelFn) {
       this.error("Missing compare label function");
-      return {};
+      return [];
     }
     return this.runCompare((obj: NodeLabelConfigObj) =>
       compareLabelFn

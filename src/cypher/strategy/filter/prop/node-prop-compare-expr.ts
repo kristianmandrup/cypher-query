@@ -1,4 +1,5 @@
 import { NodeMatchFn } from "..";
+import { GraphObjDef } from "../../../cypher-types";
 import { FilterExpr, IFilterResult } from "../filter-expr";
 
 export type PropValueCompareFn = (nodeVal: any, compareVal: any) => boolean;
@@ -46,10 +47,10 @@ export class NodePropCompareExpr extends FilterExpr {
     return this;
   }
 
-  nodeMatches(fn: NodeMatchFn): IFilterResult {
-    const { node, propName, propValue, alias } = this;
+  nodeMatches(fn: NodeMatchFn): GraphObjDef[] {
+    const { node, propName, propValue } = this;
     const matches = fn({ node, propName, propValue });
-    return matches ? { [alias]: [node] } : {};
+    return matches ? [node] : [];
   }
 
   isValid() {
@@ -60,7 +61,7 @@ export class NodePropCompareExpr extends FilterExpr {
     );
   }
 
-  runCompare(compareFn: NodeMatchFn): IFilterResult {
+  runCompare(compareFn: NodeMatchFn): GraphObjDef[] {
     if (!this.isValid()) {
       return this.results;
     }
@@ -71,15 +72,15 @@ export class NodePropCompareExpr extends FilterExpr {
     return nodeVal == compareVal;
   }
 
-  run(): IFilterResult {
+  run(): GraphObjDef[] {
     return this.runCompareValue(this.compareValue);
   }
 
-  runCompareValue(compareValueFn?: PropValueCompareFn): IFilterResult {
+  runCompareValue(compareValueFn?: PropValueCompareFn): GraphObjDef[] {
     compareValueFn = compareValueFn || this.compareValue;
     if (!compareValueFn) {
       this.error("Missing compare value function");
-      return {};
+      return [];
     }
     return this.runCompare((obj: NodeCompareConfigObj) =>
       compareValueFn

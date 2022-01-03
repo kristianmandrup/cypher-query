@@ -1,4 +1,5 @@
 import { IFilterExpr, IFilterResult, IStrategyFilter } from "..";
+import { GraphObjDef } from "../../cypher-types";
 
 export class CompositeFilterExpr implements IFilterExpr {
   filter: IStrategyFilter;
@@ -12,7 +13,7 @@ export class CompositeFilterExpr implements IFilterExpr {
     return this.filter.graphObjApi;
   }
 
-  run(): IFilterResult {
-    return {};
+  run(): GraphObjDef[] {
+    return [];
   }
 }

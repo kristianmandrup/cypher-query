@@ -10,14 +10,15 @@ export interface IFilterResult {
 }
 
 export interface IFilterExpr {
-  run(): IFilterResult;
+  run(): GraphObjDef[];
 }
 
 export abstract class FilterExpr extends Handler {
   filter: IStrategyFilter;
   alias: string;
   node?: any;
-  results: IFilterResult = {};
+  aliasKey: string = "_";
+  results: GraphObjDef[] = [];
 
   constructor(filter: IStrategyFilter, config?: { alias: string }) {
     super();
@@ -47,6 +48,10 @@ export abstract class FilterExpr extends Handler {
     return this.graphObjApi.nodeLabels(obj);
   }
 
+  isTrue(): boolean {
+    return !!this.results.length;
+  }
+
   isValid() {
     return this.node;
   }
@@ -55,7 +60,7 @@ export abstract class FilterExpr extends Handler {
     return value !== undefined && value !== null;
   }
 
-  run(): IFilterResult {
-    return {};
+  run(): GraphObjDef[] {
+    return [];
   }
 }
