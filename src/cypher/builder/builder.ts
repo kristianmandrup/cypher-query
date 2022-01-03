@@ -26,14 +26,14 @@ export interface ILabelsFilterExprMap {
   match: FilterExprFactoryFn;
 }
 
-export interface ICompositeFilterExprMap {
+export interface IBooleanFilterExprMap {
   and: FilterExprFactoryFn;
   or: FilterExprFactoryFn;
   not: FilterExprFactoryFn;
 }
 
 export interface IFilterExprMap {
-  composite: ICompositeFilterExprMap;
+  boolean: IBooleanFilterExprMap;
   props: IPropFilterExprMap;
   labels: ILabelsFilterExprMap;
 }
@@ -44,13 +44,19 @@ export interface IResultExprMap {
   union: ResultExprFactoryFn;
 }
 
+export type FilterRootFactoryFn = (
+  graphObjApi: IGraphObjApi
+) => IStrategyFilter;
+
+export type ResultRootFactoryFn = (config: any) => IStrategyResult;
+
 export interface IStrategyMap {
   filter: {
-    root: (graphObjApi: IGraphObjApi) => IStrategyFilter;
+    root: FilterRootFactoryFn;
     exprMap: IFilterExprMap;
   };
   result: {
-    root: (config: any) => IStrategyResult;
+    root: ResultRootFactoryFn;
     exprMap: IResultExprMap;
   };
 }

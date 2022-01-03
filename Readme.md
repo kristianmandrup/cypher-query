@@ -196,8 +196,33 @@ By default it calls `defaultStrategyMap` to generate a default strategy based on
 ```ts
 export const defaultStrategyMap = (): IStrategyMap => {
   return {
-    filter: defaultFilterMap(),
-    result: defaultResultMap(),
+    filter: {
+      root: FilterRootFactoryFn;
+      exprMap: {
+        boolean: {
+          and: FilterExprFactoryFn;
+          or: FilterExprFactoryFn;
+          not: FilterExprFactoryFn;
+        }
+        props: {
+          eq: FilterExprFactoryFn;
+          gt: FilterExprFactoryFn;
+          lt: FilterExprFactoryFn;
+        }
+        labels: {
+          include: FilterExprFactoryFn;
+          match: FilterExprFactoryFn;
+        }
+      }
+    };
+    result: {
+      root: ResultRootFactoryFn;
+      exprMap: {
+        limit: ResultExprFactoryFn;
+        skip: ResultExprFactoryFn;
+        union: ResultExprFactoryFn;
+      }
+    };
   };
 };
 ```
