@@ -6,9 +6,10 @@ import {
   IStrategyFilter,
 } from "..";
 import { GraphObjDef } from "../../../cypher-types";
+import { IAliasedFilter } from "../alias-filter";
 import { CompositeFilterExpr } from "../composite-filter-expr";
 
-export const createOrFilterExpr = (filter: IStrategyFilter) =>
+export const createOrFilterExpr = (filter: IAliasedFilter) =>
   new OrFilterExpr(filter);
 
 export class OrCompositeFilterResult extends CompositeFilterResult {

@@ -5,9 +5,10 @@ import {
   NodeCompareConfigObj,
 } from "..";
 import { GraphObjDef } from "../../../cypher-types";
+import { IAliasedFilter } from "../alias-filter";
 import { CompositeFilterExpr } from "../composite-filter-expr";
 
-export const createAndFilterExpr = (filter: IStrategyFilter) =>
+export const createAndFilterExpr = (filter: IAliasedFilter) =>
   new AndFilterExpr(filter);
 
 export class AndCompositeFilterResult extends CompositeFilterResult {

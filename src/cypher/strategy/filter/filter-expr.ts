@@ -2,6 +2,7 @@ import { NodeCompareConfigObj } from ".";
 import { IStrategyFilter } from "..";
 import { Handler } from "../../builder/handler";
 import { GraphObjDef } from "../../cypher-types";
+import { IAliasedFilter } from "./alias-filter";
 
 export type NodeMatchFn = (obj: NodeCompareConfigObj) => boolean;
 
@@ -16,13 +17,13 @@ export interface IFilterExpr {
 }
 
 export abstract class FilterExpr extends Handler {
-  filter: IStrategyFilter;
+  filter: IAliasedFilter;
   alias: string;
   node?: any;
   aliasKey: string = "_";
   results: GraphObjDef[] = [];
 
-  constructor(filter: IStrategyFilter, config?: { alias: string }) {
+  constructor(filter: IAliasedFilter, config?: { alias: string }) {
     super();
     this.filter = filter;
     this.alias = config ? config.alias : "_";

@@ -1,10 +1,11 @@
 import { FilterExpr, IFilterExpr, IFilterResult, IStrategyFilter } from "..";
 import { GraphObjDef } from "../../cypher-types";
+import { IAliasedFilter } from "./alias-filter";
 
 export class ComposeOneFilterExpr extends FilterExpr implements IFilterExpr {
   composedFilter?: IFilterExpr;
 
-  constructor(public filter: IStrategyFilter) {
+  constructor(public filter: IAliasedFilter) {
     super(filter);
   }
 

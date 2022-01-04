@@ -1,5 +1,6 @@
 import { FilterExpr, IFilterExpr, IFilterResult, IStrategyFilter } from "..";
 import { GraphObjDef } from "../../cypher-types";
+import { IAliasedFilter } from "./alias-filter";
 
 export interface ICompositeFilterResult {
   results: GraphObjDef[][];
@@ -23,7 +24,7 @@ export class CompositeFilterResult {
 export class CompositeFilterExpr extends FilterExpr implements IFilterExpr {
   composedFilters: IFilterExpr[] = [];
 
-  constructor(public filter: IStrategyFilter) {
+  constructor(public filter: IAliasedFilter) {
     super(filter);
   }
 
