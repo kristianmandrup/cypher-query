@@ -1,11 +1,11 @@
-import { FilterExpr, IFilterResult, IStrategyFilter } from "..";
+import { IStrategyFilter } from "..";
 import { GraphObjDef } from "../../../cypher-types";
-import { CompositeFilterExpr } from "../composite-filter-expr";
+import { ComposeOneFilterExpr } from "../compose-one-filter-expr";
 
 export const createNotFilterExpr = (filter: IStrategyFilter) =>
   new NotFilterExpr(filter);
 
-export class NotFilterExpr extends FilterExpr {
+export class NotFilterExpr extends ComposeOneFilterExpr {
   run(): GraphObjDef[] {
     return [];
   }
