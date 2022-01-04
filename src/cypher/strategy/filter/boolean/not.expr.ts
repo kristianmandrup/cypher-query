@@ -2,7 +2,7 @@ import { CompositeFilterResult, IFilterExpr, IStrategyFilter } from "..";
 import { GraphObjDef } from "../../../cypher-types";
 import { IAliasedFilter } from "../alias-filter";
 import { ComposeOneFilterExpr } from "../compose-one-filter-expr";
-import { ISetOperations, SetOperations } from "./set-operations";
+import { ISetOperations, setOperations } from "./set-operations";
 
 export const createNotFilterExpr = (filter: IAliasedFilter, config?: any) =>
   new NotFilterExpr(filter).config(config);

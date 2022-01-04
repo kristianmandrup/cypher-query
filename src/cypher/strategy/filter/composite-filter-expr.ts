@@ -1,7 +1,7 @@
 import { FilterExpr, IFilterExpr, IFilterResult, IStrategyFilter } from "..";
 import { GraphObjDef } from "../../cypher-types";
 import { IAliasedFilter } from "./alias-filter";
-import { ISetOperations, SetOperations } from "./boolean/set-operations";
+import { ISetOperations, setOperations } from "./boolean/set-operations";
 
 export interface ICompositeFilterResult {
   results: GraphObjDef[][];
@@ -14,7 +14,7 @@ export class CompositeFilterResult {
   matchedResults: GraphObjDef[] = [];
   booleanResults: GraphObjDef[] = [];
   results: GraphObjDef[][] = [];
-  setOps: ISetOperations = new SetOperations();
+  setOps: ISetOperations = setOperations;
 
   addResult(objs: GraphObjDef[]) {
     this.results.push(objs);
@@ -32,7 +32,7 @@ export class CompositeFilterResult {
 
 export class CompositeFilterExpr extends FilterExpr implements IFilterExpr {
   composedFilters: IFilterExpr[] = [];
-  setOps: ISetOperations = new SetOperations();
+  setOps: ISetOperations = setOperations;
 
   constructor(public filter: IAliasedFilter) {
     super(filter);

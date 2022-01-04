@@ -279,7 +279,19 @@ Note: When we get to support the GunDB API, this API will need to be promise bas
 
 As the filters are run, a results list will be returned on each tree node in the filter hierarchy, which must then be assembled into the final flat result format, each set of results linked to a match alias.
 
-A complex filter may be structured in a tree like structure, like the following, which is evaluated depth first left to right.
+#### Resolving boolean filter trees
+
+The resolution operates relative to list of objects (previously matched) and the tree must determine which of these objects should still be in the result set.
+
+Boolean operations use set operations to calculate the result, including: `union`, `difference` and `intersection`
+
+The `AND` operations is the `intersection` of nodes for each of the sub expressions matches (ie. those nodes that are matched by ALL sub expressions that are part of the AND composition)
+
+The `OR` operations is the distinct `union` (set addition) of nodes matched by ANY of the of sub expressions.
+
+The `NOT` is the `difference` of the "incoming" list of matches with the nodes matched by the sub expression (ie. set subtraction).
+
+A complex boolean filter may be structured in a tree like structure, like the following, which is evaluated depth first left to right.
 
 ```js
 {
