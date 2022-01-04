@@ -2,16 +2,15 @@ import {
   StrategyFilter,
   GraphologyObjApi,
   IGraphObjApi,
+  createNotFilterExpr,
+  NotFilterExpr,
   NodePropGtExpr,
-  NodePropEqlExpr,
-  OrFilterExpr,
-  createOrFilterExpr,
-} from "../../../../../src";
+} from "../../../../../../src";
 
 const context = describe;
 
-describe("OrFilterExpr", () => {
-  let expr: OrFilterExpr;
+describe("NotFilterExpr", () => {
+  let expr: NotFilterExpr;
   let api: any;
   let configObj: any;
   let filter;
@@ -31,7 +30,7 @@ describe("OrFilterExpr", () => {
       propName: "a",
       propValue: "1",
     };
-    expr = createOrFilterExpr(filter, configObj);
+    expr = createNotFilterExpr(filter, configObj);
   });
 
   describe("compareValue: 5", () => {
@@ -40,34 +39,28 @@ describe("OrFilterExpr", () => {
       propValue: 18,
       equal: true,
     });
-    let maleFilter = new NodePropEqlExpr(filter).config({
-      propName: "sex",
-      propValue: "male",
-    });
 
-    context("two males but NO males > 18", () => {
+    context("NO males > 18", () => {
       beforeEach(() => {
         expr.matchedResults = [female30, male14, male17];
-        expr.addFilter(adultFilter);
-        expr.addFilter(maleFilter);
+        expr.setComposedFilter(adultFilter);
       });
-      it("returns 2 males", () => {
+      it("returns all 3 results", () => {
         const result = expr.run();
-        expect(result.length).toBe(2);
-        expect(result).toEqual([male14, male17]);
+        expect(result.length).toBe(3);
+        expect(result).toEqual([female30, male14, male17]);
       });
     });
 
     context("one male > 18", () => {
       beforeEach(() => {
         expr.matchedResults = [female30, male14, male21];
-        expr.addFilter(adultFilter);
-        expr.addFilter(maleFilter);
+        expr.setComposedFilter(adultFilter);
       });
-      it("returns single male over 18", () => {
+      it("returns all except for male over 18", () => {
         const result = expr.run();
-        expect(result.length).toBe(1);
-        expect(result).toEqual([male14, male21]);
+        expect(result.length).toBe(2);
+        expect(result).toEqual([female30, male14]);
       });
     });
   });

@@ -9,7 +9,7 @@ export interface ICompositeFilterResult {
   composedResult(): GraphObjDef[];
 }
 
-export class CompositeFilterResult {
+export abstract class CompositeFilterResult {
   latestResults: GraphObjDef[] = [];
   matchedResults: GraphObjDef[] = [];
   booleanResults: GraphObjDef[] = [];

@@ -6,7 +6,7 @@ import {
   NodePropEqlExpr,
   AndFilterExpr,
   createAndFilterExpr,
-} from "../../../../../src";
+} from "../../../../../../src";
 
 const context = describe;
 
