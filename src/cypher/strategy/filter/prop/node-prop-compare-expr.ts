@@ -5,7 +5,7 @@ import { FilterExpr, IFilterResult } from "../filter-expr";
 export type PropValueCompareFn = (nodeVal: any, compareVal: any) => boolean;
 
 export type NodeCompareConfigObj = {
-  node: any;
+  node?: any;
   propName: string;
   propValue: any;
   equal?: boolean;

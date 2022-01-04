@@ -1,6 +1,7 @@
 import { FilterExpr, IFilterExpr, IFilterResult, IStrategyFilter } from "..";
 import { GraphObjDef } from "../../cypher-types";
 import { IAliasedFilter } from "./alias-filter";
+import { ISetOperations, SetOperations } from "./boolean/set-operations";
 
 export interface ICompositeFilterResult {
   results: GraphObjDef[][];
@@ -9,23 +10,37 @@ export interface ICompositeFilterResult {
 }
 
 export class CompositeFilterResult {
+  latestResults: GraphObjDef[] = [];
+  matchedResults: GraphObjDef[] = [];
+  booleanResults: GraphObjDef[] = [];
   results: GraphObjDef[][] = [];
+  setOps: ISetOperations = new SetOperations();
 
   addResult(objs: GraphObjDef[]) {
     this.results.push(objs);
     return this;
   }
 
-  composedResult(): GraphObjDef[] {
+  flatResult(): GraphObjDef[] {
     return this.results.flat();
+  }
+
+  composedResult(): GraphObjDef[] {
+    return this.flatResult();
   }
 }
 
 export class CompositeFilterExpr extends FilterExpr implements IFilterExpr {
   composedFilters: IFilterExpr[] = [];
+  setOps: ISetOperations = new SetOperations();
 
   constructor(public filter: IAliasedFilter) {
     super(filter);
+  }
+
+  config(config: any) {
+    this.config = config;
+    return this;
   }
 
   get graphObjApi() {
@@ -47,13 +62,17 @@ export class CompositeFilterExpr extends FilterExpr implements IFilterExpr {
     return new CompositeFilterResult();
   }
 
+  get filtersToReduce() {
+    return this.composedFilters;
+  }
+
   runComposed(): GraphObjDef[] {
     if (!this.composedFilters || this.composedFilters.length === 0) {
       return [];
     }
     const reduceFn = this.reduceComposed.bind(this);
     try {
-      const result = this.composedFilters.reduce(
+      const result = this.filtersToReduce.reduce(
         reduceFn,
         this.createCompositeResult()
       );

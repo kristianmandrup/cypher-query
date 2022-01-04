@@ -21,6 +21,7 @@ export abstract class FilterExpr extends Handler {
   alias: string;
   node?: any;
   aliasKey: string = "_";
+  matchedResults: GraphObjDef[] = [];
   results: GraphObjDef[] = [];
 
   constructor(filter: IAliasedFilter, config?: { alias: string }) {

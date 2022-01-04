@@ -1,8 +1,11 @@
-import { FilterExpr, IFilterExpr, IFilterResult, IStrategyFilter } from "..";
+import { CompositeFilterExpr, IFilterExpr } from "..";
 import { GraphObjDef } from "../../cypher-types";
 import { IAliasedFilter } from "./alias-filter";
 
-export class ComposeOneFilterExpr extends FilterExpr implements IFilterExpr {
+export class ComposeOneFilterExpr
+  extends CompositeFilterExpr
+  implements IFilterExpr
+{
   composedFilter?: IFilterExpr;
 
   constructor(public filter: IAliasedFilter) {
@@ -18,8 +21,8 @@ export class ComposeOneFilterExpr extends FilterExpr implements IFilterExpr {
     return this;
   }
 
-  runComposed(): GraphObjDef[] {
-    return this.composedFilter ? this.composedFilter.run() : [];
+  get filtersToReduce(): IFilterExpr[] {
+    return this.composedFilter ? [this.composedFilter] : [];
   }
 
   run(): GraphObjDef[] {
