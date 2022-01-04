@@ -10,7 +10,9 @@ export interface IFilterResult {
 }
 
 export interface IFilterExpr {
+  results: GraphObjDef[];
   run(): GraphObjDef[];
+  isTrue(): boolean;
 }
 
 export abstract class FilterExpr extends Handler {

@@ -7,6 +7,12 @@ export const createNotFilterExpr = (filter: IStrategyFilter) =>
 
 export class NotFilterExpr extends ComposeOneFilterExpr {
   run(): GraphObjDef[] {
-    return [];
+    const { composedFilter } = this;
+    if (!composedFilter) {
+      this.error("Missing composed filter");
+      return [];
+    }
+    this.runComposed();
+    return composedFilter.isTrue() ? [] : composedFilter.results;
   }
 }
