@@ -251,14 +251,6 @@ The core of the Query engine is the concept of filters. Filters can be composed 
 
 To filter the entire graph, a traversal strategy must be used to traverse the graph objects (such as Depth first or Breadth first) and them for each object encountered, it must be run through the filter to determine if this graph object should be part of the filter result set.
 
-Each filter must prduce a filter result of type `IFilterResult`
-
-```ts
-export interface IFilterResult {
-  [key: string]: GraphObjDef[];
-}
-```
-
 #### Composite filters
 
 The `Filter` class contains a `run` method of the following form
@@ -270,15 +262,18 @@ The `Filter` class contains a `run` method of the following form
   }
 ```
 
-The abstract class `FilterExpr` contains a placeholder `run` method which returns an empty result
+Any class implementing `IFilterExpr` must contain a `run` and `runAll` methods.
+
+The method `run` passes a single graph `object` through the filter and returns the object if the filter passes and returns `undefined` if not
+
+The method `runAll` passes a list of graph objects through and returns a list of the objects that passed the filter.
 
 ```ts
-  run(): IFilterResult {
-    return {};
-  }
+interface IFilterExpr {
+  run(obj: any): GraphObjDef | undefined;
+  runAll(objs: GraphObjDef[]): GraphObjDef[];
+}
 ```
-
-Filter epxression should subclass this abstract baseclass and provide a run method which returns a `IFilterResult`.
 
 Note: When we get to support the GunDB API, this API will need to be promise based.
 
@@ -332,7 +327,7 @@ Logical `and` for `true` and `false` is `false`
   }],
 ```
 
-`not` on `false` (no matching nodes) means the inverse set, ie. all nodes in the graph
+`not` on `false` (no matching nodes) means the inverse set, ie. all nodes in the root. If the not filter had returned one or more nodes, the inverse set would be the root nodes minus the nodes matched by the not filter.
 
 ```js
   true (ie. return matching nodes NOT)

@@ -1,4 +1,4 @@
-import { FilterExpr, IFilterExpr, IFilterResult, IStrategyFilter } from "..";
+import { FilterExpr, IFilterExpr } from "..";
 import { GraphObjDef } from "../../cypher-types";
 import { IAliasedFilter } from "./alias-filter";
 import { ISetOperations, setOperations } from "./boolean/set-operations";
