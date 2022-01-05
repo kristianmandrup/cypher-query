@@ -24,8 +24,4 @@ export class ComposeOneFilterExpr
   get filtersToReduce(): IFilterExpr[] {
     return this.composedFilter ? [this.composedFilter] : [];
   }
-
-  run(): GraphObjDef[] {
-    return this.runComposed();
-  }
 }

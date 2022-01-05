@@ -1,9 +1,9 @@
 import { NodeCompareConfigObj } from ".";
-import { IStrategyFilter } from "..";
+import { IAliasedFilter } from "..";
 import { NodePropCompareExpr } from "./node-prop-compare-expr";
 
 export const createNodePropEqlExpr = (
-  filter: IStrategyFilter,
+  filter: IAliasedFilter,
   configObj: NodeCompareConfigObj
 ) => new NodePropEqlExpr(filter).config(configObj);
 

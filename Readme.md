@@ -1,6 +1,6 @@
 # Graph DB Cypher query engine
 
-A composable barebones Javascript Cypher (Neo4J) query implementation that can query a graph DB via adapters. Adapters for the following Graph DBs will be included.
+A composable barebones Javascript Cypher (Neo4J) query implementation that can query a graph DB. Adapters for the following Graph DBs will be included.
 
 - [graphology](https://graphology.github.io/)
 - [gun](https://www.npmjs.com/package/gun)

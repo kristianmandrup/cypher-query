@@ -13,11 +13,13 @@ export class OrCompositeFilterResult extends CompositeFilterResult {
 }
 
 export class OrFilterExpr extends CompositeFilterExpr {
-  reduceComposed(acc: OrCompositeFilterResult, filter: IFilterExpr) {
-    let results = filter.run();
-    results = acc.setOps.union(acc.latestResults, results);
-    acc.latestResults = results;
-    return acc;
+  createReduceComposed(objs: GraphObjDef[]): any {
+    return (acc: OrCompositeFilterResult, filter: IFilterExpr) => {
+      let results = filter.runAll(objs);
+      results = acc.setOps.union(acc.combinedResults, results);
+      acc.combinedResults = results;
+      return acc;
+    };
   }
 
   createCompositeResult() {

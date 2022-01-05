@@ -1,7 +1,10 @@
 import { GraphObjDef } from "../../../cypher-types";
 import { FilterExpr, IFilterResult } from "../filter-expr";
 
-export type NodeLabelMatchFn = (obj: NodeLabelConfigObj) => boolean;
+export type NodeLabelMatchFn = (
+  obj: any,
+  config: NodeLabelConfigObj
+) => boolean;
 
 export type LabelCompareFn = (
   labels: string[],
@@ -9,7 +12,6 @@ export type LabelCompareFn = (
 ) => boolean;
 
 export type NodeLabelConfigObj = {
-  node: any;
   label: string;
   not?: boolean;
 };
@@ -29,47 +31,47 @@ export class NodeLabelCompareExpr extends FilterExpr {
   }
 
   config(configObj: NodeLabelConfigObj) {
-    super.setNode(configObj.node);
     this.setLabel(configObj.label);
     this.setNot(!!configObj.not);
     return this;
   }
 
-  nodeMatches(fn: NodeLabelMatchFn): GraphObjDef[] {
+  nodeMatches(obj: any, fn: NodeLabelMatchFn): GraphObjDef | undefined {
     const { node, label } = this;
-    const matches = fn({ node, label });
-    return matches ? [node] : [];
+    const matches = fn(obj, { label });
+    return matches ? node : undefined;
   }
 
   isValid() {
     return this.label && this.label.trim().length;
   }
 
-  runCompare(compareFn: NodeLabelMatchFn): GraphObjDef[] {
+  runCompare(compareFn: NodeLabelMatchFn, obj: any): GraphObjDef | undefined {
     if (!this.isValid()) {
-      return this.results;
+      return undefined;
     }
-    return this.nodeMatches(compareFn);
+    return this.nodeMatches(obj, compareFn);
   }
 
   compareLabel(label: any, compareLabel: any): boolean {
     return label == compareLabel;
   }
 
-  run(): GraphObjDef[] {
-    return this.runCompareValue(this.compareLabel);
+  run(obj: any): GraphObjDef | undefined {
+    return this.runCompareValue(obj, this.compareLabel);
   }
 
-  runCompareValue(compareLabelFn?: LabelCompareFn): GraphObjDef[] {
+  runCompareValue(
+    obj: any,
+    compareLabelFn?: LabelCompareFn
+  ): GraphObjDef | undefined {
     compareLabelFn = compareLabelFn || this.compareLabel;
     if (!compareLabelFn) {
       this.error("Missing compare label function");
-      return [];
+      return;
     }
-    return this.runCompare((obj: NodeLabelConfigObj) =>
-      compareLabelFn
-        ? compareLabelFn(this.nodeLabels(obj.node), this.label)
-        : false
-    );
+    const compare = (config: NodeLabelConfigObj) =>
+      compareLabelFn ? compareLabelFn(this.nodeLabels(obj), this.label) : false;
+    return this.runCompare(compare, obj);
   }
 }

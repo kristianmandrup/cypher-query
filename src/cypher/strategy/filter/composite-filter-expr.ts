@@ -9,8 +9,8 @@ export interface ICompositeFilterResult {
   composedResult(): GraphObjDef[];
 }
 
-export abstract class CompositeFilterResult {
-  latestResults: GraphObjDef[] = [];
+export class CompositeFilterResult {
+  combinedResults: GraphObjDef[] = [];
   matchedResults: GraphObjDef[] = [];
   booleanResults: GraphObjDef[] = [];
   results: GraphObjDef[][] = [];
@@ -52,10 +52,15 @@ export class CompositeFilterExpr extends FilterExpr implements IFilterExpr {
     return this;
   }
 
-  reduceComposed(acc: ICompositeFilterResult, filter: IFilterExpr) {
-    const results = filter.run();
-    acc.addResult(results);
-    return acc;
+  createReduceComposed(objs: GraphObjDef[]) {
+    return (
+      acc: ICompositeFilterResult,
+      filter: IFilterExpr
+    ): ICompositeFilterResult => {
+      const results = filter.runAll(objs);
+      acc.addResult(results);
+      return acc;
+    };
   }
 
   createCompositeResult() {
@@ -66,11 +71,11 @@ export class CompositeFilterExpr extends FilterExpr implements IFilterExpr {
     return this.composedFilters;
   }
 
-  runComposed(): GraphObjDef[] {
+  runComposed(objs: GraphObjDef[]): GraphObjDef[] {
     if (!this.composedFilters || this.composedFilters.length === 0) {
       return [];
     }
-    const reduceFn = this.reduceComposed.bind(this);
+    const reduceFn = this.createReduceComposed(objs);
     try {
       const result = this.filtersToReduce.reduce(
         reduceFn,
@@ -82,7 +87,7 @@ export class CompositeFilterExpr extends FilterExpr implements IFilterExpr {
     }
   }
 
-  run(): GraphObjDef[] {
-    return [];
+  runAll(objs: GraphObjDef[]): GraphObjDef[] {
+    return this.runComposed(objs);
   }
 }

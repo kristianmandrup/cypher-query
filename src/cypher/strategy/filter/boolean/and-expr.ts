@@ -21,19 +21,25 @@ export class AndFilterExpr extends CompositeFilterExpr {
     return new AndCompositeFilterResult();
   }
 
-  reduceComposed(acc: AndCompositeFilterResult, filter: IFilterExpr) {
-    let results = filter.run();
-    results = acc.setOps.intersection(acc.latestResults, results);
-    acc.latestResults = results;
-    return acc;
+  createReduceComposed(objs: GraphObjDef[]): any {
+    return (acc: AndCompositeFilterResult, filter: IFilterExpr) => {
+      let results = filter.runAll(acc.combinedResults);
+      results = acc.setOps.intersection(acc.combinedResults, results);
+      acc.combinedResults = results;
+      return acc;
+    };
   }
 
-  run(): GraphObjDef[] {
+  run(obj: any): GraphObjDef | undefined {
+    return this.runAll([obj])[0];
+  }
+
+  runAll(objs: any): GraphObjDef[] {
     const { composedFilters } = this;
     if (!composedFilters || composedFilters.length === 0) {
       this.error("Missing composed filters");
       return [];
     }
-    return this.runComposed();
+    return this.runComposed(objs);
   }
 }

@@ -1,11 +1,10 @@
 import { NodeMatchFn } from "..";
 import { GraphObjDef } from "../../../cypher-types";
-import { FilterExpr, IFilterResult } from "../filter-expr";
+import { FilterExpr } from "../filter-expr";
 
 export type PropValueCompareFn = (nodeVal: any, compareVal: any) => boolean;
 
 export type NodeCompareConfigObj = {
-  node?: any;
   propName: string;
   propValue: any;
   equal?: boolean;
@@ -19,7 +18,6 @@ export class NodePropCompareExpr extends FilterExpr {
   not?: boolean;
 
   config(configObj: NodeCompareConfigObj) {
-    super.setNode(configObj.node);
     this.setPropName(configObj.propName);
     this.setPropValue(configObj.propValue);
     this.setEqual(!!configObj.equal);
@@ -47,10 +45,10 @@ export class NodePropCompareExpr extends FilterExpr {
     return this;
   }
 
-  nodeMatches(fn: NodeMatchFn): GraphObjDef[] {
-    const { node, propName, propValue } = this;
-    const matches = fn({ node, propName, propValue });
-    return matches ? [node] : [];
+  nodeMatches(obj: any, fn: NodeMatchFn): GraphObjDef | undefined {
+    const { propName, propValue } = this;
+    const matches = fn(obj, { propName, propValue });
+    return matches ? obj : undefined;
   }
 
   isValid() {
@@ -61,30 +59,33 @@ export class NodePropCompareExpr extends FilterExpr {
     );
   }
 
-  runCompare(compareFn: NodeMatchFn): GraphObjDef[] {
+  runCompare(obj: any, compareFn: NodeMatchFn): GraphObjDef | undefined {
     if (!this.isValid()) {
-      return this.results;
+      return;
     }
-    return this.nodeMatches(compareFn);
+    return this.nodeMatches(obj, compareFn);
   }
 
   compareValue(nodeVal: any, compareVal: any): boolean {
     return nodeVal == compareVal;
   }
 
-  run(): GraphObjDef[] {
-    return this.runCompareValue(this.compareValue);
+  run(obj: any): GraphObjDef | undefined {
+    return this.runCompareValue(obj, this.compareValue);
   }
 
-  runCompareValue(compareValueFn?: PropValueCompareFn): GraphObjDef[] {
+  runCompareValue(
+    obj: any,
+    compareValueFn?: PropValueCompareFn
+  ): GraphObjDef | undefined {
     compareValueFn = compareValueFn || this.compareValue;
     if (!compareValueFn) {
       this.error("Missing compare value function");
-      return [];
+      return;
     }
-    return this.runCompare((obj: NodeCompareConfigObj) =>
+    return this.runCompare(obj, (config: NodeCompareConfigObj) =>
       compareValueFn
-        ? compareValueFn(this.propValue(obj.node, obj.propName), obj.propValue)
+        ? compareValueFn(this.propValue(obj, config.propName), config.propValue)
         : false
     );
   }

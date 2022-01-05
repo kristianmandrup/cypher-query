@@ -1,10 +1,9 @@
 import { NodeCompareConfigObj } from ".";
-import { IStrategyFilter } from "..";
 import { Handler } from "../../builder/handler";
 import { GraphObjDef } from "../../cypher-types";
 import { IAliasedFilter } from "./alias-filter";
 
-export type NodeMatchFn = (obj: NodeCompareConfigObj) => boolean;
+export type NodeMatchFn = (obj: any, config: NodeCompareConfigObj) => boolean;
 
 export interface IFilterResult {
   [key: string]: GraphObjDef[];
@@ -12,7 +11,8 @@ export interface IFilterResult {
 
 export interface IFilterExpr {
   results: GraphObjDef[];
-  run(): GraphObjDef[];
+  run(obj: any): GraphObjDef | undefined;
+  runAll(objs: GraphObjDef[]): GraphObjDef[];
   isTrue(): boolean;
 }
 
@@ -21,7 +21,7 @@ export abstract class FilterExpr extends Handler {
   alias: string;
   node?: any;
   aliasKey: string = "_";
-  matchedResults: GraphObjDef[] = [];
+  matchedResults: GraphObjDef[] = []; // default objects to filter
   results: GraphObjDef[] = [];
 
   constructor(filter: IAliasedFilter, config?: { alias: string }) {
@@ -64,7 +64,17 @@ export abstract class FilterExpr extends Handler {
     return value !== undefined && value !== null;
   }
 
-  run(): GraphObjDef[] {
-    return [];
+  runAll(objs: GraphObjDef[]): GraphObjDef[] {
+    return objs.reduce((acc: GraphObjDef[], obj) => {
+      const result = this.run(obj);
+      if (result) {
+        acc.push(result);
+      }
+      return acc;
+    }, []);
+  }
+
+  run(obj: any): GraphObjDef | undefined {
+    return obj;
   }
 }
