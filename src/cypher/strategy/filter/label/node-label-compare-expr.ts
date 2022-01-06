@@ -1,5 +1,5 @@
 import { GraphObjDef } from "../../../cypher-types";
-import { FilterExpr, IFilterResult } from "../filter-expr";
+import { FilterExpr } from "../filter-expr";
 
 export type NodeLabelMatchFn = (
   obj: any,

@@ -1,11 +1,10 @@
 import {
-  AliasMap,
   GraphObjDef,
   NodeDef,
   NodeRelOpts,
   Props,
   RelationDef,
-} from "../../../..";
+} from "../../../cypher-types";
 import { Clause } from "../../clause";
 
 export class Match extends Clause {
@@ -22,8 +21,9 @@ export class Match extends Clause {
   }
 
   // MATCH (n:Person:Swedish)
+  //TODO: put strategy match in strategy
   protected node(nodeDef: NodeDef, merge = true) {
-    const node = this.ctx.matchNode(nodeDef);
+    const node = {}; // this.ctx.matchNode(nodeDef);
     if (!nodeDef.alias) return {};
     const map = {
       [nodeDef.alias]: node,
@@ -59,8 +59,9 @@ export class Match extends Clause {
     return map;
   }
 
+  //TODO: put strategy match in strategy
   rel(nodeDef: NodeDef, opts: NodeRelOpts = {}) {
-    const rel: any = this.ctx.matchRel(nodeDef, opts);
+    const rel: any = {}; // this.ctx.matchRel(nodeDef, opts);
     if (!rel.alias) return {};
     const map = {
       [rel.alias]: rel,
