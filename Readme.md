@@ -346,6 +346,113 @@ Logical `or` for `false` and `true` is `true` returning the set labeled `OR2`
 
 Resulting in a combined (union) result set of all nodes combined with `OR2`, ie. all nodes in the graph.
 
+#### Query example
+
+Let's assume we have a graph with the following nodes and edges and relationships.
+
+```ts
+const michael = {
+  type: 'node',
+  labels: ['person'],
+  props: { name: { 'michael', age: 36, sex: 'male' }}
+}
+
+const anna =  {
+  type: 'node',
+  labels: ['person'],
+  props: { name: { 'anna', , age: 27, sex: 'female' }}
+}
+
+const thomas = {
+  type: 'node',
+  labels: ['person'],
+  props: { name: { 'thomas', , age: 17, sex: 'male' }}
+}
+
+const mazda = {
+  type: 'node',
+  labels: ['car'],
+  props: { brand: { 'mazda' }}
+}
+
+const audi = {
+  type: 'node',
+  labels: ['car'],
+  props: { brand: { 'audi' }}
+}
+
+const michael_owns_audi = {
+  type: 'edge',
+  labels: ['owns'],
+  props: { since: 2016},
+  from: michael
+  to: audi
+}
+
+const anna_owns_mazda = {
+  type: 'edge',
+  labels: ['owns'],
+  props: { since: 2012},
+  from: anna
+  to: mazda
+}
+```
+
+We can then make a query as follows where we match any `person` node as `p`, any `car` node as `c`.
+
+```ts
+const q = query(gun);
+const match = q.$match;
+match.node({ alias: "p", label: "person" });
+match.node({ alias: "c", label: "car" });
+```
+
+This would create the following alis matching map:
+
+```ts
+{
+  'p': [michael, anna, thomas],
+  'c': [mazda, audi],
+}
+```
+
+We can then use where queries to further filter from these aliased filter results.
+
+```ts
+const where = q.$where;
+where.obj("p").props({ age: { gte: 18 }, sex: "male" });
+where.obj("c").props({ since: { gte: 2015 } });
+```
+
+This would result in the following:
+
+```ts
+{
+  'p': [michael, anna],
+  'c': [audi],
+}
+```
+
+We can then use `return` to select what to return
+
+```ts
+const return = q.$return;
+return.alias("p").count({distinct: true}).as("number of legal owners")
+return.alias("c").prop("brand").as("car brand")
+```
+
+This would give us the final table
+
+```ts
+{
+  headers: ['number of legal owners', 'car brand'],
+  data: [
+    [1, 'mazda'],
+    [1, 'audi']
+  ]
+}
+```
+
 ##### Label filters
 
 Label filters filter on graph object labels. Currently the filters implemented support:
