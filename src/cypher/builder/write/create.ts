@@ -1,20 +1,27 @@
-import { Query } from "../..";
+import { IQueryBuilder } from "..";
 import {
-  AliasMap,
   DirectedRelationDef,
   NodeDef,
-  Props,
   RelationDef,
   StrMap,
-} from "../../..";
-import { Clause } from "../clause";
+} from "../../cypher-types";
+import { BuilderClause } from "../clause";
 
-export class Create extends Clause {
+export interface ICreateBuilder {}
+
+export const createCreateBuilder = (
+  q: IQueryBuilder,
+  config: any
+): ICreateBuilder => {
+  return new CreateBuilder(q).config(config);
+};
+
+export class CreateBuilder extends BuilderClause {
   relation(fromNode: NodeDef, relation: DirectedRelationDef, toNode: NodeDef) {
-    const from = this.firstFromMap(this.node(fromNode));
-    const to = this.firstFromMap(this.node(toNode));
-    const map = this.ctx.createRel(from, relation, to);
-    return map;
+    // const from = this.firstFromMap(this.node(fromNode));
+    // const to = this.firstFromMap(this.node(toNode));
+    // const map = this.ctx.createRel(from, relation, to);
+    return {};
   }
 
   relationTo(fromNode: NodeDef, relation: RelationDef, toNode: NodeDef) {
@@ -28,16 +35,17 @@ export class Create extends Clause {
   // CREATE (n:Person:Swedish)
   // https://neo4j.com/docs/cypher-manual/current/clauses/create/#create-create-a-node-with-multiple-labels
   node(opts: NodeDef = {}, merge = true) {
-    const node = this.ctx.createNode(opts);
-    if (!opts.alias)
-      return {
-        _: node,
-      };
-    const map = {
-      [opts.alias]: node,
-    };
-    if (!merge) return map;
-    return this.mergeAliasMap(map);
+    // const node = this.ctx.createNode(opts);
+    // if (!opts.alias)
+    //   return {
+    //     _: node,
+    //   };
+    // const map = {
+    //   [opts.alias]: node,
+    // };
+    return {};
+    // if (!merge) return map;
+    // return this.mergeAliasMap(map);
   }
 
   // CREATE (n:Person:Swedish), (m:Person:Danish)

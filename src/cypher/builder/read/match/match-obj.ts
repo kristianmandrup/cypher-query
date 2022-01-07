@@ -1,7 +1,7 @@
 import { IMatchObjExpr } from ".";
 import { MatchObjExpr } from "../../..";
 import { Props } from "../../../cypher-types";
-import { Clause } from "../../clause";
+import { BuilderClause } from "../../clause";
 
 export interface MatchObjConfig {
   alias?: string;
@@ -13,7 +13,7 @@ export interface IMatchObject {
   matches(config: MatchObjConfig): IMatchObjExpr;
 }
 
-export class MatchObj extends Clause implements IMatchObject {
+export class MatchObj extends BuilderClause implements IMatchObject {
   alias: string = "_";
 
   config(config: MatchObjConfig) {

@@ -1,8 +1,8 @@
-import { Match } from "../../../..";
-import { Clause } from "../../clause";
+import { BuilderClause } from "../../clause";
 
-export class Optional extends Clause {
+export class Optional extends BuilderClause {
   get match() {
-    return new Match(this.q).optional();
+    return {};
+    // return new Match(this.q).optional();
   }
 }

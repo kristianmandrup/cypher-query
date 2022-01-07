@@ -13,7 +13,7 @@ import {
   createStrategyResult,
   createUnionExpr,
 } from ".";
-import { IStrategyMap } from "..";
+import { IStrategyMap } from "./map";
 
 export const defaultPropsFilterMap = () => {
   return {
@@ -62,6 +62,9 @@ export const defaultResultMap = () => {
 
 export const defaultStrategyMap = (): IStrategyMap => {
   return {
+    create: {},
+    delete: {},
+    match: {},
     filter: defaultFilterMap(),
     result: defaultResultMap(),
   };

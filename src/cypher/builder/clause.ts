@@ -1,9 +1,8 @@
 import { Props } from "../cypher-types";
 import { IQueryBuilder } from "./builder";
-import { ErrorHandler } from "./error-handler";
 import { Handler } from "./handler";
 
-export class Clause extends Handler {
+export class BuilderClause extends Handler {
   q: IQueryBuilder;
 
   constructor(q: IQueryBuilder) {

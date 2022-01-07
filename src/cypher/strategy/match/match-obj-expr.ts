@@ -6,6 +6,10 @@ export interface ObjMatchConfigObj {
   props?: Props;
 }
 
+export interface IMatchObjExpr {
+  config(config: ObjMatchConfigObj): IMatchObjExpr;
+}
+
 export const createMatchObjExpr = (config: ObjMatchConfigObj) =>
   new MatchObjExpr().config(config);
 
