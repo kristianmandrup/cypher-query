@@ -7,7 +7,11 @@ import {
 } from "../../../cypher-types";
 import { Clause } from "../../clause";
 
-export class Match extends Clause {
+export interface IMatchObjExpr {
+  pattern(...graphObjs: GraphObjDef[]): any;
+}
+
+export class MatchObjExpr extends Clause implements IMatchObjExpr {
   $optional = false;
   currentNode: any;
 

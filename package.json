@@ -16,7 +16,7 @@
     "cypher",
     "neo4j",
     "graphdb",
-    "graph",        
+    "graph",
     "query",
     "builder",
     "engine",
@@ -33,7 +33,7 @@
     "graphology-neo4j": "^1.2.0",
     "graphology-operators": "^1.5.0",
     "gun": "^0.2020.1235",
-    "jest": "^27.4.5",
+    "jest": "^27.4.7",
     "request": "^2.88.2",
     "ts-jest": "^27.1.2",
     "typescript": "^4.5.4"

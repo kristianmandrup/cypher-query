@@ -11,6 +11,10 @@ export class Clause extends Handler {
     this.q = q;
   }
 
+  config(config: any) {
+    return this;
+  }
+
   firstFromMap(map: Props) {
     return map.values()[0];
   }

@@ -1,11 +1,19 @@
+import { IQueryBuilder } from "..";
 import { Clause } from "../clause";
 
-export class Delete extends Clause {
-  node(label: string) {}
+export interface IDeleteBuilder {
+  nodes(...labels: string[]): any;
+  relations(...labels: string[]): any;
+}
 
-  relation(label: string) {}
+export const createDeleteBuilder = (
+  q: IQueryBuilder,
+  config: any
+): IDeleteBuilder => {
+  return new DeleteBuilder(q).config(config);
+};
 
+export class DeleteBuilder extends Clause {
   nodes(...labels: string[]) {}
-
   relations(...labels: string[]) {}
 }

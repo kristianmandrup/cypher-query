@@ -1,3 +1,4 @@
+import { IMatchObjExpr } from ".";
 import { MatchObjExpr } from "../../..";
 import { Props } from "../../../cypher-types";
 import { Clause } from "../../clause";
@@ -8,11 +9,16 @@ export interface MatchObjConfig {
   props?: Props;
 }
 
-export class MatchObj extends Clause {
+export interface IMatchObject {
+  matches(config: MatchObjConfig): IMatchObjExpr;
+}
+
+export class MatchObj extends Clause implements IMatchObject {
   alias: string = "_";
 
-  config({ alias }: MatchObjConfig) {
-    this.setAlias(alias);
+  config(config: MatchObjConfig) {
+    this.setAlias(config.alias);
+    return super.config(config);
   }
 
   protected setAlias(alias: string = "_") {
@@ -22,6 +28,6 @@ export class MatchObj extends Clause {
 
   matches(config: MatchObjConfig) {
     const { alias } = this;
-    return new MatchObjExpr().config({ alias, ...config });
+    return new MatchObjExpr(this.q).config({ alias, ...config });
   }
 }

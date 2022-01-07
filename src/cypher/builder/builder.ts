@@ -1,9 +1,8 @@
-import { Match, Where } from "./read";
+import { IMatchAlias } from "./read";
 import { IResultExpr, IStrategyResult, Props } from "../cypher-types";
-import { Return } from "./return";
-import { Create, Delete } from "./write";
+import { Create, IDeleteBuilder } from "./write";
 import { Csv } from "./load";
-import { IFilterExpr, IGraphObjApi, IStrategyFilter } from "..";
+import { IFilterExpr, IStrategyFilter } from "..";
 import { defaultStrategyMap } from "../strategy/defaults";
 
 type FilterExprFactoryFn = (
@@ -44,13 +43,21 @@ export interface IResultExprMap {
   union: ResultExprFactoryFn;
 }
 
-export type FilterRootFactoryFn = (
-  graphObjApi: IGraphObjApi
-) => IStrategyFilter;
+export type FilterRootFactoryFn = (config: any) => IStrategyFilter;
 
 export type ResultRootFactoryFn = (config: any) => IStrategyResult;
 
+type MatchRootFactoryFn = (q: IQueryBuilder, config: any) => IMatchAlias;
+
+type DeleteRootFactoryFn = (q: IQueryBuilder, config: any) => IDeleteBuilder;
+
 export interface IStrategyMap {
+  delete: {
+    root: DeleteRootFactoryFn;
+  };
+  match: {
+    root: MatchRootFactoryFn;
+  };
   filter: {
     root: FilterRootFactoryFn;
     exprMap: IFilterExprMap;
@@ -70,6 +77,12 @@ export interface IQueryBuilder {
 export class QueryBuilder {
   strategyMap: IStrategyMap = defaultStrategyMap();
   aliasMap: Props = {};
+  configObj: any;
+
+  config(config: any) {
+    this.configObj = config;
+    return this;
+  }
 
   mergeAliasMap(aliasMap: Props, name = "alias") {
     this.aliasMap[name] = {
@@ -88,18 +101,18 @@ export class QueryBuilder {
   }
 
   get delete() {
-    return new Delete(this);
+    return this.strategyMap.delete.root(this, this.configObj);
   }
 
   get match() {
-    return new Match(this);
+    return this.strategyMap.match.root(this, this.configObj);
   }
 
   get where() {
-    return new Where(this);
+    return this.strategyMap.filter.root(this);
   }
 
   get return() {
-    return new Return(this);
+    return this.strategyMap.result.root(this);
   }
 }
