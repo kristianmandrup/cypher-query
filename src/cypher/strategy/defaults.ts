@@ -30,7 +30,7 @@ export const defaultLabelsFilterMap = () => {
   };
 };
 
-export const defaultCompositeFilterMap = () => {
+export const defaultBooleanFilterMap = () => {
   return {
     and: createAndFilterExpr,
     or: createOrFilterExpr,
@@ -42,7 +42,7 @@ export const defaultFilterMap = () => {
   return {
     root: createStrategyFilter,
     exprMap: {
-      composite: defaultCompositeFilterMap(),
+      boolean: defaultBooleanFilterMap(),
       props: defaultPropsFilterMap(),
       labels: defaultLabelsFilterMap(),
     },
@@ -60,11 +60,19 @@ export const defaultResultMap = () => {
   };
 };
 
+const empty: any = {};
+
 export const defaultStrategyMap = (): IStrategyMap => {
   return {
-    create: {},
-    delete: {},
-    match: {},
+    create: {
+      root: empty,
+    },
+    delete: {
+      root: empty,
+    },
+    match: {
+      root: empty,
+    },
     filter: defaultFilterMap(),
     result: defaultResultMap(),
   };

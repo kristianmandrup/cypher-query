@@ -1,5 +1,6 @@
-import { AndExpr, NotExpr, OrExpr } from ".";
-import { Where } from "../where";
+import { AndExprBuilder, OrExprBuilder } from ".";
+import { IWhereBuilder } from "..";
+import { BuilderClause } from "../../../clause";
 
 type ExprFn = () => boolean;
 
@@ -9,8 +10,8 @@ type ExprObj = {
 
 export type Expression = ExprFn | ExprObj;
 
-export class BaseExpr {
-  whereExpr: Where;
+export class BaseExprBuilder extends BuilderClause {
+  whereExpr: IWhereBuilder;
 
   expressions: Expression[] = [];
 
@@ -19,15 +20,16 @@ export class BaseExpr {
     return (exprObj.matches && exprObj.matches()) || (expr as ExprFn)();
   }
 
-  constructor(whereExpr: Where) {
+  constructor(whereExpr: IWhereBuilder) {
+    super(whereExpr.q);
     this.whereExpr = whereExpr;
   }
 
   get or() {
-    return new OrExpr(this.whereExpr);
+    return new OrExprBuilder(this.whereExpr);
   }
 
   get and() {
-    return new AndExpr(this.whereExpr);
+    return new AndExprBuilder(this.whereExpr);
   }
 }

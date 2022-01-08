@@ -1,20 +1,34 @@
-import { Clause } from "../../clause";
-import { AndExpr, NotExpr, OrExpr } from "./boolean";
+import { IQueryBuilder } from "../..";
+import { BuilderClause, IBuilderClause } from "../../clause";
+import { IOrExprBuilder, IAndExprBuilder, INotExprBuilder } from "./boolean";
 
 export type NodeMatchFn = (node: any) => boolean;
 
-export class Where extends Clause {
+export const createWhereBuilder = (q: IQueryBuilder, config: any) =>
+  new WhereBuilder(q).config(config);
+
+export interface IWhereBuilder extends IBuilderClause {
+  or: IOrExprBuilder;
+  and: IAndExprBuilder;
+  not: INotExprBuilder;
+}
+
+export class WhereBuilder extends BuilderClause {
   nodeMatches(fn: NodeMatchFn) {}
 
+  protected get where() {
+    return this.builderMap.where;
+  }
+
   get or() {
-    return new OrExpr(this);
+    return this.where.or(this);
   }
 
   get and() {
-    return new AndExpr(this);
+    return this.where.and(this);
   }
 
   get not() {
-    return new NotExpr(this);
+    return this.where.not(this);
   }
 }

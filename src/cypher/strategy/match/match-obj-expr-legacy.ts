@@ -4,25 +4,14 @@ import {
   NodeRelOpts,
   Props,
   RelationDef,
-} from "../../../cypher-types";
-import { Clause } from "../../clause";
+} from "../../cypher-types";
 
 export interface IMatchObjExpr {
   pattern(...graphObjs: GraphObjDef[]): any;
 }
 
-export class MatchObjExpr extends Clause implements IMatchObjExpr {
-  $optional = false;
+export class MatchObjExpr implements IMatchObjExpr {
   currentNode: any;
-
-  mergeMap(aliasMap: Props) {
-    return this.q.mergeAliasMap(aliasMap, "matches");
-  }
-
-  optional() {
-    this.$optional = true;
-    return this;
-  }
 
   // MATCH (n:Person:Swedish)
   //TODO: put strategy match in strategy
@@ -33,7 +22,7 @@ export class MatchObjExpr extends Clause implements IMatchObjExpr {
       [nodeDef.alias]: node,
     };
     if (!merge) return map;
-    return this.mergeMap(map);
+    // return this.mergeMap(map);
   }
 
   // MATCH (n:Person:Swedish), (m:Person:Danish)
@@ -46,7 +35,7 @@ export class MatchObjExpr extends Clause implements IMatchObjExpr {
       };
       return acc;
     }, {});
-    return this.mergeMap(map);
+    // return this.mergeMap(map);
   }
 
   pattern(...graphObjs: GraphObjDef[]) {

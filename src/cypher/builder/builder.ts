@@ -1,10 +1,8 @@
-import { IMatchAlias } from "./read";
-import { IResultExpr, IStrategyResult, Props } from "../cypher-types";
-import { ICreateBuilder, IDeleteBuilder } from "./write";
 import { Csv } from "./load";
 import { defaultStrategyMap } from "../strategy/defaults";
 import { IStrategyMap } from "../strategy/map";
-import { IBuilderMap } from "./map";
+import { defaultBuilderMap, IBuilderMap } from "./map";
+import { Props } from "../cypher-types";
 
 export interface IQueryBuilder {
   aliasMap: Props;
@@ -15,7 +13,7 @@ export interface IQueryBuilder {
 
 export class QueryBuilder {
   strategyMap: IStrategyMap = defaultStrategyMap();
-  builderMap: IBuilderMap = {};
+  builderMap: IBuilderMap = defaultBuilderMap();
   aliasMap: Props = {};
   configObj: any;
 
@@ -37,7 +35,7 @@ export class QueryBuilder {
   }
 
   get create() {
-    return new Create(this);
+    return this.builderMap.create.root(this, this.configObj);
   }
 
   get delete() {
@@ -45,14 +43,14 @@ export class QueryBuilder {
   }
 
   get match() {
-    return this.strategyMap.match.root(this, this.configObj);
+    return this.builderMap.match.root(this, this.configObj);
   }
 
   get where() {
-    return this.strategyMap.filter.root(this);
+    return this.builderMap.where.root(this, this.configObj);
   }
 
   get return() {
-    return this.strategyMap.result.root(this);
+    return this.builderMap.return.root(this, this.configObj);
   }
 }

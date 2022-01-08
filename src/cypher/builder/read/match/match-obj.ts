@@ -10,15 +10,21 @@ export interface MatchObjConfig {
 }
 
 export interface IMatchObject {
-  matches(config: MatchObjConfig): IMatchObjExpr;
+  matches(config: MatchObjConfig): any;
 }
 
-export class MatchObj extends BuilderClause implements IMatchObject {
+export class MatchObjBuilder extends BuilderClause implements IMatchObject {
   alias: string = "_";
+  $optional: boolean = false;
 
   config(config: MatchObjConfig) {
     this.setAlias(config.alias);
     return super.config(config);
+  }
+
+  optional() {
+    this.$optional = true;
+    return this;
   }
 
   protected setAlias(alias: string = "_") {
@@ -28,6 +34,6 @@ export class MatchObj extends BuilderClause implements IMatchObject {
 
   matches(config: MatchObjConfig) {
     const { alias } = this;
-    return new MatchObjExpr(this.q).config({ alias, ...config });
+    return {};
   }
 }

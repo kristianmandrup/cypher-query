@@ -1,3 +1,3 @@
 import { BuilderClause } from "../../clause";
 
-export class Merge extends BuilderClause {}
+export class OrerBy extends BuilderClause {}

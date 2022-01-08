@@ -1,3 +1,3 @@
-import { Clause } from "../clause";
+import { BuilderClause } from "../clause";
 
-export class SetObj extends Clause {}
+export class SetObj extends BuilderClause {}

@@ -1,12 +1,15 @@
-import { NotExpr } from ".";
-import { BaseExpr } from "./base-expr";
+import { IWhereBuilder } from "..";
+import { BaseExprBuilder } from "./base-expr";
 
-export class OrExpr extends BaseExpr {
-  get not() {
-    return new NotExpr(this.whereExpr);
-  }
+export interface IOrExprBuilder {
+  matches(expr: any): any;
+}
 
-  matches() {
+export const createOrExprBuilder = (w: IWhereBuilder, config: any) =>
+  new OrExprBuilder(w).config(config);
+
+export class OrExprBuilder extends BaseExprBuilder {
+  matches(expr: any) {
     return this.expressions.some((expr) => this.eval(expr));
   }
 }

@@ -1,4 +1,12 @@
 import {
+  createAndExprBuilder,
+  createCreateBuilder,
+  createDeleteBuilder,
+  createMatchBuilder,
+  createNotExprBuilder,
+  createOrExprBuilder,
+  createReturnBuilder,
+  createWhereBuilder,
   ICreateBuilder,
   IDeleteBuilder,
   IMatchBuilder,
@@ -24,14 +32,40 @@ export interface IBuilderMap {
   match: {
     root: MatchBuilderRootFactoryFn;
   };
+  where: any;
+  return: any;
 }
+
+const defaultWhereMap = () => {
+  return {
+    root: createWhereBuilder,
+    or: createOrExprBuilder,
+    and: createAndExprBuilder,
+    not: createNotExprBuilder,
+  };
+};
+
+const defaultReturnMap = () => {
+  return {
+    root: createReturnBuilder,
+    // skip: createSkipExprBuilder,
+    // limit: createLimitExprBuilder,
+    // union: createUnionExprBuilder,
+  };
+};
 
 export const defaultBuilderMap = (): IBuilderMap => {
   return {
-    create: {},
-    delete: {},
-    match: {},
-    filter: defaultFilterMap(),
-    result: defaultReturnMap(),
+    create: {
+      root: createCreateBuilder,
+    },
+    delete: {
+      root: createDeleteBuilder,
+    },
+    match: {
+      root: createMatchBuilder,
+    },
+    where: defaultWhereMap(),
+    return: defaultReturnMap(),
   };
 };
