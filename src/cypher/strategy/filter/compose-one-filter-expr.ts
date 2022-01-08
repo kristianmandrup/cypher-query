@@ -1,6 +1,8 @@
 import { CompositeFilterExpr, IFilterExpr } from "..";
-import { GraphObjDef } from "../../cypher-types";
-import { IAliasedFilter } from "./alias-filter";
+
+export interface IComposeOneFilterExpr {
+  setComposedFilter(filterExpr: IFilterExpr): IComposeOneFilterExpr;
+}
 
 export class ComposeOneFilterExpr
   extends CompositeFilterExpr

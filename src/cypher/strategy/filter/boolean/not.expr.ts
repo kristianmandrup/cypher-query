@@ -1,6 +1,5 @@
-import { CompositeFilterResult, IFilterExpr, IStrategyFilter } from "..";
+import { CompositeFilterResult, IComposeOneFilterExpr } from "..";
 import { GraphObjDef } from "../../../cypher-types";
-import { IAliasedFilter } from "../alias-filter";
 import { ComposeOneFilterExpr } from "../compose-one-filter-expr";
 
 export const createNotFilterExpr = (config?: any) =>
@@ -11,6 +10,8 @@ export class NotCompositeFilterResult extends CompositeFilterResult {
     return this.combinedResults;
   }
 }
+
+export interface INotFilterExpr extends IComposeOneFilterExpr {}
 
 export class NotFilterExpr extends ComposeOneFilterExpr {
   createCompositeResult() {

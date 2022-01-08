@@ -1,5 +1,12 @@
 import { IResultExpr, IStrategyResult } from "../cypher-types";
 import { IFilterExpr, IMatchObjExpr, IStrategyFilter } from "..";
+import { IComposeOneFilterExpr, ICompositeFilterExpr } from ".";
+
+type AndOrFilterExprFactoryFn = CompositeFilterExprFactoryFn;
+type NotFilterExprFactoryFn = ComposeOneFilterExprFactoryFn;
+
+type CompositeFilterExprFactoryFn = (config?: any) => ICompositeFilterExpr;
+type ComposeOneFilterExprFactoryFn = (config?: any) => IComposeOneFilterExpr;
 
 type FilterExprFactoryFn = (config?: any) => IFilterExpr;
 type ResultExprFactoryFn = (
@@ -19,9 +26,9 @@ export interface ILabelsFilterExprMap {
 }
 
 export interface IBooleanFilterExprMap {
-  and: FilterExprFactoryFn;
-  or: FilterExprFactoryFn;
-  not: FilterExprFactoryFn;
+  and: AndOrFilterExprFactoryFn;
+  or: AndOrFilterExprFactoryFn;
+  not: NotFilterExprFactoryFn;
 }
 
 export interface IFilterExprMap {

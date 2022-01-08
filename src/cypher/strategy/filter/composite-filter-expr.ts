@@ -1,6 +1,5 @@
 import { FilterExpr, IFilterExpr } from "..";
 import { GraphObjDef } from "../../cypher-types";
-import { IAliasedFilter } from "./alias-filter";
 import { ISetOperations, setOperations } from "./boolean/set-operations";
 
 export interface ICompositeFilterResult {
@@ -30,7 +29,14 @@ export class CompositeFilterResult {
   }
 }
 
-export class CompositeFilterExpr extends FilterExpr implements IFilterExpr {
+export interface ICompositeFilterExpr extends IFilterExpr {
+  addFilter(filterExpr: IFilterExpr): ICompositeFilterExpr;
+}
+
+export class CompositeFilterExpr
+  extends FilterExpr
+  implements ICompositeFilterExpr
+{
   composedFilters: IFilterExpr[] = [];
   setOps: ISetOperations = setOperations;
 

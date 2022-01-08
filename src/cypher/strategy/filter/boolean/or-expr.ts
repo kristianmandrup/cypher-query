@@ -1,4 +1,4 @@
-import { CompositeFilterResult, IFilterExpr } from "..";
+import { CompositeFilterResult, ICompositeFilterExpr, IFilterExpr } from "..";
 import { GraphObjDef } from "../../../cypher-types";
 import { IAliasedFilter } from "../alias-filter";
 import { CompositeFilterExpr } from "../composite-filter-expr";
@@ -11,6 +11,8 @@ export class OrCompositeFilterResult extends CompositeFilterResult {
     return this.results.every((result) => result.length > 0);
   }
 }
+
+export interface IOrFilterExpr extends ICompositeFilterExpr {}
 
 export class OrFilterExpr extends CompositeFilterExpr {
   createReduceComposed(objs: GraphObjDef[]): any {

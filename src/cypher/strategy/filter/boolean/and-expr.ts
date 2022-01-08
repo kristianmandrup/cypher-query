@@ -1,7 +1,9 @@
 import { CompositeFilterResult, IFilterExpr } from "..";
 import { GraphObjDef } from "../../../cypher-types";
-import { IAliasedFilter } from "../alias-filter";
-import { CompositeFilterExpr } from "../composite-filter-expr";
+import {
+  CompositeFilterExpr,
+  ICompositeFilterExpr,
+} from "../composite-filter-expr";
 
 export const createAndFilterExpr = (config?: any) =>
   new AndFilterExpr().config(config);
@@ -15,6 +17,8 @@ export class AndCompositeFilterResult extends CompositeFilterResult {
     return this.allValid() ? super.composedResult() : [];
   }
 }
+
+export interface IAndFilterExpr extends ICompositeFilterExpr {}
 
 export class AndFilterExpr extends CompositeFilterExpr {
   createCompositeResult() {

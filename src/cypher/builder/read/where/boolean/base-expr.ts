@@ -27,4 +27,8 @@ export class BaseExprBuilder extends BuilderClause {
   matches(expr: any) {
     return this;
   }
+
+  createFilterFrom(config: any) {
+    return {} as any;
+  }
 }
