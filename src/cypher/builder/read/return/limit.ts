@@ -1,12 +1,12 @@
-import { ReturnClause } from "./return-clause";
+import { IQueryBuilder } from "../..";
+import {
+  IReturnNumberClause,
+  ReturnNumberClause,
+} from "./return-number-clause";
 
-export class LimitBuilder extends ReturnClause {
-  number(num: number) {
-    if (!this.result) {
-      this.error("Missing results to limit");
-      return;
-    }
-    // this.result.addExpr(createLimitExpr(num));
-    return this;
-  }
-}
+export const createŸLimitExprBuilder = (q: IQueryBuilder, config: any) =>
+  new LimitExprBuilder(q).config(config);
+
+export interface ILimitExprBuilder extends IReturnNumberClause {}
+
+export class LimitExprBuilder extends ReturnNumberClause {}

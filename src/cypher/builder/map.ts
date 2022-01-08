@@ -6,7 +6,10 @@ import {
   createNotExprBuilder,
   createOrExprBuilder,
   createReturnBuilder,
+  createSkipExprBuilder,
+  createUnionExprBuilder,
   createWhereBuilder,
+  createŸLimitExprBuilder,
   ICreateBuilder,
   IDeleteBuilder,
   IMatchBuilder,
@@ -48,9 +51,9 @@ const defaultWhereMap = () => {
 const defaultReturnMap = () => {
   return {
     root: createReturnBuilder,
-    // skip: createSkipExprBuilder,
-    // limit: createLimitExprBuilder,
-    // union: createUnionExprBuilder,
+    skip: createSkipExprBuilder,
+    limit: createŸLimitExprBuilder,
+    union: createUnionExprBuilder,
   };
 };
 

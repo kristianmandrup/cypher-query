@@ -1,12 +1,12 @@
-import { ReturnClause } from "./return-clause";
+import { IQueryBuilder } from "../..";
+import {
+  IReturnNumberClause,
+  ReturnNumberClause,
+} from "./return-number-clause";
 
-export class SkipBuilder extends ReturnClause {
-  number(num: number) {
-    if (!this.result) {
-      this.error("Missing results to skip");
-      return;
-    }
-    // this.result.addExpr();
-    return this;
-  }
-}
+export const createSkipExprBuilder = (q: IQueryBuilder, config: any) =>
+  new SkipExprBuilder(q).config(config);
+
+export interface ISkipExprBuilder extends IReturnNumberClause {}
+
+export class SkipExprBuilder extends ReturnNumberClause {}
