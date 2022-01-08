@@ -1,9 +1,9 @@
 import { IResultExpr, IStrategyResult, Props } from "../cypher-types";
 import { IFilterExpr, IMatchObjExpr, IStrategyFilter } from "..";
-import { defaultStrategyMap } from "./defaults";
+import { IAliasedFilter } from ".";
 
 type FilterExprFactoryFn = (
-  filter: IStrategyFilter,
+  filter: IAliasedFilter,
   config?: any
 ) => IFilterExpr;
 type ResultExprFactoryFn = (

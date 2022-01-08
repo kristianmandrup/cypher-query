@@ -1,12 +1,11 @@
-import { IStrategyFilter, NodeCompareConfigObj } from "..";
-import { IGraphApi } from "../../../../";
+import { IAliasedFilter } from "..";
 import {
   NodeLabelCompareExpr,
   NodeLabelConfigObj,
 } from "./node-label-compare-expr";
 
 export const createNodeLabelsIncludeExpr = (
-  filter: IStrategyFilter,
+  filter: IAliasedFilter,
   configObj: NodeLabelConfigObj
 ) => new NodeLabelsIncludeExpr(filter).config(configObj);
 
