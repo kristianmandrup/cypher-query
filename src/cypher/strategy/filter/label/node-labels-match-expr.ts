@@ -4,10 +4,8 @@ import {
   NodeLabelConfigObj,
 } from "./node-label-compare-expr";
 
-export const createNodeLabelMatchesExpr = (
-  filter: IAliasedFilter,
-  configObj: NodeLabelConfigObj
-) => new NodeLabelMatchesExpr(filter).config(configObj);
+export const createNodeLabelMatchesExpr = (configObj: NodeLabelConfigObj) =>
+  new NodeLabelMatchesExpr().config(configObj);
 
 export class NodeLabelMatchesExpr extends NodeLabelCompareExpr {
   compareValue(nodeLabels: string[], compareLabel: string | RegExp): boolean {

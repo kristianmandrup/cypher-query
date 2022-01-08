@@ -8,14 +8,6 @@ export class ComposeOneFilterExpr
 {
   composedFilter?: IFilterExpr;
 
-  constructor(public filter: IAliasedFilter) {
-    super(filter);
-  }
-
-  get graphObjApi() {
-    return this.filter.graphObjApi;
-  }
-
   setComposedFilter(filterExpr: IFilterExpr) {
     this.composedFilter = filterExpr;
     return this;

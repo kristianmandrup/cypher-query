@@ -2,10 +2,8 @@ import { NodeCompareConfigObj } from ".";
 import { IAliasedFilter } from "..";
 import { NodePropCompareExpr } from "./node-prop-compare-expr";
 
-export const createNodePropLtExpr = (
-  filter: IAliasedFilter,
-  configObj: NodeCompareConfigObj
-) => new NodePropLtExpr(filter).config(configObj);
+export const createNodePropLtExpr = (configObj: NodeCompareConfigObj) =>
+  new NodePropLtExpr().config(configObj);
 
 export class NodePropLtExpr extends NodePropCompareExpr {
   compareValue(nodeVal: any, compareVal: any): boolean {

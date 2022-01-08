@@ -14,7 +14,10 @@ import {
   IDeleteBuilder,
   IMatchBuilder,
   IQueryBuilder,
+  IWhereBuilder,
 } from ".";
+import { BuilderClause } from "./clause";
+import { BaseExprBuilder } from "./read/where/boolean/base-expr";
 
 type DeleteRootFactoryFn = (q: IQueryBuilder, config: any) => IDeleteBuilder;
 
@@ -24,6 +27,28 @@ type MatchBuilderRootFactoryFn = (
   q: IQueryBuilder,
   config: any
 ) => IMatchBuilder;
+
+export type ReturnBuilderFn = (q: IQueryBuilder, config: any) => BuilderClause;
+export type WhereBuilderFn = (w: IWhereBuilder, config: any) => BaseExprBuilder;
+
+export interface ReturnBuilderMap {
+  root: ReturnBuilderFn;
+  skip: ReturnBuilderFn;
+  limit: ReturnBuilderFn;
+  union: ReturnBuilderFn;
+}
+
+export type WhereRootBuilderFn = (
+  q: IQueryBuilder,
+  config: any
+) => IWhereBuilder;
+
+export interface WhereBuilderMap {
+  root: WhereRootBuilderFn;
+  or: WhereBuilderFn;
+  and: WhereBuilderFn;
+  not: WhereBuilderFn;
+}
 
 export interface IBuilderMap {
   create: {
@@ -35,8 +60,8 @@ export interface IBuilderMap {
   match: {
     root: MatchBuilderRootFactoryFn;
   };
-  where: any;
-  return: any;
+  where: WhereBuilderMap;
+  return: ReturnBuilderMap;
 }
 
 const defaultWhereMap = () => {

@@ -1,6 +1,7 @@
 import { IQueryBuilder } from "../..";
 import { BuilderClause, IBuilderClause } from "../../clause";
 import { IOrExprBuilder, IAndExprBuilder, INotExprBuilder } from "./boolean";
+import { BaseExprBuilder } from "./boolean/base-expr";
 
 export type NodeMatchFn = (node: any) => boolean;
 
@@ -20,15 +21,15 @@ export class WhereBuilder extends BuilderClause {
     return this.builderMap.where;
   }
 
-  get or() {
-    return this.where.or(this);
+  get or(): IOrExprBuilder {
+    return this.where.or(this, this.configObj);
   }
 
-  get and() {
-    return this.where.and(this);
+  get and(): IAndExprBuilder {
+    return this.where.and(this, this.configObj);
   }
 
-  get not() {
-    return this.where.not(this);
+  get not(): INotExprBuilder {
+    return this.where.not(this, this.configObj);
   }
 }

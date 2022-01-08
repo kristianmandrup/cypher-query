@@ -1,4 +1,5 @@
 import { NodeCompareConfigObj } from ".";
+import { IGraphObjApi } from "../../../adapters";
 import { Handler } from "../../builder/handler";
 import { GraphObjDef } from "../../cypher-types";
 import { IAliasedFilter } from "./alias-filter";
@@ -17,21 +18,25 @@ export interface IFilterExpr {
 }
 
 export abstract class FilterExpr extends Handler {
-  filter: IAliasedFilter;
+  filter?: IAliasedFilter;
   alias: string;
   node?: any;
   aliasKey: string = "_";
   matchedResults: GraphObjDef[] = []; // default objects to filter
   results: GraphObjDef[] = [];
 
-  constructor(filter: IAliasedFilter, config?: { alias: string }) {
+  constructor(config?: { alias: string }) {
     super();
-    this.filter = filter;
     this.alias = config ? config.alias : "_";
   }
 
-  get graphObjApi() {
-    return this.filter.graphObjApi;
+  setAliasedFilter(filter: IAliasedFilter) {
+    this.filter = filter;
+    return this;
+  }
+
+  get graphObjApi(): IGraphObjApi | undefined {
+    return this.filter && this.filter.graphObjApi;
   }
 
   setAlias(alias: string) {
@@ -45,11 +50,11 @@ export abstract class FilterExpr extends Handler {
   }
 
   propValue(obj: any, propName: string) {
-    return this.graphObjApi.propValue(obj, propName);
+    return this.graphObjApi && this.graphObjApi.propValue(obj, propName);
   }
 
   nodeLabels(obj: any) {
-    return this.graphObjApi.nodeLabels(obj);
+    return this.graphObjApi ? this.graphObjApi.nodeLabels(obj) : [];
   }
 
   isTrue(): boolean {

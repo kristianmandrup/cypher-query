@@ -1,11 +1,7 @@
-import { IResultExpr, IStrategyResult, Props } from "../cypher-types";
+import { IResultExpr, IStrategyResult } from "../cypher-types";
 import { IFilterExpr, IMatchObjExpr, IStrategyFilter } from "..";
-import { IAliasedFilter } from ".";
 
-type FilterExprFactoryFn = (
-  filter: IAliasedFilter,
-  config?: any
-) => IFilterExpr;
+type FilterExprFactoryFn = (config?: any) => IFilterExpr;
 type ResultExprFactoryFn = (
   result: IStrategyResult,
   config?: any

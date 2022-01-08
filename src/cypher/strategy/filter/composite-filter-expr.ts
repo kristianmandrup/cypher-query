@@ -34,17 +34,9 @@ export class CompositeFilterExpr extends FilterExpr implements IFilterExpr {
   composedFilters: IFilterExpr[] = [];
   setOps: ISetOperations = setOperations;
 
-  constructor(public filter: IAliasedFilter) {
-    super(filter);
-  }
-
-  config(config: any) {
+  config(config: any = {}) {
     this.config = config;
     return this;
-  }
-
-  get graphObjApi() {
-    return this.filter.graphObjApi;
   }
 
   addFilter(filterExpr: IFilterExpr) {

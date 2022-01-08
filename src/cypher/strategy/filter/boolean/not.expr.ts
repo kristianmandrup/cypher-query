@@ -3,8 +3,8 @@ import { GraphObjDef } from "../../../cypher-types";
 import { IAliasedFilter } from "../alias-filter";
 import { ComposeOneFilterExpr } from "../compose-one-filter-expr";
 
-export const createNotFilterExpr = (filter: IAliasedFilter, config?: any) =>
-  new NotFilterExpr(filter).config(config);
+export const createNotFilterExpr = (config?: any) =>
+  new NotFilterExpr().config(config);
 
 export class NotCompositeFilterResult extends CompositeFilterResult {
   composedResult(): GraphObjDef[] {

@@ -12,22 +12,22 @@ export type IGraphObjApi = {
 
 export interface IStrategyFilter extends IStrategy {
   api?: IGraphApi;
-  graphObjApi: IGraphObjApi;
+  graphObjApi?: IGraphObjApi;
   filterAll(objs: GraphObjDef[]): IFilterResult;
   filter(obj: GraphObjDef): boolean;
 }
 
 export const createStrategyFilter = (
-  graphObjApi: IGraphObjApi
+  graphObjApi?: IGraphObjApi
 ): IStrategyFilter => new StrategyFilter(graphObjApi);
 
 export class StrategyFilter implements IStrategyFilter {
-  graphObjApi: IGraphObjApi;
+  graphObjApi?: IGraphObjApi;
   filters: FilterExpr[] = [];
   objs: GraphObjDef[] = [];
   result: IFilterResult = {};
 
-  constructor(graphObjApi: IGraphObjApi) {
+  constructor(graphObjApi?: IGraphObjApi) {
     this.graphObjApi = graphObjApi;
   }
 

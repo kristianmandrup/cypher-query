@@ -13,6 +13,10 @@ export interface IBuilderClause {
 export class BuilderClause extends Handler {
   q: IQueryBuilder;
 
+  get configObj() {
+    return this.q.configObj;
+  }
+
   get builderMap() {
     return this.q.builderMap;
   }

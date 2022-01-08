@@ -192,7 +192,46 @@ Sample result:
 
 ## Strategy API
 
-The Builder must be configured with an `IStrategyMap` object which contains a map of the factory maethods to create each type of strategy for the chainable builder DSL methods.
+The Cypher Query Builder is composed via a `builderMap` passed into the root `QueryBuilder` instance.
+
+The `builderMap` must adhere to the following interfaces. By default a `defaultBuilderMap` function is called to create and setup the built-in builder map using the Builder classes that come with this library out of the box.
+
+```ts
+export interface ReturnBuilderMap {
+  root: ReturnBuilderFn;
+  skip: ReturnBuilderFn;
+  limit: ReturnBuilderFn;
+  union: ReturnBuilderFn;
+}
+
+export type WhereRootBuilderFn = (
+  q: IQueryBuilder,
+  config: any
+) => IWhereBuilder;
+
+export interface WhereBuilderMap {
+  root: WhereRootBuilderFn;
+  or: WhereBuilderFn;
+  and: WhereBuilderFn;
+  not: WhereBuilderFn;
+}
+
+export interface IBuilderMap {
+  create: {
+    root: CreateRootFactoryFn;
+  };
+  delete: {
+    root: DeleteRootFactoryFn;
+  };
+  match: {
+    root: MatchBuilderRootFactoryFn;
+  };
+  where: WhereBuilderMap;
+  return: ReturnBuilderMap;
+}
+```
+
+The `QuewryBuilder` must further be configured with a `strategyMap` instance that implement `IStrategyMap` and which contains a map of the factory methods to create each type of strategy for the chainable builder DSL methods.
 
 This makes the strategy completely configurable and composable, so that you can override, customize and extend with a strategy to fit your particular needs.
 

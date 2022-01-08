@@ -5,6 +5,7 @@ import { defaultBuilderMap, IBuilderMap } from "./map";
 import { Props } from "../cypher-types";
 
 export interface IQueryBuilder {
+  configObj: any;
   aliasMap: Props;
   strategyMap: IStrategyMap;
   builderMap: IBuilderMap;

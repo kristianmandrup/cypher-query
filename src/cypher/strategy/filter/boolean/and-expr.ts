@@ -3,8 +3,8 @@ import { GraphObjDef } from "../../../cypher-types";
 import { IAliasedFilter } from "../alias-filter";
 import { CompositeFilterExpr } from "../composite-filter-expr";
 
-export const createAndFilterExpr = (filter: IAliasedFilter, config?: any) =>
-  new AndFilterExpr(filter).config(config);
+export const createAndFilterExpr = (config?: any) =>
+  new AndFilterExpr().config(config);
 
 export class AndCompositeFilterResult extends CompositeFilterResult {
   allValid(): boolean {

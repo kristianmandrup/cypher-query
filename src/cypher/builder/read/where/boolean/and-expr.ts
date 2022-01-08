@@ -1,15 +1,14 @@
 import { IWhereBuilder } from "..";
-import { BaseExprBuilder } from "./base-expr";
+import { BaseExprBuilder, IBaseExprBuilder } from "./base-expr";
 
-export interface IAndExprBuilder {
-  matches(expr: any): any;
-}
+export interface IAndExprBuilder extends IBaseExprBuilder {}
 
 export const createAndExprBuilder = (w: IWhereBuilder, config: any) =>
   new AndExprBuilder(w).config(config);
 
 export class AndExprBuilder extends BaseExprBuilder {
-  matches(expr: any) {
-    // return this.expressions.every((expr) => this.eval(expr));
+  matches(config: any) {
+    this.strategyMap.filter.exprMap.boolean.and(config);
+    return this;
   }
 }

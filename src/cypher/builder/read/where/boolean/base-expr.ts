@@ -10,26 +10,21 @@ type ExprObj = {
 
 export type Expression = ExprFn | ExprObj;
 
-export class BaseExprBuilder extends BuilderClause {
+export interface IBaseExprBuilder {
   whereExpr: IWhereBuilder;
 
-  expressions: Expression[] = [];
+  matches(expr: any): any;
+}
 
-  eval(expr: Expression) {
-    const exprObj = expr as ExprObj;
-    return (exprObj.matches && exprObj.matches()) || (expr as ExprFn)();
-  }
+export class BaseExprBuilder extends BuilderClause {
+  whereExpr: IWhereBuilder;
 
   constructor(whereExpr: IWhereBuilder) {
     super(whereExpr.q);
     this.whereExpr = whereExpr;
   }
 
-  get or() {
-    return new OrExprBuilder(this.whereExpr);
-  }
-
-  get and() {
-    return new AndExprBuilder(this.whereExpr);
+  matches(expr: any) {
+    return this;
   }
 }
