@@ -2,7 +2,7 @@ import { NodeCompareConfigObj } from ".";
 import { IGraphObjApi } from "../../../adapters";
 import { Handler } from "../../builder/handler";
 import { GraphObjDef } from "../../cypher-types";
-import { IAliasedFilter } from "./alias-filter";
+import { IAliasFilterExpr } from "./alias-filter";
 
 export type NodeMatchFn = (obj: any, config: NodeCompareConfigObj) => boolean;
 
@@ -18,7 +18,7 @@ export interface IFilterExpr {
 }
 
 export abstract class FilterExpr extends Handler {
-  filter?: IAliasedFilter;
+  filter?: IAliasFilterExpr;
   alias: string;
   node?: any;
   aliasKey: string = "_";
@@ -30,7 +30,7 @@ export abstract class FilterExpr extends Handler {
     this.alias = config ? config.alias : "_";
   }
 
-  setAliasedFilter(filter: IAliasedFilter) {
+  setAliasedFilter(filter: IAliasFilterExpr) {
     this.filter = filter;
     return this;
   }

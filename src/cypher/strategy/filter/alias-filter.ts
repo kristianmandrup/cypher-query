@@ -1,14 +1,15 @@
 import { IGraphObjApi, IStrategyFilter, StrategyFilter } from "..";
 import { GraphObjDef } from "../../cypher-types";
 
-export interface IAliasedFilter {
+export interface IAliasFilterExpr {
   graphObjApi?: IGraphObjApi;
   filter?: IStrategyFilter;
   alias: string;
   matchedResults: GraphObjDef[];
+  isOptional: boolean;
 }
 
-export class AliasedFilter implements IAliasedFilter {
+export class AliasFilterExpr implements IAliasFilterExpr {
   filter?: IStrategyFilter;
   alias: string = "_";
   matchedResults: GraphObjDef[] = [];
@@ -16,6 +17,10 @@ export class AliasedFilter implements IAliasedFilter {
   setStrategyFilter(filter: IStrategyFilter) {
     this.filter = filter;
     return this;
+  }
+
+  get isOptional() {
+    return false;
   }
 
   get graphObjApi(): IGraphObjApi | undefined {

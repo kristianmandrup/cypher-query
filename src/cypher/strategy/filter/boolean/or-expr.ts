@@ -1,6 +1,6 @@
 import { CompositeFilterResult, ICompositeFilterExpr, IFilterExpr } from "..";
 import { GraphObjDef } from "../../../cypher-types";
-import { IAliasedFilter } from "../alias-filter";
+import { IAliasFilterExpr } from "../alias-filter";
 import { CompositeFilterExpr } from "../composite-filter-expr";
 
 export const createOrFilterExpr = (config?: any) =>

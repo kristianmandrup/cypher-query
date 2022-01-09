@@ -231,7 +231,7 @@ export interface IBuilderMap {
 }
 ```
 
-The `QuewryBuilder` must further be configured with a `strategyMap` instance that implement `IStrategyMap` and which contains a map of the factory methods to create each type of strategy for the chainable builder DSL methods.
+The `QueryBuilder` must further be configured with a `strategyMap` instance that implement `IStrategyMap` and which contains a map of the factory methods to create each type of strategy for the chainable builder DSL methods.
 
 This makes the strategy completely configurable and composable, so that you can override, customize and extend with a strategy to fit your particular needs.
 
@@ -269,6 +269,66 @@ export const defaultStrategyMap = (): IStrategyMap => {
     };
   };
 };
+```
+
+Each builder method looks up a strategy from the strategyMap and adds a query expression (such as a filter) using that strategy. Here is an example for the `AndExprBuilder` (builder of an `And` query expression). The builder class initially creates an instance of `strategyMap.filter.exprMap.boolean.and`. Each time `matches(config)` is called on the builder, the config is parsed/evaluated using `createFilterFrom(config)` and a filter is created from that `config` and added to the and expression using `this.expr.addFilter(expr);`
+
+```ts
+export class AndExprBuilder extends BaseExprBuilder {
+  expr: IAndFilterExpr;
+
+  constructor(w: IWhereBuilder, config: any = {}) {
+    super(w);
+    this.expr = this.strategyMap.filter.exprMap.boolean.and(config);
+  }
+
+  matches(config: any) {
+    const expr = this.createFilterFrom(config);
+    this.expr.addFilter(expr);
+    return this;
+  }
+}
+```
+
+All the expressions should be gathered in an `IExpressionsTree`. Each root node is an `IAliasFilterExpr` for a given type of expressions. The `IAliasFilterExpr` is a composite, which may contain a tree of composite expressions.
+
+```ts
+export interface IExpressionsTree {
+  match: IAliasFilterExpr[];
+  where: {
+    must: IAliasFilterExpr[];
+    optional: IAliasFilterExpr[];
+  };
+  return: IAliasFilterExpr[];
+}
+```
+
+The `IStrategyFilter` must contain all the expressions built up from the builder.
+
+```ts
+export interface IStrategyFilter {
+  filterTree: IFilterTree = new FilterTree();
+
+  addFilter(filter: IFilterExpr) {
+    this.filterTree.addFilter(filter);
+  }
+}
+```
+
+The executer can then pass in the `apis` such as `api: IGraphApi` for accessing the graph as a whole and `graphObjApi: IGraphObjApi;` for operating on individual graph objects.
+
+```ts
+export interface IQueryExecuter {
+  api: IGraphApi;
+  graphObjApi: IGraphObjApi;
+  strategy: ICypherStrategy;
+
+  run() {
+    // configure stategy if needed
+    // run filters in strategy filterTree on graph using api
+    return this.strategy.run();
+  }
+}
 ```
 
 ### Matches

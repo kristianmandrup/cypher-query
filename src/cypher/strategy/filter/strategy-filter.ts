@@ -1,6 +1,7 @@
-import { IFilterResult } from ".";
+import { IFilterExpr, IFilterResult } from ".";
 import { IGraphApi } from "../../..";
 import { GraphObjDef } from "../../cypher-types";
+import { FilterTree, IFilterTree } from "../tree";
 
 type FilterExpr = (obj: GraphObjDef) => boolean;
 
@@ -13,8 +14,8 @@ export type IGraphObjApi = {
 export interface IStrategyFilter extends IStrategy {
   api?: IGraphApi;
   graphObjApi?: IGraphObjApi;
-  filterAll(objs: GraphObjDef[]): IFilterResult;
-  filter(obj: GraphObjDef): boolean;
+  // filterAll(objs: GraphObjDef[]): IFilterResult;
+  // filter(obj: GraphObjDef): boolean;
 }
 
 export const createStrategyFilter = (
@@ -23,32 +24,16 @@ export const createStrategyFilter = (
 
 export class StrategyFilter implements IStrategyFilter {
   graphObjApi?: IGraphObjApi;
-  filters: FilterExpr[] = [];
   objs: GraphObjDef[] = [];
   result: IFilterResult = {};
+  filterTree: IFilterTree = new FilterTree();
 
   constructor(graphObjApi?: IGraphObjApi) {
     this.graphObjApi = graphObjApi;
   }
 
-  addFilter(filter: FilterExpr) {
-    this.filters.push(filter);
-  }
-
-  addFilters(filters: FilterExpr[]) {
-    this.filters.push(...filters);
-    return this;
-  }
-
-  // TODO: connect with Match and alias maps
-  filterAll(objs: GraphObjDef[]): IFilterResult {
-    return {
-      _: objs.filter(this.filter.bind(this)),
-    };
-  }
-
-  filter(obj: GraphObjDef) {
-    return this.filters.every((filter: FilterExpr) => filter(obj));
+  addFilter(filter: IFilterExpr) {
+    this.filterTree.addFilter(filter);
   }
 
   setObjs(objs: GraphObjDef[]) {
@@ -57,7 +42,6 @@ export class StrategyFilter implements IStrategyFilter {
   }
 
   run() {
-    this.result = this.filterAll(this.objs);
     return this;
   }
 }

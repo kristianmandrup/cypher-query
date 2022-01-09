@@ -1,5 +1,5 @@
 import { NodeCompareConfigObj } from ".";
-import { IAliasedFilter } from "..";
+import { IAliasFilterExpr } from "..";
 import { NodePropCompareExpr } from "./node-prop-compare-expr";
 
 export const createNodePropLtExpr = (configObj: NodeCompareConfigObj) =>

@@ -1,4 +1,4 @@
-import { IAliasedFilter } from "..";
+import { IAliasFilterExpr } from "..";
 import {
   NodeLabelCompareExpr,
   NodeLabelConfigObj,
