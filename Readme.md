@@ -318,7 +318,7 @@ export interface IStrategyFilter {
 The executer can then pass in the `apis` such as `api: IGraphApi` for accessing the graph as a whole and `graphObjApi: IGraphObjApi;` for operating on individual graph objects.
 
 ```ts
-export interface IQueryExecuter {
+export interface ICypherStrategyExecuter {
   api: IGraphApi;
   graphObjApi: IGraphObjApi;
   strategy: ICypherStrategy;
