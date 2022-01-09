@@ -319,9 +319,22 @@ The executer can then pass in the `apis` such as `api: IGraphApi` for accessing 
 
 ```ts
 export interface ICypherStrategyExecuter {
-  api: IGraphApi;
-  graphObjApi: IGraphObjApi;
   strategy: ICypherStrategy;
+  configure(config: any);
+  run(): IResult;
+}
+
+export class CypherStrategyExecuter {
+  strategy: ICypherStrategy;
+
+  constructor(strategy: ICypherStrategy) {
+    this.strategy = strategy;
+  }
+
+  configure(config: any) {
+    this.strategy.configure(config);
+    return this;
+  }
 
   run() {
     // configure stategy if needed
@@ -329,6 +342,14 @@ export interface ICypherStrategyExecuter {
     return this.strategy.run();
   }
 }
+```
+
+Using an executer:
+
+```ts
+// strategy created by query builder
+const executer = createStrategyExecuter(strategy);
+const queryResult = executer.configure(config).run();
 ```
 
 ### Matches
