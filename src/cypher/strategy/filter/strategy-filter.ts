@@ -1,7 +1,7 @@
 import { IFilterExpr, IFilterResult } from ".";
 import { IGraphApi } from "../../..";
 import { GraphObjDef } from "../../cypher-types";
-import { FilterTree, IFilterTree } from "../tree";
+import { IQueryController, QueryController } from "../controllers";
 
 type FilterExpr = (obj: GraphObjDef) => boolean;
 
@@ -26,14 +26,22 @@ export class StrategyFilter implements IStrategyFilter {
   graphObjApi?: IGraphObjApi;
   objs: GraphObjDef[] = [];
   result: IFilterResult = {};
-  filterTree: IFilterTree = new FilterTree();
+  queryController: IQueryController = new QueryController();
 
   constructor(graphObjApi?: IGraphObjApi) {
     this.graphObjApi = graphObjApi;
   }
 
   addFilter(filter: IFilterExpr) {
-    this.filterTree.addFilter(filter);
+    // this.queryController.addFilter(filter);
+    return this;
+  }
+
+  // TODO: connect with Match and alias maps
+  filter(objs: GraphObjDef[]): IFilterResult {
+    return {
+      _: [],
+    };
   }
 
   setObjs(objs: GraphObjDef[]) {

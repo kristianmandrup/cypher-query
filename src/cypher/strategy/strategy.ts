@@ -1,6 +1,6 @@
 import { IStrategyFilter, StrategyResult } from ".";
 import { IGraphApi } from "../..";
-import { IQueryResult } from "../cypher-types";
+import { GraphObjDef, IQueryResult } from "../cypher-types";
 
 export interface ICypherStrategy {
   configure(config: any): ICypherStrategy;
@@ -21,9 +21,25 @@ export class CypherStrategy implements IStrategy {
     return this;
   }
 
-  run(): IQueryResult {
-    const result = new StrategyResult();
-    result.setFiltered(this.filter && this.filter.run());
-    return result.results;
+  get filterTree() {
+    return this.filter && this.filter.filterTree;
+  }
+
+  run(objs: GraphObjDef[]): IQueryResult {
+    const filterTree = this.filterTree || {};
+    const { matchExec, whereExec, returnExec } = filterTree as any;
+    let aliasMap: any;
+    if (matchExec) {
+      aliasMap = matchExec.filter(objs);
+    }
+    if (whereExec) {
+      whereExec.configure({ aliasMap });
+      aliasMap = whereExec.filter(objs);
+    }
+    if (!returnExec) {
+    }
+    if (!aliasMap) {
+    }
+    return returnExec.process(aliasMap) as IQueryResult;
   }
 }

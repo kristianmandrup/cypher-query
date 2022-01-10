@@ -6,6 +6,8 @@ export interface ObjMatchConfigObj {
   props?: Props;
 }
 
+export interface IMatchFilter extends IMatchObjExpr {}
+
 export interface IMatchObjExpr {
   config(config: ObjMatchConfigObj): IMatchObjExpr;
 }

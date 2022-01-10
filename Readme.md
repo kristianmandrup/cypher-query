@@ -93,6 +93,12 @@ The Cypher Query Engine will be developed starting from result and step by step 
 
 It should be developed interface first, starting with the executer, then startegy and finally the builder to build the strategy.
 
+## Architecture
+
+The current target architecture looks roughly as follows:
+
+![Cypher Query Architecture](./docs/images/cypher-query-architecture.jpeg "Cypher Query Architecture")
+
 ## APIs under development
 
 ### Create
@@ -293,24 +299,53 @@ export class AndExprBuilder extends BaseExprBuilder {
 All the expressions should be gathered in an `IExpressionsTree`. Each root node is an `IAliasFilterExpr` for a given type of expressions. The `IAliasFilterExpr` is a composite, which may contain a tree of composite expressions.
 
 ```ts
-export interface IExpressionsTree {
-  match: IAliasFilterExpr[];
-  where: {
-    must: IAliasFilterExpr[];
-    optional: IAliasFilterExpr[];
-  };
-  return: IAliasFilterExpr[];
+export interface IQueryController {
+  match?: IMatchController;
+  where?: IWhereController;
+  return?: IReturnController;
+
+  run(): IQueryResult | undefined;
 }
 ```
 
-The `IStrategyFilter` must contain all the expressions built up from the builder.
+The `IMatchController`
+
+```ts
+export interface IMatchController {
+  expressions: IMatchFilter[];
+}
+```
+
+The `IWhereController` is a composite of where conditions that MUST be true (in `must`) and OPTIONAL conditions (in `optional`)
+
+The `IWhereController` must control the execution of both these clauses and sets of filter expressions.
+
+```ts
+export interface IWhereFilterBucket {
+  must: [];
+  optional: [];
+}
+
+export interface IWhereController {
+  expressions: IWhereFilterBucket;
+}
+
+export class WhereController implements IWhereController {
+  expressions: IWhereFilterBucket = {
+    must: [],
+    optional: [],
+  };
+}
+```
+
+The `IStrategyFilter` must contain all the clauses with expressions built up from the builder. The clauses (and expressions) are maintained and controlled in a `QueryController`.
 
 ```ts
 export interface IStrategyFilter {
-  filterTree: IFilterTree = new FilterTree();
+  queryController: IQueryController = new QueryController();
 
   addFilter(filter: IFilterExpr) {
-    this.filterTree.addFilter(filter);
+    this.queryController.addFilter(filter);
   }
 }
 ```
@@ -338,7 +373,7 @@ export class CypherStrategyExecuter {
 
   run() {
     // configure stategy if needed
-    // run filters in strategy filterTree on graph using api
+    // run filters in strategy on graph using api
     return this.strategy.run();
   }
 }
@@ -351,6 +386,8 @@ Using an executer:
 const executer = createStrategyExecuter(strategy);
 const queryResult = executer.configure(config).run();
 ```
+
+The executer can decide how to feed the graph objects to the strategy, either as a list, as a stream, or whatever. All the strategy should deal with is receiving one or more (graph) objects to filter on and return results for.
 
 ### Matches
 
