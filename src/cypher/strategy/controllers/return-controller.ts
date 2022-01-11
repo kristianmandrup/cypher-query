@@ -1,9 +1,9 @@
-import { IAliasFilterExpr } from "..";
+import { IReturnClauses, ReturnClauses } from "../clauses";
 
 export interface IReturnController {
-  expressions: IAliasFilterExpr[];
+  clauses: IReturnClauses;
 }
 
 export class ReturnController implements IReturnController {
-  expressions: IAliasFilterExpr[] = [];
+  clauses: IReturnClauses = new ReturnClauses();
 }

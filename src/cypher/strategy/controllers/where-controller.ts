@@ -1,15 +1,9 @@
-export interface IWhereFilterBucket {
-  must: [];
-  optional: [];
-}
+import { IWhereClauses, WhereClauses } from "../clauses";
 
 export interface IWhereController {
-  expressions: IWhereFilterBucket;
+  clauses: IWhereClauses;
 }
 
 export class WhereController implements IWhereController {
-  expressions: IWhereFilterBucket = {
-    must: [],
-    optional: [],
-  };
+  clauses: IWhereClauses = new WhereClauses();
 }

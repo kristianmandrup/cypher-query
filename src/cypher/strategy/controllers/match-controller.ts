@@ -1,9 +1,9 @@
-import { IMatchFilter } from "..";
+import { IMatchClauses, MatchClauses } from "../clauses";
 
 export interface IMatchController {
-  expressions: IMatchFilter[];
+  clauses: IMatchClauses;
 }
 
 export class MatchController implements IMatchController {
-  expressions: IMatchFilter[] = [];
+  clauses: IMatchClauses = new MatchClauses();
 }

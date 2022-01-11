@@ -2,7 +2,11 @@ import { ClauseType } from "../enum";
 import { MatchClause } from "./match-clause";
 import { QueryClauses } from "./query-clauses";
 
-export class MatchClauses extends QueryClauses {
+export interface IMatchClauses {
+  addClause(clause: MatchClause): IMatchClauses;
+}
+
+export class MatchClauses extends QueryClauses implements IMatchClauses {
   addClause(clause: MatchClause) {
     return super.addClause(clause);
   }

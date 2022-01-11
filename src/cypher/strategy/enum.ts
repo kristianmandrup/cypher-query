@@ -6,6 +6,7 @@ export enum ClauseType {
 }
 
 export enum WhereFilterType {
+  none = "none",
   optional = "optional",
   must = "must",
 }
