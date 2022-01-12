@@ -1,5 +1,5 @@
+import { IFilterExpr } from "..";
 import { ClauseType, WhereFilterType } from "../enum";
-import { ClauseExpressions } from "../expressions/clause-expressions";
 
 export interface IQueryClause {
   subtype: WhereFilterType;
@@ -7,7 +7,12 @@ export interface IQueryClause {
 }
 
 export class QueryClause implements IQueryClause {
-  expressions: ClauseExpressions = new ClauseExpressions();
+  expressions: IFilterExpr[] = [];
+
+  addExpression(...expressions: IFilterExpr[]) {
+    this.expressions.push(...expressions);
+    return this;
+  }
 
   subtype: WhereFilterType = WhereFilterType.none;
 

@@ -152,8 +152,9 @@ Not that more complex comnparison statements like not equal, can be expressed ei
 
 Similarly `{ age: {ngte: 18}` or `{ age: {not: {gte: 18}}` is the same as `{ age: {lt: 18}`
 
-The `Where` builders should build a `StrategyFilter` with filter expressions (`FilterExpr`).
-The `StrategyFilter` is a composite. Any `FilterExpr` can itself be a composite, such as `AndExpr` and `OrExpr`. Each `FilterExpr` implementation must have a `run` method that runs the filter on a graph object (node or edge)
+The `Where` builders should build a `WhereClause` with filter expressions (`FilterExpr`).
+
+Any `FilterExpr` can itself be a composite, such as `AndExpr` and `OrExpr`. Each `FilterExpr` implementation must have a `run` method that runs the filter on a graph object (node or edge)
 
 Any alias referenced (such as `mike` in the above example) must be matched in the alias map created using a previous `Match` builder.
 
@@ -237,7 +238,7 @@ export interface IBuilderMap {
 }
 ```
 
-The `QueryBuilder` must further be configured with a `strategyMap` instance that implement `IStrategyMap` and which contains a map of the factory methods to create each type of strategy for the chainable builder DSL methods.
+The `Strategy` instance used by the builder must be configured with a `strategyMap` instance that implement `IStrategyMap` and which contains a map of the factory methods to create each type of strategy for the chainable builder DSL methods.
 
 This makes the strategy completely configurable and composable, so that you can override, customize and extend with a strategy to fit your particular needs.
 
@@ -277,7 +278,7 @@ export const defaultStrategyMap = (): IStrategyMap => {
 };
 ```
 
-Each builder method looks up a strategy from the strategyMap and adds a query expression (such as a filter) using that strategy. Here is an example for the `AndExprBuilder` (builder of an `And` query expression). The builder class initially creates an instance of `strategyMap.filter.exprMap.boolean.and`. Each time `matches(config)` is called on the builder, the config is parsed/evaluated using `createFilterFrom(config)` and a filter is created from that `config` and added to the and expression using `this.expr.addFilter(expr);`
+Each builder method looks up a "strategy" from the `strategyMap` and adds a query expression (such as a filter) using that strategy. Here is an example for the `AndExprBuilder` (builder of an `And` query expression). The builder class initially creates an instance of `strategyMap.filter.exprMap.boolean.and`. Each time `matches(config)` is called on the builder, the config is parsed/evaluated using `createFilterFrom(config)` and a filter is created from that `config` and added to the and expression using `this.expr.addFilter(expr);`
 
 ```ts
 export class AndExprBuilder extends BaseExprBuilder {
@@ -285,7 +286,12 @@ export class AndExprBuilder extends BaseExprBuilder {
 
   constructor(w: IWhereBuilder, config: any = {}) {
     super(w);
-    this.expr = this.strategyMap.filter.exprMap.boolean.and(config);
+    // Note: the create and add could both be encapsulated under the addExpression method
+    // createExpression uses strategyMap
+    const expr = this.strategy.createExpression("and", config);
+    // based on the expr figures out which controller and clause to add it to
+    this.strategy.addExpression(expr);
+    this.expr = expr;
   }
 
   matches(config: any) {
@@ -312,7 +318,7 @@ The `IMatchController`
 
 ```ts
 export interface IMatchController {
-  expressions: IMatchFilter[];
+  clauses: IMatchClauses;
 }
 ```
 
@@ -321,32 +327,23 @@ The `IWhereController` is a composite of where conditions that MUST be true (in 
 The `IWhereController` must control the execution of both these clauses and sets of filter expressions.
 
 ```ts
-export interface IWhereFilterBucket {
-  must: [];
-  optional: [];
-}
-
 export interface IWhereController {
-  expressions: IWhereFilterBucket;
+  clauses: IWhereClauses;
 }
 
 export class WhereController implements IWhereController {
-  expressions: IWhereFilterBucket = {
-    must: [],
-    optional: [],
-  };
+  clauses: IWhereClauses = new WhereClauses();
 }
 ```
 
-The `IStrategyFilter` must contain all the clauses with expressions built up from the builder. The clauses (and expressions) are maintained and controlled in a `QueryController`.
+The `ICypherStrategy` must contain all the clauses with expressions built up from the builder. The clauses (and expressions) are maintained and controlled in a instance of `IQueryController`.
 
 ```ts
-export interface IStrategyFilter {
-  queryController: IQueryController = new QueryController();
-
-  addFilter(filter: IFilterExpr) {
-    this.queryController.addFilter(filter);
-  }
+export interface ICypherStrategy {
+  queryController: IQueryController;
+  setGraphApi(graphApi: IGraphApi): ICypherStrategy;
+  configure(config: any): ICypherStrategy;
+  run(objs: GraphObjDef[]): IQueryResult;
 }
 ```
 
@@ -373,8 +370,9 @@ export class CypherStrategyExecuter {
 
   run() {
     // configure stategy if needed
+    // traverse graph to retrieve objects to feed to strategy.run
     // run filters in strategy on graph using api
-    return this.strategy.run();
+    return this.strategy.run(objs);
   }
 }
 ```
