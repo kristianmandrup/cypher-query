@@ -1,29 +1,25 @@
-import { IGraphObjApi, IStrategyFilter, StrategyFilter } from "..";
+import { FilterExpr, IFilterExpr } from ".";
+import { ICypherStrategy } from "..";
+import { IGraphObjApi } from "../../..";
 import { GraphObjDef } from "../../cypher-types";
 
-export interface IAliasFilterExpr {
-  graphObjApi?: IGraphObjApi;
-  filter?: IStrategyFilter;
+export interface IAliasFilterExpr extends IFilterExpr {
+  strategy?: ICypherStrategy;
   alias: string;
   matchedResults: GraphObjDef[];
-  isOptional: boolean;
+  setMatchedResults(matchedResults: GraphObjDef[]): IAliasFilterExpr;
 }
 
-export class AliasFilterExpr implements IAliasFilterExpr {
-  filter?: IStrategyFilter;
+export class AliasFilterExpr extends FilterExpr implements IAliasFilterExpr {  
   alias: string = "_";
   matchedResults: GraphObjDef[] = [];
 
-  setStrategyFilter(filter: IStrategyFilter) {
-    this.filter = filter;
+  setMatchedResults(matchedResults: GraphObjDef[]) {
+    this.matchedResults = matchedResults;
     return this;
   }
 
   get isOptional() {
     return false;
-  }
-
-  get graphObjApi(): IGraphObjApi | undefined {
-    return this.filter && this.filter.graphObjApi;
   }
 }

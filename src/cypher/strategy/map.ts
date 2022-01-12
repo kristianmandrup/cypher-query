@@ -1,6 +1,10 @@
 import { IResultExpr, IStrategyResult } from "../cypher-types";
-import { IFilterExpr, IMatchObjExpr, IStrategyFilter } from "..";
-import { IComposeOneFilterExpr, ICompositeFilterExpr } from ".";
+import { IFilterExpr, IMatchObjExpr } from "..";
+import {
+  IComposeOneFilterExpr,
+  ICompositeFilterExpr,
+  ICypherStrategy,
+} from ".";
 
 type AndOrFilterExprFactoryFn = CompositeFilterExprFactoryFn;
 type NotFilterExprFactoryFn = ComposeOneFilterExprFactoryFn;
@@ -43,7 +47,7 @@ export interface IResultExprMap {
   union: ResultExprFactoryFn;
 }
 
-export type FilterRootFactoryFn = (config: any) => IStrategyFilter;
+export type StrategyRootFactoryFn = (config: any) => ICypherStrategy;
 
 export type ResultRootFactoryFn = (config: any) => IStrategyResult;
 
@@ -67,7 +71,6 @@ export interface IStrategyMap {
     root: MatchRootExprFactoryFn;
   };
   filter: {
-    root: FilterRootFactoryFn;
     exprMap: IFilterExprMap;
   };
   result: {

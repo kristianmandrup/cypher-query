@@ -1,16 +1,24 @@
-import { IFilterExpr } from "..";
+import { IAliasFilterExpr, IFilterExpr } from "..";
 import { ClauseType, WhereFilterType } from "../enum";
 
 export interface IQueryClause {
   subtype: WhereFilterType;
   type: ClauseType;
+  addExpression(...expressions: IFilterExpr[]): IQueryClause;
+  setAliasFilter(filter: IAliasFilterExpr): IQueryClause;
 }
 
 export class QueryClause implements IQueryClause {
   expressions: IFilterExpr[] = [];
+  aliasFilter?: IAliasFilterExpr;
 
   addExpression(...expressions: IFilterExpr[]) {
     this.expressions.push(...expressions);
+    return this;
+  }
+
+  setAliasFilter(filter: IAliasFilterExpr) {
+    this.aliasFilter = filter;
     return this;
   }
 

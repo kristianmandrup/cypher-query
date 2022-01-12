@@ -1,8 +1,10 @@
-import { IGraphApi } from "../..";
+import { IGraphApi, IGraphObjApi } from "../..";
 import { GraphObjDef, IQueryResult } from "../cypher-types";
 import { IQueryController, QueryController } from "./controllers";
 
 export interface ICypherStrategy {
+  graphApi?: IGraphApi;
+  graphObjApi?: IGraphObjApi;
   queryController: IQueryController;
   setGraphApi(graphApi: IGraphApi): ICypherStrategy;
   configure(config: any): ICypherStrategy;
@@ -11,10 +13,16 @@ export interface ICypherStrategy {
 
 export class CypherStrategy implements ICypherStrategy {
   graphApi?: IGraphApi;
+  graphObjApi?: IGraphObjApi;
   queryController: IQueryController = new QueryController();
 
-  setGraphApi(graphApi: IGraphApi) {
-    this.graphApi = graphApi;
+  setGraphApi(api: IGraphApi) {
+    this.graphApi = api;
+    return this;
+  }
+
+  setGraphObjApi(api: IGraphObjApi) {
+    this.graphObjApi = api;
     return this;
   }
 

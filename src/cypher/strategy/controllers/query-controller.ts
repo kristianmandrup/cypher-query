@@ -1,5 +1,5 @@
 import { IAliasFilterExpr, IFilterExpr, IMatchFilter } from "..";
-import { IQueryResult } from "../../cypher-types";
+import { GraphObjDef, IQueryResult } from "../../cypher-types";
 import { IMatchController, IReturnController, IWhereController } from ".";
 
 export interface IQueryController {
@@ -7,7 +7,7 @@ export interface IQueryController {
   where?: IWhereController;
   return?: IReturnController;
 
-  run(): IQueryResult | undefined;
+  run(objs: GraphObjDef[]): IQueryResult | undefined;
 }
 
 export class QueryController implements IQueryController {
@@ -15,12 +15,16 @@ export class QueryController implements IQueryController {
   where?: IWhereController;
   return?: IReturnController;
 
-  run(): IQueryResult | undefined {
+  run(objs: GraphObjDef[]): IQueryResult | undefined {
     return;
   }
 
   addFilter(filter: IFilterExpr) {
     // this.filters.push(filter);
+    return this;
+  }
+
+  setAliasFilter(filter: IAliasFilterExpr) {
     return this;
   }
 
@@ -41,9 +45,7 @@ export class QueryController implements IQueryController {
   }
 
   addWhereFilter(filter: IAliasFilterExpr) {
-    // const { where } = this;
-    // const bucket: any[] = filter.isOptional ? where.optional : where.must;
-    // bucket.push(filter);
+    this.where && this.where.setAliasFilter(filter);
     return this;
   }
 }

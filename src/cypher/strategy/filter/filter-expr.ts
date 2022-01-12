@@ -1,4 +1,5 @@
 import { NodeCompareConfigObj } from ".";
+import { ICypherStrategy } from "..";
 import { IGraphObjApi } from "../../../adapters";
 import { Handler } from "../../builder/handler";
 import { GraphObjDef } from "../../cypher-types";
@@ -18,11 +19,11 @@ export interface IFilterExpr {
 }
 
 export abstract class FilterExpr extends Handler {
+  strategy?: ICypherStrategy;
   filter?: IAliasFilterExpr;
   alias: string;
   node?: any;
   aliasKey: string = "_";
-  matchedResults: GraphObjDef[] = []; // default objects to filter
   results: GraphObjDef[] = [];
 
   constructor(config?: { alias: string }) {
@@ -35,8 +36,13 @@ export abstract class FilterExpr extends Handler {
     return this;
   }
 
+  setStrategy(strategy: ICypherStrategy) {
+    this.strategy = strategy;
+    return this;
+  }
+
   get graphObjApi(): IGraphObjApi | undefined {
-    return this.filter && this.filter.graphObjApi;
+    return this.strategy && this.strategy.graphObjApi;
   }
 
   setAlias(alias: string) {

@@ -1,9 +1,9 @@
 import { ClauseType, WhereFilterType } from "../enum";
-import { IQueryClause } from "./query-clause";
+import { IQueryClause, QueryClause } from "./query-clause";
 
 export interface IWhereClause extends IQueryClause {}
 
-export class WhereClause implements IQueryClause {
+export class WhereClause extends QueryClause implements IQueryClause {
   subtype: WhereFilterType = WhereFilterType.must;
 
   get type(): ClauseType {

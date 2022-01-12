@@ -1,11 +1,11 @@
 import {
-  StrategyFilter,
   GraphologyObjApi,
   IGraphObjApi,
   NodePropGtExpr,
   NodePropEqlExpr,
   AndFilterExpr,
   createAndFilterExpr,
+  // CypherStrategy,
 } from "../../../../../../src";
 
 const context = describe;
@@ -25,13 +25,13 @@ describe("AndFilterExpr", () => {
   beforeEach(() => {
     api = {};
     graphObjApi = new GraphologyObjApi(); //
-    filter = new StrategyFilter(graphObjApi);
+    // strategy = new CypherStrategy();
     configObj = {
       node: {},
       propName: "a",
       propValue: "1",
     };
-    expr = createAndFilterExpr(filter, configObj);
+    expr = createAndFilterExpr(configObj);
   });
 
   describe("compareValue: 5", () => {

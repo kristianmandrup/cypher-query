@@ -1,10 +1,10 @@
 import { IWhereClause } from ".";
 import { ClauseType } from "../enum";
-import { QueryClauses } from "./query-clauses";
+import { IQueryClauses, QueryClauses } from "./query-clauses";
 import { WhereClause } from "./where-clause";
 
-export interface IWhereClauses {
-  addClause(clause: WhereClause): IWhereClauses;
+export interface IWhereClauses extends IQueryClauses {
+  addClause(clause: IWhereClause): IWhereClauses;
 }
 
 export class WhereClauses extends QueryClauses implements IWhereClauses {
@@ -12,7 +12,7 @@ export class WhereClauses extends QueryClauses implements IWhereClauses {
     return super.addClause(clause);
   }
 
-  isValid(clause: WhereClause) {
+  isValid(clause: IWhereClause) {
     return clause.type === ClauseType.where;
   }
 
