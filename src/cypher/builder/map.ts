@@ -12,12 +12,12 @@ import {
   createŸLimitExprBuilder,
   ICreateBuilder,
   IDeleteBuilder,
-  IMatchBuilder,
+  IMatchClauseBuilder,
   IQueryBuilder,
-  IWhereBuilder,
+  IWhereClauseBuilder,
 } from ".";
-import { BuilderClause } from "./clause";
-import { BaseExprBuilder } from "./read/where/boolean/base-expr";
+import { ClauseBuilder } from "./clause";
+import { BaseExprBuilder } from "./read/where/boolean/boolean-expr-builder";
 
 type DeleteRootFactoryFn = (q: IQueryBuilder, config: any) => IDeleteBuilder;
 
@@ -26,10 +26,13 @@ type CreateRootFactoryFn = (q: IQueryBuilder, config: any) => ICreateBuilder;
 type MatchBuilderRootFactoryFn = (
   q: IQueryBuilder,
   config: any
-) => IMatchBuilder;
+) => IMatchClauseBuilder;
 
-export type ReturnBuilderFn = (q: IQueryBuilder, config: any) => BuilderClause;
-export type WhereBuilderFn = (w: IWhereBuilder, config: any) => BaseExprBuilder;
+export type ReturnBuilderFn = (q: IQueryBuilder, config: any) => ClauseBuilder;
+export type WhereBuilderFn = (
+  w: IWhereClauseBuilder,
+  config: any
+) => BaseExprBuilder;
 
 export interface ReturnBuilderMap {
   root: ReturnBuilderFn;
@@ -41,7 +44,7 @@ export interface ReturnBuilderMap {
 export type WhereRootBuilderFn = (
   q: IQueryBuilder,
   config: any
-) => IWhereBuilder;
+) => IWhereClauseBuilder;
 
 export interface WhereBuilderMap {
   root: WhereRootBuilderFn;

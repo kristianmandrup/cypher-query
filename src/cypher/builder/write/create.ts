@@ -5,7 +5,7 @@ import {
   RelationDef,
   StrMap,
 } from "../../cypher-types";
-import { BuilderClause } from "../clause";
+import { ClauseBuilder } from "../clause";
 
 export interface ICreateBuilder {}
 
@@ -16,7 +16,7 @@ export const createCreateBuilder = (
   return new CreateBuilder(q).config(config);
 };
 
-export class CreateBuilder extends BuilderClause {
+export class CreateBuilder extends ClauseBuilder {
   relation(fromNode: NodeDef, relation: DirectedRelationDef, toNode: NodeDef) {
     // const from = this.firstFromMap(this.node(fromNode));
     // const to = this.firstFromMap(this.node(toNode));

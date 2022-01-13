@@ -3,20 +3,25 @@ import { defaultStrategyMap } from "../strategy/defaults";
 import { IStrategyMap } from "../strategy/map";
 import { defaultBuilderMap, IBuilderMap } from "./map";
 import { Props } from "../cypher-types";
+import { ICypherStrategy } from "..";
 
 export interface IQueryBuilder {
   configObj: any;
   aliasMap: Props;
-  strategyMap: IStrategyMap;
+  strategy: ICypherStrategy;
   builderMap: IBuilderMap;
   mergeAliasMap(aliasMap: Props, name?: string): void;
 }
 
 export class QueryBuilder {
-  strategyMap: IStrategyMap = defaultStrategyMap();
+  strategy: ICypherStrategy;
   builderMap: IBuilderMap = defaultBuilderMap();
   aliasMap: Props = {};
   configObj: any;
+
+  constructor(strategy: ICypherStrategy) {
+    this.strategy = strategy;
+  }
 
   config(config: any) {
     this.configObj = config;
@@ -31,11 +36,11 @@ export class QueryBuilder {
     return aliasMap;
   }
 
-  get loadCsv() {
+  get loadCsv(): Csv {
     return new Csv(this);
   }
 
-  get create() {
+  get create(): any {
     return this.builderMap.create.root(this, this.configObj);
   }
 

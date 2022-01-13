@@ -1,9 +1,13 @@
 import { IReturnClauses, ReturnClauses } from "../clauses";
+import { BaseController } from "./base-controller";
 
 export interface IReturnController {
   clauses: IReturnClauses;
 }
 
-export class ReturnController implements IReturnController {
-  clauses: IReturnClauses = new ReturnClauses();
+export class ReturnController
+  extends BaseController
+  implements IReturnController
+{
+  clauses: IReturnClauses = new ReturnClauses(this.strategy);
 }

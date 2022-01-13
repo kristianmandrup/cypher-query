@@ -1,6 +1,6 @@
-import { BuilderClause } from "./clause";
+import { ClauseBuilder } from "./clause";
 
-export class Return extends BuilderClause {
+export class Return extends ClauseBuilder {
   node(alias: string, prop?: string) {
     const node = this.aliasMap["matches"][alias];
     if (node.__type !== "node") {

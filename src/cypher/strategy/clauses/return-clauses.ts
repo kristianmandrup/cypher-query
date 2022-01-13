@@ -1,8 +1,9 @@
+import { IQueryClauses } from ".";
 import { ClauseType } from "../enum";
 import { QueryClauses } from "./query-clauses";
 import { ReturnClause } from "./return-clause";
 
-export interface IReturnClauses {
+export interface IReturnClauses extends IQueryClauses {
   addClause(clause: ReturnClause): IReturnClauses;
 }
 

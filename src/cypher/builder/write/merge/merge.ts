@@ -1,3 +1,3 @@
-import { BuilderClause } from "../../clause";
+import { ClauseBuilder } from "../../clause";
 
-export class Merge extends BuilderClause {}
+export class Merge extends ClauseBuilder {}

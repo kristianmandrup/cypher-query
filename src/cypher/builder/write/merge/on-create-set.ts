@@ -1,3 +1,3 @@
-import { BuilderClause } from "../../clause";
+import { ClauseBuilder } from "../../clause";
 
-export class OnCreateSet extends BuilderClause {}
+export class OnCreateSet extends ClauseBuilder {}

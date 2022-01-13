@@ -1,3 +1,3 @@
-export * from "./and-expr";
-export * from "./not-expr";
-export * from "./or-expr";
+export * from "./and-expr-builder";
+export * from "./not-expr-builder";
+export * from "./or-expr-builder";

@@ -1,20 +1,47 @@
+import { Handler } from "..";
 import { IGraphApi, IGraphObjApi } from "../..";
 import { GraphObjDef, IQueryResult } from "../cypher-types";
-import { IQueryController, QueryController } from "./controllers";
+import {
+  IQueryController,
+  QueryController,
+  IMatchController,
+  IWhereController,
+  IReturnController,
+} from "./controllers";
+import { defaultStrategyMap } from "./defaults";
+import { IStrategyMap } from "./map";
 
 export interface ICypherStrategy {
+  strategyMap: IStrategyMap;
   graphApi?: IGraphApi;
   graphObjApi?: IGraphObjApi;
   queryController: IQueryController;
+  match: IMatchController;
+  where: IWhereController;
+  return: IReturnController;
+
   setGraphApi(graphApi: IGraphApi): ICypherStrategy;
   configure(config: any): ICypherStrategy;
   run(objs: GraphObjDef[]): IQueryResult;
 }
 
-export class CypherStrategy implements ICypherStrategy {
+export class CypherStrategy extends Handler implements ICypherStrategy {
   graphApi?: IGraphApi;
   graphObjApi?: IGraphObjApi;
-  queryController: IQueryController = new QueryController();
+  queryController: IQueryController = new QueryController(this);
+  strategyMap: IStrategyMap = defaultStrategyMap();
+
+  get match() {
+    return this.queryController.match;
+  }
+
+  get where() {
+    return this.queryController.where;
+  }
+
+  get return() {
+    return this.queryController.return;
+  }
 
   setGraphApi(api: IGraphApi) {
     this.graphApi = api;

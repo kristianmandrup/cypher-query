@@ -1,8 +1,8 @@
 import { ClauseType } from "../enum";
 import { MatchClause } from "./match-clause";
-import { QueryClauses } from "./query-clauses";
+import { IQueryClauses, QueryClauses } from "./query-clauses";
 
-export interface IMatchClauses {
+export interface IMatchClauses extends IQueryClauses {
   addClause(clause: MatchClause): IMatchClauses;
 }
 

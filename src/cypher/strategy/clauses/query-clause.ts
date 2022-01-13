@@ -1,16 +1,22 @@
 import { IAliasFilterExpr, IFilterExpr } from "..";
 import { ClauseType, WhereFilterType } from "../enum";
+import { StrategyHandler } from "../strategy-handler";
 
 export interface IQueryClause {
   subtype: WhereFilterType;
   type: ClauseType;
+  createExpression(key: string, config: any): any;
   addExpression(...expressions: IFilterExpr[]): IQueryClause;
   setAliasFilter(filter: IAliasFilterExpr): IQueryClause;
 }
 
-export class QueryClause implements IQueryClause {
+export class QueryClause extends StrategyHandler implements IQueryClause {
   expressions: IFilterExpr[] = [];
   aliasFilter?: IAliasFilterExpr;
+
+  createExpression(key: string, config: any): any {
+    return this;
+  }
 
   addExpression(...expressions: IFilterExpr[]) {
     this.expressions.push(...expressions);

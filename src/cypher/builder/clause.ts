@@ -1,17 +1,22 @@
+import { ICypherStrategy } from "..";
 import { Props } from "../cypher-types";
 import { IStrategyMap } from "../strategy/map";
 import { IQueryBuilder } from "./builder";
 import { Handler } from "./handler";
 import { IBuilderMap } from "./map";
 
-export interface IBuilderClause {
+export interface IClauseBuilder {
   q: IQueryBuilder;
   builderMap: IBuilderMap;
-  strategyMap: IStrategyMap;
+  strategy: ICypherStrategy;
 }
 
-export class BuilderClause extends Handler {
+export class ClauseBuilder extends Handler {
   q: IQueryBuilder;
+
+  get strategy() {
+    return this.q.strategy;
+  }
 
   get configObj() {
     return this.q.configObj;
@@ -19,10 +24,6 @@ export class BuilderClause extends Handler {
 
   get builderMap() {
     return this.q.builderMap;
-  }
-
-  get strategyMap() {
-    return this.q.strategyMap;
   }
 
   constructor(q: IQueryBuilder) {

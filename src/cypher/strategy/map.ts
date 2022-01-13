@@ -35,7 +35,7 @@ export interface IBooleanFilterExprMap {
   not: NotFilterExprFactoryFn;
 }
 
-export interface IFilterExprMap {
+export interface IWhereExprMap {
   boolean: IBooleanFilterExprMap;
   props: IPropFilterExprMap;
   labels: ILabelsFilterExprMap;
@@ -70,11 +70,7 @@ export interface IStrategyMap {
   match: {
     root: MatchRootExprFactoryFn;
   };
-  filter: {
-    exprMap: IFilterExprMap;
-  };
-  result: {
-    root: ResultRootFactoryFn;
-    exprMap: IResultExprMap;
-  };
+  where: IWhereExprMap;
+  result: IResultExprMap;
+  // root: ResultRootFactoryFn;
 }

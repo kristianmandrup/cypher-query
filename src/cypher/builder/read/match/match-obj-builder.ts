@@ -1,8 +1,6 @@
-import { IMatchObjExpr } from ".";
 import { IQueryBuilder } from "../..";
-import { MatchObjExpr } from "../../..";
 import { Props } from "../../../cypher-types";
-import { BuilderClause } from "../../clause";
+import { ClauseBuilder } from "../../clause";
 
 export interface MatchObjConfig {
   alias?: string;
@@ -17,7 +15,7 @@ export interface IMatchObject {
 export const createMatchObjBuilder = (q: IQueryBuilder, config: any) =>
   new MatchObjBuilder(q).config(config);
 
-export class MatchObjBuilder extends BuilderClause implements IMatchObject {
+export class MatchObjBuilder extends ClauseBuilder implements IMatchObject {
   alias: string = "_";
   $optional: boolean = false;
 

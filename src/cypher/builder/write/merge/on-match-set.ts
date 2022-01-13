@@ -1,3 +1,3 @@
-import { BuilderClause } from "../../clause";
+import { ClauseBuilder } from "../../clause";
 
-export class OnMatchSet extends BuilderClause {}
+export class OnMatchSet extends ClauseBuilder {}

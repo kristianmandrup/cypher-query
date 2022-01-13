@@ -1,16 +1,16 @@
-import { MatchObjBuilder } from "./match-obj";
-import { BuilderClause } from "../../clause";
+import { MatchObjBuilder } from "./match-obj-builder";
+import { ClauseBuilder } from "../../clause";
 import { IQueryBuilder } from "../..";
 import { IMatchObject } from ".";
 
 export const createMatchBuilder = (q: IQueryBuilder, config: any) =>
-  new MatchBuilder(q).config(config);
+  new MatchClauseBuilder(q).config(config);
 
-export interface IMatchBuilder {
+export interface IMatchClauseBuilder {
   obj(alias: string): IMatchObject;
 }
 
-export class MatchBuilder extends BuilderClause {
+export class MatchClauseBuilder extends ClauseBuilder {
   obj(alias: string = "_") {
     return new MatchObjBuilder(this.q).config({ alias });
   }

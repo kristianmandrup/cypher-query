@@ -1,10 +1,10 @@
 import csvtojson from "csvtojson";
 import request from "request";
-import { BuilderClause } from "../clause";
+import { ClauseBuilder } from "../clause";
 import { Query } from "../..";
 import { IQueryBuilder } from "../builder";
 
-export class Csv extends BuilderClause {
+export class Csv extends ClauseBuilder {
   csv: any;
 
   constructor(q: IQueryBuilder) {

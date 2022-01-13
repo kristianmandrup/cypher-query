@@ -1,5 +1,5 @@
 import { IQueryBuilder } from "..";
-import { BuilderClause } from "../clause";
+import { ClauseBuilder } from "../clause";
 
 export interface IDeleteBuilder {
   nodes(...labels: string[]): any;
@@ -13,7 +13,7 @@ export const createDeleteBuilder = (
   return new DeleteBuilder(q).config(config);
 };
 
-export class DeleteBuilder extends BuilderClause {
+export class DeleteBuilder extends ClauseBuilder {
   nodes(...labels: string[]) {}
   relations(...labels: string[]) {}
 }

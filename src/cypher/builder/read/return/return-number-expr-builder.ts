@@ -1,11 +1,11 @@
+import { ReturnExprBuilder } from ".";
 import { IStrategyResult } from "../../../cypher-types";
-import { BuilderClause } from "../../clause";
 
-export interface IReturnNumberClause {
-  number(num: number): IReturnNumberClause;
+export interface IReturnNumberExprBuilder {
+  number(num: number): IReturnNumberExprBuilder;
 }
 
-export class ReturnNumberClause extends BuilderClause {
+export class ReturnNumberExprBuilder extends ReturnExprBuilder {
   result?: IStrategyResult;
 
   protected isValidNumber(num: number) {

@@ -1,2 +1,2 @@
-export * from "./where";
+export * from "./where-clause-builder";
 export * from "./boolean";

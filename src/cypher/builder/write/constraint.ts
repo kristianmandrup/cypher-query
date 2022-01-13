@@ -1,6 +1,6 @@
-import { BuilderClause } from "../clause";
+import { ClauseBuilder } from "../clause";
 
-export class Constraint extends BuilderClause {
+export class Constraint extends ClauseBuilder {
   nodePropUnique(label: string, propName: string) {}
 
   relationPropUnique(label: string, propName: string) {}

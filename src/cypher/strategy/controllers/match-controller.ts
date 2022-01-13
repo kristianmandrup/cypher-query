@@ -1,9 +1,13 @@
 import { IMatchClauses, MatchClauses } from "../clauses";
+import { BaseController } from "./base-controller";
 
 export interface IMatchController {
   clauses: IMatchClauses;
 }
 
-export class MatchController implements IMatchController {
-  clauses: IMatchClauses = new MatchClauses();
+export class MatchController
+  extends BaseController
+  implements IMatchController
+{
+  clauses: IMatchClauses = new MatchClauses(this.strategy);
 }
