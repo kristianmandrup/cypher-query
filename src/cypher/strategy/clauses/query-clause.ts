@@ -6,7 +6,8 @@ export interface IQueryClause {
   subtype: WhereFilterType;
   type: ClauseType;
   current: IFilterExpr;
-  createExpression(key: string, config: any): any;
+  createExpression(key: string, config: any): IFilterExpr | undefined;
+  addAsExpression(key: string, config: any): IQueryClause;
   addExpressions(...expressions: IFilterExpr[]): IQueryClause;
   setAliasFilterExpr(aliasFilterExpr: IAliasFilterExpr): IQueryClause;
 }
@@ -15,12 +16,18 @@ export class QueryClause extends StrategyHandler implements IQueryClause {
   expressions: IFilterExpr[] = [];
   aliasFilterExpr?: IAliasFilterExpr;
 
-  createExpression(key: string, config: any): any {
+  get current(): IFilterExpr {
+    return this.expressions[this.expressions.length - 1];
+  }
+
+  addAsExpression(key: string, config: any): IQueryClause {
+    const expr = this.createExpression(key, config);
+    expr && this.addExpressions(expr);
     return this;
   }
 
-  get current(): IFilterExpr {
-    return this.expressions[this.expressions.length - 1];
+  createExpression(key: string, config: any): IFilterExpr | undefined {
+    return;
   }
 
   addExpressions(...expressions: IFilterExpr[]) {

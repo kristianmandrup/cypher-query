@@ -1,54 +1,65 @@
 import {
+  ClauseType,
   AliasFilterExpr,
   CypherStrategy,
   MatchClause,
-  // CypherStrategy,
 } from "../../../../src";
-import { ClauseType } from "../../../../src/cypher/strategy/enum";
 
 const context = describe;
 
 describe("MatchClause", () => {
-  let strategy, matchClause;
+  let strategy, clause;
   beforeEach(() => {
     strategy = new CypherStrategy();
-    matchClause = new MatchClause(strategy);
+    clause = new MatchClause(strategy);
   });
 
   describe("createExpression", () => {
     it("creates expression", () => {
       const config = {};
-      const expr = matchClause.createExpression("x", config);
+      const expr = clause.createExpression("x", config);
       expect(expr).toBeDefined();
     });
   });
 
+  describe("addAsExpression", () => {
+    context("single valid expression", () => {
+      it("creates and adds expression", () => {
+        const config = {};
+        const expr = clause.addAsExpression("x", config);
+        expect(expr).toBeDefined();
+      });
+    });
+  });
+
   describe("addExpressions", () => {
-    it("adds expressions", () => {
-      const config = {};
-      const expr = matchClause.createExpression("x", config);
-      matchClause.addExpressions(expr);
-      expect(matchClause.current).toBe(expr);
+    context("single valid expression", () => {
+      it("adds expressions", () => {
+        const config = {};
+        const expr = clause.createExpression("obj", config);
+        clause.addExpressions(expr);
+        expect(clause.current).toBe(expr);
+      });
     });
   });
 
   describe("setAliasFilterExpr", () => {
     it("sets alias filter expression", () => {
       const aliasFilterExpr = new AliasFilterExpr();
-      matchClause.setAliasFilterExpr(aliasFilterExpr);
-      expect(matchClause.aliasFilter).toBe(aliasFilterExpr);
+      clause.setAliasFilterExpr(aliasFilterExpr);
+      expect(clause.aliasFilter).toBe(aliasFilterExpr);
     });
   });
 
   describe("type", () => {
     it("is match", () => {
-      expect(matchClause.type).toBe(ClauseType.match);
+      expect(clause.type).toBe(ClauseType.match);
     });
   });
 
   describe("typeName", () => {
     it("is match", () => {
-      expect(matchClause.typeName).toBe("match");
+      expect(clause.typeName).toBe("match");
     });
   });
 });
