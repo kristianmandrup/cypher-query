@@ -5,7 +5,7 @@ import { IQueryClause } from "./query-clause";
 
 export interface IQueryClauses {
   addClause(clause: IQueryClause): IQueryClauses;
-  addExpression(...expressions: IFilterExpr[]): IQueryClauses;
+  addExpressions(...expressions: IFilterExpr[]): IQueryClauses;
   get current(): IQueryClause;
 }
 
@@ -25,8 +25,8 @@ export class QueryClauses extends StrategyHandler {
     return this;
   }
 
-  addExpression(...expressions: IFilterExpr[]) {
-    this.current.addExpression(...expressions);
+  addExpressions(...expressions: IFilterExpr[]) {
+    this.current.addExpressions(...expressions);
     return this;
   }
 

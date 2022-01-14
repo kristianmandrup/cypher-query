@@ -9,8 +9,8 @@ import { StrategyHandler } from "../strategy-handler";
 
 export interface IBaseController {
   clauses: IQueryClauses;
-  setAliasFilter(filter: IAliasFilterExpr): IBaseController;
-  addExpression(...expressions: IFilterExpr[]): IBaseController;
+  setAliasFilterExpr(aliasFilterExpr: IAliasFilterExpr): IBaseController;
+  addExpressions(...expressions: IFilterExpr[]): IBaseController;
 }
 
 export class BaseController extends StrategyHandler implements IBaseController {
@@ -20,18 +20,18 @@ export class BaseController extends StrategyHandler implements IBaseController {
     this.clauses.addClause(clause);
   }
 
-  addExpression(...expressions: IFilterExpr[]) {
-    this.clauses.addExpression(...expressions);
+  addExpressions(...expressions: IFilterExpr[]) {
+    this.clauses.addExpressions(...expressions);
     return this;
   }
 
   addFilter(filter: IFilterExpr) {
-    this.clauses.current.addExpression(filter);
+    this.clauses.current.addExpressions(filter);
     return this;
   }
 
-  setAliasFilter(filter: IAliasFilterExpr) {
-    this.clauses.current.setAliasFilter(filter);
+  setAliasFilterExpr(filter: IAliasFilterExpr) {
+    this.clauses.current.setAliasFilterExpr(filter);
     return this;
   }
 }

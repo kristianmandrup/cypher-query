@@ -5,26 +5,31 @@ import { StrategyHandler } from "../strategy-handler";
 export interface IQueryClause {
   subtype: WhereFilterType;
   type: ClauseType;
+  current: IFilterExpr;
   createExpression(key: string, config: any): any;
-  addExpression(...expressions: IFilterExpr[]): IQueryClause;
-  setAliasFilter(filter: IAliasFilterExpr): IQueryClause;
+  addExpressions(...expressions: IFilterExpr[]): IQueryClause;
+  setAliasFilterExpr(aliasFilterExpr: IAliasFilterExpr): IQueryClause;
 }
 
 export class QueryClause extends StrategyHandler implements IQueryClause {
   expressions: IFilterExpr[] = [];
-  aliasFilter?: IAliasFilterExpr;
+  aliasFilterExpr?: IAliasFilterExpr;
 
   createExpression(key: string, config: any): any {
     return this;
   }
 
-  addExpression(...expressions: IFilterExpr[]) {
+  get current(): IFilterExpr {
+    return this.expressions[this.expressions.length - 1];
+  }
+
+  addExpressions(...expressions: IFilterExpr[]) {
     this.expressions.push(...expressions);
     return this;
   }
 
-  setAliasFilter(filter: IAliasFilterExpr) {
-    this.aliasFilter = filter;
+  setAliasFilterExpr(aliasFilterExpr: IAliasFilterExpr) {
+    this.aliasFilterExpr = aliasFilterExpr;
     return this;
   }
 

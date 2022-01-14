@@ -15,6 +15,7 @@ export interface IQueryController {
   where: IWhereController;
   return: IReturnController;
 
+  setAliasFilterExpr(aliasFilterExpr: IAliasFilterExpr): IQueryController;
   run(objs: GraphObjDef[]): IQueryResult | undefined;
 }
 
@@ -35,7 +36,7 @@ export class QueryController
     return this;
   }
 
-  setAliasFilter(filter: IAliasFilterExpr) {
+  setAliasFilterExpr(aliasFilterExpr: IAliasFilterExpr) {
     return this;
   }
 
@@ -56,7 +57,7 @@ export class QueryController
   }
 
   addWhereFilter(filter: IAliasFilterExpr) {
-    this.where && this.where.setAliasFilter(filter);
+    this.where && this.where.setAliasFilterExpr(filter);
     return this;
   }
 }
