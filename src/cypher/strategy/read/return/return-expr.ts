@@ -29,6 +29,7 @@ export const emptyResults = (): IQueryResult => ({
 
 type NodeResultConfigObj = {
   num?: number;
+  alias: string;
 };
 
 export interface IReturnExpr {
@@ -45,6 +46,7 @@ export class ReturnExpr extends Handler implements IReturnExpr {
   queryResult: IQueryResult = emptyResults();
   result?: IStrategyResult;
   num?: number;
+  alias: string = "_";
 
   constructor() {
     super();
@@ -55,8 +57,14 @@ export class ReturnExpr extends Handler implements IReturnExpr {
     return this;
   }
 
-  config(configObj: NodeResultConfigObj = {}) {
+  config(configObj: NodeResultConfigObj) {
     this.setNumber(configObj.num);
+    this.setAlias(configObj.alias);
+    return this;
+  }
+
+  setAlias(alias: string) {
+    this.alias = alias;
     return this;
   }
 

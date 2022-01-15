@@ -31,6 +31,7 @@ export type NodeRelOpts = {
 };
 
 export type GraphObjDef = {
+  [key: string]: any;
   type?: string;
   alias?: string;
   labels?: string[];
