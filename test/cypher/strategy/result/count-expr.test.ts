@@ -1,7 +1,4 @@
-import {
-  CountExpr,
-  // CypherStrategy,
-} from "../../../../src";
+import { CountExpr } from "../../../../src";
 
 const context = describe;
 

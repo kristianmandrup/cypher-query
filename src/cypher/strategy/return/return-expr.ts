@@ -1,5 +1,7 @@
+import { IStrategyResult } from ".";
+import { IFilterResult } from "..";
 import { Handler } from "../../builder/handler";
-import { IQueryResult, IReturnExpr, IStrategyResult } from "../../cypher-types";
+import { IQueryResult } from "../../cypher-types";
 
 const createData = (num: number): any[] =>
   [...Array(num)].map((e, i) => ({ id: i }));
@@ -29,14 +31,28 @@ type NodeResultConfigObj = {
   num?: number;
 };
 
-export class ResultExpr extends Handler implements IReturnExpr {
-  results: IQueryResult = emptyResults();
-  result: IStrategyResult;
+export interface IReturnExpr {
+  filterResult: IFilterResult;
+  queryResult: IQueryResult;
+  result?: IStrategyResult;
+  setResult(result: IStrategyResult): IReturnExpr;
+  setResults(queryResult: IQueryResult): IReturnExpr;
+  run(): any;
+}
+
+export class ReturnExpr extends Handler implements IReturnExpr {
+  filterResult: IFilterResult = {};
+  queryResult: IQueryResult = emptyResults();
+  result?: IStrategyResult;
   num?: number;
 
-  constructor(result: IStrategyResult) {
+  constructor() {
     super();
+  }
+
+  setResult(result: IStrategyResult) {
     this.result = result;
+    return this;
   }
 
   config(configObj: NodeResultConfigObj = {}) {
@@ -49,8 +65,8 @@ export class ResultExpr extends Handler implements IReturnExpr {
     return this;
   }
 
-  setResults(results: IQueryResult) {
-    this.results = results;
+  setResults(queryResult: IQueryResult) {
+    this.queryResult = queryResult;
     return this;
   }
 

@@ -1,19 +1,11 @@
 import { IFilterResult } from ".";
+import { IStrategyResult } from "..";
 
 export interface IQueryResult {
   headers: string[];
   data: any[];
   rows: number;
   columns: number;
-}
-
-export interface IReturnExpr {
-  results: IQueryResult;
-}
-
-export interface IStrategyResult {
-  setFiltered(filtered: IFilterResult): IStrategyResult;
-  addExpr(expr: IReturnExpr): IStrategyResult;
 }
 
 export interface AliasMap {

@@ -44,7 +44,7 @@ export class QueryClause extends StrategyHandler implements IQueryClause {
     return this;
   }
 
-  findMatchingMapKey(key: string): any {
+  findMatchingMapKey(key: string): string | undefined {
     return this.exprMapKeys.find(
       (item: string) => this.map[item] && this.map[item][key]
     );
@@ -58,6 +58,10 @@ export class QueryClause extends StrategyHandler implements IQueryClause {
   createExpression(key: string, config: any): IFilterExpr | undefined {
     const exprMap = this.findExprMapForKey(key);
     const createExprFn = exprMap[key];
+    if (!createExprFn) {
+      this.error(`No matching expression found for ${key}`);
+      return;
+    }
     return createExprFn(config);
   }
 

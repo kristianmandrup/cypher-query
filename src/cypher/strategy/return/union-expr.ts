@@ -1,10 +1,9 @@
-import { IQueryResult, IStrategyResult } from "../../cypher-types";
-import { emptyResults, ResultExpr } from "./result-expr";
+import { IQueryResult } from "../../cypher-types";
+import { emptyResults, ReturnExpr } from "./return-expr";
 
-export const createUnionExpr = (result: IStrategyResult, config: any) =>
-  new UnionExpr(result).config(config);
+export const createUnionExpr = (config: any) => new UnionExpr().config(config);
 
-export class UnionExpr extends ResultExpr {
+export class UnionExpr extends ReturnExpr {
   results2: IQueryResult = emptyResults();
 
   config(config: any) {
@@ -23,16 +22,16 @@ export class UnionExpr extends ResultExpr {
   }
 
   run() {
-    if (!this.hasValidResults(this.results)) {
+    if (!this.hasValidResults(this.queryResult)) {
       this.error("Source results to unite is invalid");
     }
     if (!this.hasValidResults(this.results2)) {
       this.error("Target results to unite is invalid");
     }
-    if (!this.hasSameHeaders(this.results, this.results2)) {
+    if (!this.hasSameHeaders(this.queryResult, this.results2)) {
       this.error("Results to unite must have same headers");
     }
-    this.results.data.push(...this.results2.data);
-    return this.results;
+    this.queryResult.data.push(...this.results2.data);
+    return this.queryResult;
   }
 }

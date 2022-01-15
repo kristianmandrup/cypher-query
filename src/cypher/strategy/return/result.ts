@@ -1,5 +1,5 @@
-import { emptyResults, ResultExpr } from ".";
-import { GraphObjDef, IQueryResult, IStrategyResult } from "../../cypher-types";
+import { emptyResults, IReturnExpr, ReturnExpr } from ".";
+import { IQueryResult } from "../../cypher-types";
 import { IFilterResult } from "../filter";
 import {
   FilterResultConverter,
@@ -14,10 +14,15 @@ export interface IStrategyResultConfig {
   converter?: IFilterResultConverter;
 }
 
+export interface IStrategyResult {
+  setFiltered(filtered: IFilterResult): IStrategyResult;
+  addExpr(expr: IReturnExpr): IStrategyResult;
+}
+
 export class StrategyResult {
   filtered: IFilterResult = {};
   results: IQueryResult = emptyResults();
-  expressions: ResultExpr[] = [];
+  expressions: IReturnExpr[] = [];
   converter: IFilterResultConverter;
 
   constructor(config: IStrategyResultConfig = {}) {
@@ -34,7 +39,7 @@ export class StrategyResult {
     return this;
   }
 
-  addExpr(expr: ResultExpr) {
+  addExpr(expr: IReturnExpr) {
     expr.setResults(this.results);
     this.expressions.push(expr);
     return this;
