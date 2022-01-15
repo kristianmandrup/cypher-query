@@ -1,6 +1,6 @@
 import { ReturnNumberExprBuilder } from ".";
 import { IQueryBuilder } from "../..";
-import { IReturnNumberExprBuilder } from "./return-number-expr-builder";
+import { IReturnNumberExprBuilder } from "../result/result-number-expr-builder";
 
 export const createCountBuilder = (q: IQueryBuilder, config: any) =>
   new CountExprBuilder(q).config(config);
