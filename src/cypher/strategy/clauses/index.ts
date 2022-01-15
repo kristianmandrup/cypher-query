@@ -4,5 +4,7 @@ export * from "./query-clause";
 export * from "./query-clauses";
 export * from "./return-clause";
 export * from "./return-clauses";
+export * from "./result-clause";
+export * from "./result-clauses";
 export * from "./where-clause";
 export * from "./where-clauses";

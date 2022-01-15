@@ -1,12 +1,12 @@
-import { CypherStrategy, ReturnClause, ReturnClauses } from "../../../../src";
+import { CypherStrategy, ResultClause, ResultClauses } from "../../../../src";
 
 const context = describe;
 
-describe("ReturnClauses", () => {
+describe("ResultClauses", () => {
   let strategy, clauses;
 
-  const createClauses = () => new ReturnClauses(strategy);
-  const createClause = () => new ReturnClause(strategy);
+  const createClauses = () => new ResultClauses(strategy);
+  const createClause = () => new ResultClause(strategy);
 
   beforeEach(() => {
     strategy = new CypherStrategy();
