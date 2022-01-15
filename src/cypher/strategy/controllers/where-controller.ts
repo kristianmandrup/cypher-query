@@ -9,5 +9,9 @@ export class WhereController
   extends BaseController
   implements IWhereController
 {
-  clauses: IWhereClauses = new WhereClauses(this.strategy);
+  clauses: IWhereClauses = new WhereClauses(this.strategy).setController(this);
+
+  get map() {
+    return this.strategyMap.where;
+  }
 }

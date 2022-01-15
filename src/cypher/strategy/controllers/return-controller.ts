@@ -9,5 +9,11 @@ export class ReturnController
   extends BaseController
   implements IReturnController
 {
-  clauses: IReturnClauses = new ReturnClauses(this.strategy);
+  clauses: IReturnClauses = new ReturnClauses(this.strategy).setController(
+    this
+  );
+
+  get map() {
+    return this.strategyMap.return;
+  }
 }

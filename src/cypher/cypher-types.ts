@@ -7,13 +7,13 @@ export interface IQueryResult {
   columns: number;
 }
 
-export interface IResultExpr {
+export interface IReturnExpr {
   results: IQueryResult;
 }
 
 export interface IStrategyResult {
   setFiltered(filtered: IFilterResult): IStrategyResult;
-  addExpr(expr: IResultExpr): IStrategyResult;
+  addExpr(expr: IReturnExpr): IStrategyResult;
 }
 
 export interface AliasMap {

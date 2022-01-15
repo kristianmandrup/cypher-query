@@ -1,3 +1,4 @@
+import { IQueryClauses } from ".";
 import { IAliasFilterExpr, IFilterExpr } from "..";
 import { ClauseType, WhereFilterType } from "../enum";
 import { StrategyHandler } from "../strategy-handler";
@@ -6,18 +7,35 @@ export interface IQueryClause {
   subtype: WhereFilterType;
   type: ClauseType;
   current: IFilterExpr;
+  setContainer(container: IQueryClauses): IQueryClause;
   createExpression(key: string, config: any): IFilterExpr | undefined;
   addAsExpression(key: string, config: any): IQueryClause;
   addExpressions(...expressions: IFilterExpr[]): IQueryClause;
   setAliasFilterExpr(aliasFilterExpr: IAliasFilterExpr): IQueryClause;
+  findMatchingMapKey(key: string): any;
+  findExprMapForKey(key: string): any;
 }
 
 export class QueryClause extends StrategyHandler implements IQueryClause {
+  container?: IQueryClauses;
   expressions: IFilterExpr[] = [];
   aliasFilterExpr?: IAliasFilterExpr;
 
+  get exprMapKeys(): string[] {
+    return [];
+  }
+
+  get map() {
+    return this.container?.map;
+  }
+
   get current(): IFilterExpr {
     return this.expressions[this.expressions.length - 1];
+  }
+
+  setContainer(container: IQueryClauses) {
+    this.container = container;
+    return this;
   }
 
   addAsExpression(key: string, config: any): IQueryClause {
@@ -26,8 +44,21 @@ export class QueryClause extends StrategyHandler implements IQueryClause {
     return this;
   }
 
+  findMatchingMapKey(key: string): any {
+    return this.exprMapKeys.find(
+      (item: string) => this.map[item] && this.map[item][key]
+    );
+  }
+
+  findExprMapForKey(key: string): any {
+    const matchingMapKey = this.findMatchingMapKey(key);
+    return matchingMapKey ? this.map[matchingMapKey] : this.map;
+  }
+
   createExpression(key: string, config: any): IFilterExpr | undefined {
-    return;
+    const exprMap = this.findExprMapForKey(key);
+    const createExprFn = exprMap[key];
+    return createExprFn(config);
   }
 
   addExpressions(...expressions: IFilterExpr[]) {

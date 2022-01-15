@@ -11,10 +11,15 @@ export interface IBaseController {
   clauses: IQueryClauses;
   setAliasFilterExpr(aliasFilterExpr: IAliasFilterExpr): IBaseController;
   addExpressions(...expressions: IFilterExpr[]): IBaseController;
+  map: any;
 }
 
 export class BaseController extends StrategyHandler implements IBaseController {
   clauses: IQueryClauses = new QueryClauses(this.strategy);
+
+  get map() {
+    return {};
+  }
 
   addClause(clause: IQueryClause) {
     this.clauses.addClause(clause);

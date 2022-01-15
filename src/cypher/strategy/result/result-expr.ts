@@ -1,5 +1,5 @@
 import { Handler } from "../../builder/handler";
-import { IQueryResult, IResultExpr, IStrategyResult } from "../../cypher-types";
+import { IQueryResult, IReturnExpr, IStrategyResult } from "../../cypher-types";
 
 const createData = (num: number): any[] =>
   [...Array(num)].map((e, i) => ({ id: i }));
@@ -29,7 +29,7 @@ type NodeResultConfigObj = {
   num?: number;
 };
 
-export class ResultExpr extends Handler implements IResultExpr {
+export class ResultExpr extends Handler implements IReturnExpr {
   results: IQueryResult = emptyResults();
   result: IStrategyResult;
   num?: number;

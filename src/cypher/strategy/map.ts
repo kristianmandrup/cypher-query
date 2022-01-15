@@ -1,4 +1,4 @@
-import { IResultExpr, IStrategyResult } from "../cypher-types";
+import { IReturnExpr, IStrategyResult } from "../cypher-types";
 import { IFilterExpr, IMatchObjExpr } from "..";
 import {
   IComposeOneFilterExpr,
@@ -13,10 +13,10 @@ type CompositeFilterExprFactoryFn = (config?: any) => ICompositeFilterExpr;
 type ComposeOneFilterExprFactoryFn = (config?: any) => IComposeOneFilterExpr;
 
 type FilterExprFactoryFn = (config?: any) => IFilterExpr;
-type ResultExprFactoryFn = (
+type ReturnExprFactoryFn = (
   result: IStrategyResult,
   config?: any
-) => IResultExpr;
+) => IReturnExpr;
 
 export interface IPropFilterExprMap {
   eq: FilterExprFactoryFn;
@@ -41,10 +41,10 @@ export interface IWhereExprMap {
   labels: ILabelsFilterExprMap;
 }
 
-export interface IResultExprMap {
-  limit: ResultExprFactoryFn;
-  skip: ResultExprFactoryFn;
-  union: ResultExprFactoryFn;
+export interface IReturnExprMap {
+  limit: ReturnExprFactoryFn;
+  skip: ReturnExprFactoryFn;
+  union: ReturnExprFactoryFn;
 }
 
 export type StrategyRootFactoryFn = (config: any) => ICypherStrategy;
@@ -71,6 +71,6 @@ export interface IStrategyMap {
     root: MatchRootExprFactoryFn;
   };
   where: IWhereExprMap;
-  result: IResultExprMap;
+  return: IReturnExprMap;
   // root: ResultRootFactoryFn;
 }

@@ -1,4 +1,5 @@
-import { IFilterExpr } from "..";
+import { IFilterExpr, IQueryController } from "..";
+import { IBaseController } from "../controllers/base-controller";
 import { ClauseType } from "../enum";
 import { StrategyHandler } from "../strategy-handler";
 import { IQueryClause } from "./query-clause";
@@ -8,10 +9,21 @@ export interface IQueryClauses {
   addExpressions(...expressions: IFilterExpr[]): IQueryClauses;
   current: IQueryClause;
   count: number;
+  map: any;
 }
 
 export class QueryClauses extends StrategyHandler {
   list: IQueryClause[] = [];
+  controller?: IBaseController;
+
+  get map() {
+    return this.controller?.map;
+  }
+
+  setController(controller: IBaseController) {
+    this.controller = controller;
+    return this;
+  }
 
   get count() {
     return this.list.length;
@@ -22,6 +34,7 @@ export class QueryClauses extends StrategyHandler {
   }
 
   addClause(clause: IQueryClause) {
+    clause.setContainer(this);
     if (!this.isValid(clause)) {
       this.error(`addClause: Invalid ${this.typeName} clause`, clause);
       return this;
