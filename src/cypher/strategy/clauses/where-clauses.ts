@@ -8,7 +8,7 @@ export interface IWhereClauses extends IQueryClauses {
 }
 
 export class WhereClauses extends QueryClauses implements IWhereClauses {
-  addClause(clause: WhereClause) {
+  addClause(clause: IWhereClause) {
     return super.addClause(clause);
   }
 

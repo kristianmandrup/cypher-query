@@ -6,11 +6,16 @@ import { IQueryClause } from "./query-clause";
 export interface IQueryClauses {
   addClause(clause: IQueryClause): IQueryClauses;
   addExpressions(...expressions: IFilterExpr[]): IQueryClauses;
-  get current(): IQueryClause;
+  current: IQueryClause;
+  count: number;
 }
 
 export class QueryClauses extends StrategyHandler {
   list: IQueryClause[] = [];
+
+  get count() {
+    return this.list.length;
+  }
 
   get current(): IQueryClause {
     return this.list[this.list.length - 1];

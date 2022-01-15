@@ -47,7 +47,7 @@ describe("MatchClause", () => {
     it("sets alias filter expression", () => {
       const aliasFilterExpr = new AliasFilterExpr();
       clause.setAliasFilterExpr(aliasFilterExpr);
-      expect(clause.aliasFilter).toBe(aliasFilterExpr);
+      expect(clause.aliasFilterExpr).toBe(aliasFilterExpr);
     });
   });
 

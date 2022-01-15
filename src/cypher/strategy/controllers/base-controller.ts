@@ -25,11 +25,6 @@ export class BaseController extends StrategyHandler implements IBaseController {
     return this;
   }
 
-  addFilter(filter: IFilterExpr) {
-    this.clauses.current.addExpressions(filter);
-    return this;
-  }
-
   setAliasFilterExpr(filter: IAliasFilterExpr) {
     this.clauses.current.setAliasFilterExpr(filter);
     return this;
