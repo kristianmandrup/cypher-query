@@ -2,4 +2,8 @@ import { ReturnAggregationExpr } from "../../../../../src";
 
 const context = describe;
 
-describe("ReturnAggregationExpr", () => {});
+describe("ReturnAggregationExpr", () => {
+  // invalid function
+  // sum
+  // avg
+});

@@ -38,10 +38,14 @@ export class ReturnAggregationExpr extends ReturnExpr {
   }
 
   run() {
-    if (!this.hasValidResults(this.queryResult)) {
-      return this.queryResult;
+    const { queryResult, functionName, data, aggregateFn, transformFn } = this;
+    if (!this.hasValidResults(queryResult)) {
+      return queryResult;
     }
-    const result = this.data.reduce(this.aggregateFn, 0);
-    return this.transformFn(result, this.data);
+    if (!aggregateFn) {
+      this.error(`Invalid aggregation function ${functionName}`);
+    }
+    const result = data.reduce(aggregateFn, 0);
+    return transformFn ? transformFn(result, data) : result;
   }
 }
