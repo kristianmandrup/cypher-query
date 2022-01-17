@@ -6,6 +6,7 @@ import {
   createNotExprBuilder,
   createOrExprBuilder,
   createReturnBuilder,
+  createReturnCountExprBuilder,
   createSkipExprBuilder,
   createUnionExprBuilder,
   createWhereBuilder,
@@ -14,6 +15,8 @@ import {
   IDeleteBuilder,
   IMatchClauseBuilder,
   IQueryBuilder,
+  IResultExprBuilder,
+  IReturnExprBuilder,
   IWhereClauseBuilder,
 } from ".";
 import { ClauseBuilder } from "./clause";
@@ -28,17 +31,34 @@ type MatchBuilderRootFactoryFn = (
   config: any
 ) => IMatchClauseBuilder;
 
-export type ReturnBuilderFn = (q: IQueryBuilder, config: any) => ClauseBuilder;
+export type ResultBuilderFn = (
+  q: IQueryBuilder,
+  config: any
+) => IResultExprBuilder;
+
+export type ReturnBuilderFn = (
+  q: IQueryBuilder,
+  config: any
+) => IReturnExprBuilder;
+
 export type WhereBuilderFn = (
   w: IWhereClauseBuilder,
   config: any
 ) => BaseExprBuilder;
 
 export interface ReturnBuilderMap {
-  root: ReturnBuilderFn;
-  skip: ReturnBuilderFn;
-  limit: ReturnBuilderFn;
-  union: ReturnBuilderFn;
+  root?: ReturnBuilderFn;
+  count: ReturnBuilderFn;
+  aggregation?: ReturnBuilderFn;
+  prop?: ReturnBuilderFn;
+  alias?: ReturnBuilderFn;
+}
+
+export interface ResultBuilderMap {
+  root?: ResultBuilderFn;
+  skip: ResultBuilderFn;
+  limit: ResultBuilderFn;
+  union?: ResultBuilderFn;
 }
 
 export type WhereRootBuilderFn = (
@@ -65,6 +85,7 @@ export interface IBuilderMap {
   };
   where: WhereBuilderMap;
   return: ReturnBuilderMap;
+  result: ResultBuilderMap;
 }
 
 const defaultWhereMap = () => {
@@ -76,12 +97,20 @@ const defaultWhereMap = () => {
   };
 };
 
-const defaultReturnMap = () => {
+const defaultResultMap = () => {
   return {
     root: createReturnBuilder,
     skip: createSkipExprBuilder,
     limit: createŸLimitExprBuilder,
     union: createUnionExprBuilder,
+  };
+};
+
+const defaultReturnMap = () => {
+  return {
+    count: createReturnCountExprBuilder,
+    // aggregation: createReturnAggregationExprBuilder,
+    // prop: createReturnAliasPropExprBuilder,
   };
 };
 
@@ -98,5 +127,6 @@ export const defaultBuilderMap = (): IBuilderMap => {
     },
     where: defaultWhereMap(),
     return: defaultReturnMap(),
+    result: defaultResultMap(),
   };
 };

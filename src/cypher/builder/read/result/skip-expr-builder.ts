@@ -1,9 +1,9 @@
-import { IReturnNumberExprBuilder, ReturnNumberExprBuilder } from "../return";
+import { IResultNumberExprBuilder, ResultNumberExprBuilder } from "../return";
 import { IQueryBuilder } from "../..";
 
 export const createSkipExprBuilder = (q: IQueryBuilder, config: any) =>
   new SkipExprBuilder(q).config(config);
 
-export interface ISkipExprBuilder extends IReturnNumberExprBuilder {}
+export interface ISkipExprBuilder extends IResultNumberExprBuilder {}
 
-export class SkipExprBuilder extends ReturnNumberExprBuilder {}
+export class SkipExprBuilder extends ResultNumberExprBuilder {}

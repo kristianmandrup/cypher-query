@@ -1,26 +1,11 @@
+import { IResultExprBuilder, ResultExprBuilder } from ".";
 import { IStrategyResult } from "../../..";
-import { ReturnExprBuilder } from "../return";
+import { NumberExprBuilder } from "../generic";
 
-export interface IReturnNumberExprBuilder {
-  number(num: number): IReturnNumberExprBuilder;
+export interface IResultNumberExprBuilder extends IResultExprBuilder {
+  number(num: number): IResultNumberExprBuilder;
 }
 
-export class ReturnNumberExprBuilder extends ReturnExprBuilder {
+export class ResultNumberExprBuilder extends NumberExprBuilder {
   result?: IStrategyResult;
-
-  protected isValidNumber(num: number) {
-    return num && num >= 0;
-  }
-
-  number(num: number) {
-    if (!this.result) {
-      this.error("Missing results to limit");
-      return;
-    }
-    if (!this.isValidNumber(num)) {
-      this.error("Invalid number");
-      return;
-    }
-    return this;
-  }
 }

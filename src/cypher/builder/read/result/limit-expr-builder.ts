@@ -1,10 +1,10 @@
-import { IReturnNumberExprBuilder } from "../return";
+import { IResultNumberExprBuilder } from "../return";
 import { IQueryBuilder } from "../..";
-import { ReturnNumberExprBuilder } from "./result-number-expr-builder";
+import { ResultNumberExprBuilder } from "./result-number-expr-builder";
 
 export const createŸLimitExprBuilder = (q: IQueryBuilder, config: any) =>
   new LimitExprBuilder(q).config(config);
 
-export interface ILimitExprBuilder extends IReturnNumberExprBuilder {}
+export interface ILimitExprBuilder extends IResultNumberExprBuilder {}
 
-export class LimitExprBuilder extends ReturnNumberExprBuilder {}
+export class LimitExprBuilder extends ResultNumberExprBuilder {}
