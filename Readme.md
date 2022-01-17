@@ -160,13 +160,21 @@ Any alias referenced (such as `mike` in the above example) must be matched in th
 
 ### Return
 
-`Return` builds a map of what exactly is returned from the nodes matched in the filters (`Where`).
+`Return` selects what is to be returned as results for each alias that references a result set of matching graph objects.
+
+Return expressions can select the alias itself (each full object) a given property for each object, the count of objects or aggregations of props, such as the sum or average of given (numerical) properties.
+
+Each return expression can be assigned an alias or will determine a default alias if possible.
+
+### Result
+
+`Result` expressions can be used to partition the result set into a window (`limit` and `skip` rows of data) or to combine result sets (`union`)
 
 ```js
 const q = query(gun);
-const match = q.match;
-match.node({ alias: "mike" });
-return q.return.node({ alias: "mike" });
+q.match.node({ alias: "mike" });
+q.return.obj("mike").prop("age").as("years old");
+return q.result.limit({ count: 5 }).skip({ count: 2 });
 ```
 
 Any alias referenced (such as `mike` in the above example) must be matched in the alias map created using a previous `Match` builder (same as for Where).
@@ -205,10 +213,16 @@ The `builderMap` must adhere to the following interfaces. By default a `defaultB
 
 ```ts
 export interface ReturnBuilderMap {
-  root: ReturnBuilderFn;
-  skip: ReturnBuilderFn;
-  limit: ReturnBuilderFn;
-  union: ReturnBuilderFn;
+  aggregation: ReturnBuilderFn;
+  count: ReturnBuilderFn;
+  prop: ReturnBuilderFn;
+}
+
+export interface ResultBuilderMap {
+  root: ResultBuilderFn;
+  skip: ResultBuilderFn;
+  limit: ResultBuilderFn;
+  union: ResultBuilderFn;
 }
 
 export type WhereRootBuilderFn = (
@@ -235,6 +249,7 @@ export interface IBuilderMap {
   };
   where: WhereBuilderMap;
   return: ReturnBuilderMap;
+  result: ResultBuilderMap;
 }
 ```
 
@@ -247,33 +262,7 @@ By default it calls `defaultStrategyMap` to generate a default strategy based on
 ```ts
 export const defaultStrategyMap = (): IStrategyMap => {
   return {
-    filter: {
-      root: FilterRootFactoryFn;
-      exprMap: {
-        boolean: {
-          and: FilterExprFactoryFn;
-          or: FilterExprFactoryFn;
-          not: FilterExprFactoryFn;
-        }
-        props: {
-          eq: FilterExprFactoryFn;
-          gt: FilterExprFactoryFn;
-          lt: FilterExprFactoryFn;
-        }
-        labels: {
-          include: FilterExprFactoryFn;
-          match: FilterExprFactoryFn;
-        }
-      }
-    };
-    result: {
-      root: ResultRootFactoryFn;
-      exprMap: {
-        limit: ResultExprFactoryFn;
-        skip: ResultExprFactoryFn;
-        union: ResultExprFactoryFn;
-      }
-    };
+    // ...
   };
 };
 ```
@@ -576,9 +565,9 @@ We can then make a query as follows where we match any `person` node as `p`, any
 
 ```ts
 const q = query(gun);
-const match = q.$match;
-match.obj("p").matches({ label: "person" });
-match.obj("c").matches({ label: "car" });
+const $match = q.match;
+$match.obj("p").matches({ label: "person" });
+$match.obj("c").matches({ label: "car" });
 ```
 
 This would create the following alis matching map:
@@ -593,9 +582,9 @@ This would create the following alis matching map:
 We can then use where queries to further filter from these aliased filter results.
 
 ```ts
-const where = q.$where;
-where.obj("p").props({ age: { gte: 18 }, sex: "male" });
-where.obj("c").props({ since: { gte: 2015 } });
+const $where = q.where;
+$where.obj("p").props({ age: { gte: 18 }, sex: "male" });
+$where.obj("c").props({ since: { gte: 2015 } });
 ```
 
 This would result in the following:
@@ -610,9 +599,9 @@ This would result in the following:
 We can then use `return` to select what to return
 
 ```ts
-const return = q.$return;
-return.alias("p").count({distinct: true}).as("number of legal owners")
-return.alias("c").prop("brand").as("car brand")
+const $return = q.return;
+$return.alias("p").count({ distinct: true }).as("number of legal owners");
+$return.alias("c").prop("brand").as("car brand");
 ```
 
 This would give us the final table
@@ -625,6 +614,13 @@ This would give us the final table
     [1, 'audi']
   ]
 }
+```
+
+Finally we can select a window of the result set (`skip` and `limit`) or combine it with another result set (`union`)
+
+```ts
+const $result = q.result;
+$result.limit({ count: 5 });
 ```
 
 ##### Label filters
