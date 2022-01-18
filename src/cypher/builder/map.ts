@@ -21,6 +21,8 @@ import {
 } from ".";
 import { ClauseBuilder } from "./clause";
 import { createResultClauseBuilder } from "./read/result/result-clause-builder";
+import { createReturnAggregationExprBuilder } from "./read/return/aggregation-expr-builder";
+import { createReturnPropExprBuilder } from "./read/return/prop-expr-builder";
 import { createReturnClauseBuilder } from "./read/return/return-clause-builder";
 import { BaseExprBuilder } from "./read/where/boolean/boolean-expr-builder";
 
@@ -51,16 +53,16 @@ export type WhereBuilderFn = (
 export interface ReturnBuilderMap {
   root: ReturnBuilderFn;
   count: ReturnBuilderFn;
-  aggregation?: ReturnBuilderFn;
-  prop?: ReturnBuilderFn;
-  alias?: ReturnBuilderFn;
+  aggregation: ReturnBuilderFn;
+  prop: ReturnBuilderFn;
+  // alias?: ReturnBuilderFn;
 }
 
 export interface ResultBuilderMap {
   root: ResultBuilderFn;
   skip: ResultBuilderFn;
   limit: ResultBuilderFn;
-  union?: ResultBuilderFn;
+  // union?: ResultBuilderFn;
 }
 
 export type WhereRootBuilderFn = (
@@ -112,8 +114,8 @@ const defaultReturnMap = () => {
   return {
     root: createReturnClauseBuilder,
     count: createReturnCountExprBuilder,
-    // aggregation: createReturnAggregationExprBuilder,
-    // prop: createReturnAliasPropExprBuilder,
+    aggregation: createReturnAggregationExprBuilder,
+    prop: createReturnPropExprBuilder,
   };
 };
 

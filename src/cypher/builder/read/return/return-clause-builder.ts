@@ -7,6 +7,16 @@ export const createReturnClauseBuilder = (q: IQueryBuilder, config: any) =>
 
 export interface IReturnClauseBuilder {
   obj(alias: string): IReturnExprBuilder;
+
+  aggregate(config: any): IReturnExprBuilder;
 }
 
-export class ReturnClauseBuilder extends ClauseBuilder {}
+export class ReturnClauseBuilder extends ClauseBuilder {
+  aggregate(config: any = {}): IReturnExprBuilder {
+    return this.builderMap.return.aggregation(this, config);
+  }
+
+  prop(name: string): IReturnExprBuilder {
+    return this.builderMap.return.prop(this, { name });
+  }
+}
