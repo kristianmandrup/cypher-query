@@ -2,7 +2,7 @@ import {
   createAndExprBuilder,
   createCreateBuilder,
   createDeleteBuilder,
-  createMatchBuilder,
+  createMatchClauseBuilder,
   createNotExprBuilder,
   createOrExprBuilder,
   createReturnBuilder,
@@ -20,6 +20,8 @@ import {
   IWhereClauseBuilder,
 } from ".";
 import { ClauseBuilder } from "./clause";
+import { createResultClauseBuilder } from "./read/result/result-clause-builder";
+import { createReturnClauseBuilder } from "./read/return/return-clause-builder";
 import { BaseExprBuilder } from "./read/where/boolean/boolean-expr-builder";
 
 type DeleteRootFactoryFn = (q: IQueryBuilder, config: any) => IDeleteBuilder;
@@ -47,7 +49,7 @@ export type WhereBuilderFn = (
 ) => BaseExprBuilder;
 
 export interface ReturnBuilderMap {
-  root?: ReturnBuilderFn;
+  root: ReturnBuilderFn;
   count: ReturnBuilderFn;
   aggregation?: ReturnBuilderFn;
   prop?: ReturnBuilderFn;
@@ -55,7 +57,7 @@ export interface ReturnBuilderMap {
 }
 
 export interface ResultBuilderMap {
-  root?: ResultBuilderFn;
+  root: ResultBuilderFn;
   skip: ResultBuilderFn;
   limit: ResultBuilderFn;
   union?: ResultBuilderFn;
@@ -99,7 +101,7 @@ const defaultWhereMap = () => {
 
 const defaultResultMap = () => {
   return {
-    root: createReturnBuilder,
+    root: createResultClauseBuilder,
     skip: createSkipExprBuilder,
     limit: createŸLimitExprBuilder,
     union: createUnionExprBuilder,
@@ -108,6 +110,7 @@ const defaultResultMap = () => {
 
 const defaultReturnMap = () => {
   return {
+    root: createReturnClauseBuilder,
     count: createReturnCountExprBuilder,
     // aggregation: createReturnAggregationExprBuilder,
     // prop: createReturnAliasPropExprBuilder,
@@ -123,7 +126,7 @@ export const defaultBuilderMap = (): IBuilderMap => {
       root: createDeleteBuilder,
     },
     match: {
-      root: createMatchBuilder,
+      root: createMatchClauseBuilder,
     },
     where: defaultWhereMap(),
     return: defaultReturnMap(),

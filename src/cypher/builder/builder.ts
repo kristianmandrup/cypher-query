@@ -56,6 +56,10 @@ export class QueryBuilder {
     return this.builderMap.where.root(this, this.configObj);
   }
 
+  get result() {
+    return this.builderMap.result.root(this, this.configObj);
+  }
+
   get return() {
     return this.builderMap.return.root(this, this.configObj);
   }

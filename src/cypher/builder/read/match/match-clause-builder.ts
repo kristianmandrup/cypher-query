@@ -3,7 +3,7 @@ import { ClauseBuilder } from "../../clause";
 import { IQueryBuilder } from "../..";
 import { IMatchObject } from ".";
 
-export const createMatchBuilder = (q: IQueryBuilder, config: any) =>
+export const createMatchClauseBuilder = (q: IQueryBuilder, config: any) =>
   new MatchClauseBuilder(q).config(config);
 
 export interface IMatchClauseBuilder {
