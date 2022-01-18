@@ -16,11 +16,11 @@ export interface IAggregationExprBuilder extends IReturnExprBuilder {
 export class AggregationExprBuilder extends NumberExprBuilder {
   $distinct = false;
 
-  sum() {
+  sum(name: string) {
     return this;
   }
 
-  avg() {
+  avg(name: string) {
     return this;
   }
 }
