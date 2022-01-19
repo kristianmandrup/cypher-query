@@ -12,7 +12,7 @@ export class NotExprBuilder extends BaseExprBuilder {
 
   constructor(w: IWhereClauseBuilder, config: any = {}) {
     super(w);
-    this.expr = this.strategyMap.filter.exprMap.boolean.not(config);
+    this.expr = this.strategy.addExpressionFor(config);
   }
 
   matches(config: any) {

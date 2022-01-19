@@ -10,7 +10,7 @@ export const createOrExprBuilder = (w: IWhereClauseBuilder, config: any) =>
 
 export class OrExprBuilder extends BaseExprBuilder {
   matches(config: any) {
-    this.strategyMap.filter.exprMap.boolean.or(config);
+    // this.strategy.addExpressionFor(config);
     return this;
   }
 }
