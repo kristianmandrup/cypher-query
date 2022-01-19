@@ -1,13 +1,19 @@
 import { IReturnExprBuilder, ReturnExprBuilder } from ".";
 import { IQueryBuilder } from "../..";
+import { IResultClauseBuilder } from "../result/result-clause-builder";
 
 export interface IReturnPropExprBuilder extends IReturnExprBuilder {
-  matches(expr: any): any;
+  // matches(expr: any): any;
 }
 
-export const createReturnPropExprBuilder = (q: IQueryBuilder, config: any) =>
-  new PropExprBuilder(q).config(config);
+export const createReturnPropExprBuilder = (
+  cb: IResultClauseBuilder,
+  config: any
+) => new PropExprBuilder(cb).config(config);
 
-export class PropExprBuilder extends ReturnExprBuilder {
+export class PropExprBuilder
+  extends ReturnExprBuilder
+  implements IReturnPropExprBuilder
+{
   exprName: string = "or";
 }

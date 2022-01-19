@@ -1,5 +1,5 @@
 import { IQueryBuilder } from "..";
-import { ClauseBuilder } from "../clause";
+import { ClauseBuilder } from "../clause-builder";
 
 export interface IDeleteBuilder {
   nodes(...labels: string[]): any;

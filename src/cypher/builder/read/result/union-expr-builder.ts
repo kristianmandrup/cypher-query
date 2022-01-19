@@ -1,8 +1,8 @@
 import { IResultExprBuilder, ResultExprBuilder } from ".";
-import { IQueryBuilder } from "../..";
+import { IResultClauseBuilder } from "./result-clause-builder";
 
-export const createUnionExprBuilder = (q: IQueryBuilder, config: any) =>
-  new UnionExprBuilder(q).config(config);
+export const createUnionExprBuilder = (cb: IResultClauseBuilder, config: any) =>
+  new UnionExprBuilder(cb).config(config);
 
 export interface IUnionExprBuilder extends IResultExprBuilder {}
 

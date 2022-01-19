@@ -1,4 +1,4 @@
-import { ClauseBuilder } from "./clause";
+import { ClauseBuilder } from "./clause-builder";
 
 export class Return extends ClauseBuilder {
   node(alias: string, prop?: string) {

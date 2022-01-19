@@ -2,15 +2,17 @@ import {
   createAndExprBuilder,
   createCreateBuilder,
   createDeleteBuilder,
+  createLabelExprBuilder,
+  createLimitExprBuilder,
   createMatchClauseBuilder,
   createNotExprBuilder,
   createOrExprBuilder,
-  createReturnBuilder,
+  createPropExprBuilder,
   createReturnCountExprBuilder,
+  createReturnPropExprBuilder,
   createSkipExprBuilder,
   createUnionExprBuilder,
   createWhereBuilder,
-  createŸLimitExprBuilder,
   ICreateBuilder,
   IDeleteBuilder,
   IMatchClauseBuilder,
@@ -18,74 +20,112 @@ import {
   IResultExprBuilder,
   IReturnExprBuilder,
   IWhereClauseBuilder,
+  WhereExprBuilder,
 } from ".";
-import { ClauseBuilder } from "./clause";
-import { createResultClauseBuilder } from "./read/result/result-clause-builder";
+import { IMatchExprBuilder } from "./read/match/match-expr-builder";
+import {
+  createResultClauseBuilder,
+  IResultClauseBuilder,
+} from "./read/result/result-clause-builder";
 import { createReturnAggregationExprBuilder } from "./read/return/aggregation-expr-builder";
-import { createReturnPropExprBuilder } from "./read/where/prop-expr-builder";
-import { createReturnClauseBuilder } from "./read/return/return-clause-builder";
-import { BaseExprBuilder } from "./read/where/boolean/boolean-expr-builder";
+import {
+  createReturnClauseBuilder,
+  IReturnClauseBuilder,
+} from "./read/return/return-clause-builder";
+import {
+  createWhereSelectAliasExprBuilder,
+  IWhereSelectAliasExprBuilder,
+} from "./read/where/select-alias-expr-builder";
 
-type DeleteRootFactoryFn = (q: IQueryBuilder, config: any) => IDeleteBuilder;
+export type DeleteClauseBuilderFactoryFn = (
+  q: IQueryBuilder,
+  config: any
+) => IDeleteBuilder;
 
-type CreateRootFactoryFn = (q: IQueryBuilder, config: any) => ICreateBuilder;
+export type CreateClauseBuilderFactoryFn = (
+  q: IQueryBuilder,
+  config: any
+) => ICreateBuilder;
 
-type MatchBuilderRootFactoryFn = (
+export type MatchClauseBuilderFactoryFn = (
   q: IQueryBuilder,
   config: any
 ) => IMatchClauseBuilder;
 
-export type ResultBuilderFn = (
+export type ResultClauseBuilderFactoryFn = (
   q: IQueryBuilder,
+  config: any
+) => IResultClauseBuilder;
+
+export type ReturnClauseBuilderFactoryFn = (
+  q: IQueryBuilder,
+  config: any
+) => IReturnClauseBuilder;
+
+export type MatchExprBuilderFn = (
+  cb: IMatchClauseBuilder,
+  config: any
+) => IMatchExprBuilder;
+
+export type ResultExprBuilderFn = (
+  cb: IResultClauseBuilder,
   config: any
 ) => IResultExprBuilder;
 
-export type ReturnBuilderFn = (
-  q: IQueryBuilder,
+export type ReturnExprBuilderFn = (
+  cb: IReturnClauseBuilder,
   config: any
 ) => IReturnExprBuilder;
 
-export type WhereBuilderFn = (
+export type WhereExprBuilderFn = (
   w: IWhereClauseBuilder,
   config: any
-) => BaseExprBuilder;
+) => WhereExprBuilder;
 
 export interface ReturnBuilderMap {
-  root: ReturnBuilderFn;
-  count: ReturnBuilderFn;
-  aggregation: ReturnBuilderFn;
-  prop: ReturnBuilderFn;
+  root: ReturnClauseBuilderFactoryFn;
+  count: ReturnExprBuilderFn;
+  aggregation: ReturnExprBuilderFn;
+  prop: ReturnExprBuilderFn;
   // alias?: ReturnBuilderFn;
 }
 
 export interface ResultBuilderMap {
-  root: ResultBuilderFn;
-  skip: ResultBuilderFn;
-  limit: ResultBuilderFn;
+  root: ResultClauseBuilderFactoryFn;
+  skip: ResultExprBuilderFn;
+  limit: ResultExprBuilderFn;
   // union?: ResultBuilderFn;
 }
 
-export type WhereRootBuilderFn = (
+export type WhereClauseBuilderFactoryFn = (
   q: IQueryBuilder,
   config: any
 ) => IWhereClauseBuilder;
 
+export type WhereSelectAliasBuilderFn = (
+  w: IWhereClauseBuilder,
+  config: any
+) => IWhereSelectAliasExprBuilder;
+
 export interface WhereBuilderMap {
-  root: WhereRootBuilderFn;
-  or: WhereBuilderFn;
-  and: WhereBuilderFn;
-  not: WhereBuilderFn;
+  root: WhereClauseBuilderFactoryFn;
+  obj: WhereSelectAliasBuilderFn;
+  or: WhereExprBuilderFn;
+  and: WhereExprBuilderFn;
+  not: WhereExprBuilderFn;
+  label: WhereExprBuilderFn;
+  prop: WhereExprBuilderFn;
 }
 
 export interface IBuilderMap {
   create: {
-    root: CreateRootFactoryFn;
+    root: CreateClauseBuilderFactoryFn;
   };
   delete: {
-    root: DeleteRootFactoryFn;
+    root: DeleteClauseBuilderFactoryFn;
   };
   match: {
-    root: MatchBuilderRootFactoryFn;
+    root: MatchClauseBuilderFactoryFn;
   };
   where: WhereBuilderMap;
   return: ReturnBuilderMap;
@@ -95,9 +135,12 @@ export interface IBuilderMap {
 const defaultWhereMap = () => {
   return {
     root: createWhereBuilder,
+    obj: createWhereSelectAliasExprBuilder,
     or: createOrExprBuilder,
     and: createAndExprBuilder,
     not: createNotExprBuilder,
+    label: createLabelExprBuilder,
+    prop: createPropExprBuilder,
   };
 };
 
@@ -105,7 +148,7 @@ const defaultResultMap = () => {
   return {
     root: createResultClauseBuilder,
     skip: createSkipExprBuilder,
-    limit: createŸLimitExprBuilder,
+    limit: createLimitExprBuilder,
     union: createUnionExprBuilder,
   };
 };

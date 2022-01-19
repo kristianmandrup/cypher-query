@@ -1,8 +1,8 @@
 import csvtojson from "csvtojson";
 import request from "request";
-import { ClauseBuilder } from "../clause";
+import { ClauseBuilder } from "../clause-builder";
 import { Query } from "../..";
-import { IQueryBuilder } from "../builder";
+import { IQueryBuilder } from "../query-builder";
 
 export class Csv extends ClauseBuilder {
   csv: any;

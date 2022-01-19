@@ -1,17 +1,18 @@
 import { IReturnExprBuilder } from ".";
 import { IQueryBuilder } from "../..";
-import { ClauseBuilder } from "../../clause";
+import { ClauseBuilder, IClauseBuilder } from "../../clause-builder";
 
 export const createReturnClauseBuilder = (q: IQueryBuilder, config: any) =>
   new ReturnClauseBuilder(q).config(config);
 
-export interface IReturnClauseBuilder {
-  obj(alias: string): IReturnExprBuilder;
-
+export interface IReturnClauseBuilder extends IClauseBuilder {
   aggregate(config: any): IReturnExprBuilder;
 }
 
-export class ReturnClauseBuilder extends ClauseBuilder {
+export class ReturnClauseBuilder
+  extends ClauseBuilder
+  implements IReturnClauseBuilder
+{
   aggregate(config: any = {}): IReturnExprBuilder {
     return this.builderMap.return.aggregation(this, config);
   }

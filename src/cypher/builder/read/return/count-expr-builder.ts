@@ -1,16 +1,17 @@
-import { IReturnExprBuilder } from ".";
-import { IQueryBuilder } from "../..";
+import { IReturnClauseBuilder, IReturnExprBuilder } from ".";
 import { NumberExprBuilder } from "../generic";
-import { IResultNumberExprBuilder } from "../result/result-number-expr-builder";
 
 export const createReturnCountExprBuilder = (
-  q: IQueryBuilder,
+  cb: IReturnClauseBuilder,
   config: any
-): IReturnExprBuilder => new CountExprBuilder(q).config(config);
+): IReturnExprBuilder => new CountExprBuilder(cb).config(config);
 
 export interface ICountExprBuilder extends IReturnExprBuilder {}
 
-export class CountExprBuilder extends NumberExprBuilder {
+export class CountExprBuilder
+  extends NumberExprBuilder
+  implements ICountExprBuilder
+{
   $distinct = false;
 
   distinct() {

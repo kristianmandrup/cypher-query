@@ -1,6 +1,6 @@
 import { IQueryBuilder } from "../..";
 import { Props } from "../../../cypher-types";
-import { ClauseBuilder } from "../../clause";
+import { ClauseBuilder } from "../../clause-builder";
 import { ExprBuilder } from "../expr-builder";
 
 export interface MatchObjConfig {

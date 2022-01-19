@@ -1,18 +1,20 @@
-import { IReturnExprBuilder } from ".";
-import { IQueryBuilder } from "../..";
+import { IReturnClauseBuilder, IReturnExprBuilder } from ".";
 import { NumberExprBuilder } from "../generic";
 
 export const createReturnAggregationExprBuilder = (
-  q: IQueryBuilder,
+  cb: IReturnClauseBuilder,
   config: any
-): IReturnExprBuilder => new AggregationExprBuilder(q).config(config);
+): IReturnExprBuilder => new AggregationExprBuilder(cb).config(config);
 
 export interface IAggregationExprBuilder extends IReturnExprBuilder {
-  sum(): IReturnExprBuilder;
-  avg(): IReturnExprBuilder;
+  sum(name: string): IAggregationExprBuilder;
+  avg(name: string): IAggregationExprBuilder;
 }
 
-export class AggregationExprBuilder extends NumberExprBuilder {
+export class AggregationExprBuilder
+  extends NumberExprBuilder
+  implements IAggregationExprBuilder
+{
   $distinct = false;
 
   sum(name: string) {

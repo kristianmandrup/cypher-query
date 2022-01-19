@@ -5,7 +5,7 @@ import {
   RelationDef,
   StrMap,
 } from "../../cypher-types";
-import { ClauseBuilder } from "../clause";
+import { ClauseBuilder } from "../clause-builder";
 
 export interface ICreateBuilder {}
 

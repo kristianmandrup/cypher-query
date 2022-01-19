@@ -1,4 +1,4 @@
-import { ClauseBuilder } from "../../clause";
+import { ClauseBuilder } from "../../clause-builder";
 import { IQueryBuilder } from "../..";
 import {
   IMatchObjExprBuilder,
@@ -14,6 +14,6 @@ export interface IMatchClauseBuilder {
 
 export class MatchClauseBuilder extends ClauseBuilder {
   obj(alias: string = "_") {
-    return new MatchObjExprBuilder(this.q).config({ alias });
+    return new MatchObjExprBuilder(this.queryBuilder).config({ alias });
   }
 }

@@ -1,3 +1,4 @@
+import { IClauseBuilder } from "../../clause-builder";
 import { ExprBuilder, IExprBuilder } from "../expr-builder";
 
 export interface INumberExprBuilder extends IExprBuilder {
@@ -5,6 +6,11 @@ export interface INumberExprBuilder extends IExprBuilder {
 }
 
 export class NumberExprBuilder extends ExprBuilder {
+  constructor(clauseBuilder: IClauseBuilder) {
+    super(clauseBuilder.queryBuilder);
+    this.clauseBuilder = clauseBuilder;
+  }
+
   protected isValidNumber(num: number) {
     return num && num >= 0;
   }

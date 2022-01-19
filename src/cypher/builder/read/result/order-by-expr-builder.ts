@@ -1,9 +1,9 @@
-import { IQueryBuilder } from "../..";
-import { ClauseBuilder } from "../../clause";
+import { ResultExprBuilder } from "../..";
+import { IResultClauseBuilder } from "./result-clause-builder";
 
-export const createOrderByBuilder = (q: IQueryBuilder, config: any) =>
-  new OrderByExprBuilder(q).config(config);
+export const createOrderByBuilder = (cb: IResultClauseBuilder, config: any) =>
+  new OrderByExprBuilder(cb).config(config);
 
-export class OrderByExprBuilder extends ClauseBuilder {
+export class OrderByExprBuilder extends ResultExprBuilder {
   exprName: string = "orderBy";
 }

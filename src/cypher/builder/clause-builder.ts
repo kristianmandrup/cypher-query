@@ -1,34 +1,33 @@
 import { ICypherStrategy } from "..";
 import { Props } from "../cypher-types";
-import { IStrategyMap } from "../strategy/map";
-import { IQueryBuilder } from "./builder";
+import { IQueryBuilder } from "./query-builder";
 import { Handler } from "./handler";
 import { IBuilderMap } from "./map";
 
 export interface IClauseBuilder {
-  q: IQueryBuilder;
+  queryBuilder: IQueryBuilder;
   builderMap: IBuilderMap;
   strategy: ICypherStrategy;
 }
 
 export class ClauseBuilder extends Handler {
-  q: IQueryBuilder;
+  queryBuilder: IQueryBuilder;
 
   get strategy() {
-    return this.q.strategy;
+    return this.queryBuilder.strategy;
   }
 
   get configObj() {
-    return this.q.configObj;
+    return this.queryBuilder.configObj;
   }
 
   get builderMap() {
-    return this.q.builderMap;
+    return this.queryBuilder.builderMap;
   }
 
   constructor(q: IQueryBuilder) {
     super();
-    this.q = q;
+    this.queryBuilder = q;
   }
 
   config(config: any) {
@@ -40,7 +39,7 @@ export class ClauseBuilder extends Handler {
   }
 
   get aliasMap() {
-    return this.q.aliasMap;
+    return this.queryBuilder.aliasMap;
   }
 
   error(...msg: any[]) {
@@ -48,6 +47,6 @@ export class ClauseBuilder extends Handler {
   }
 
   mergeAliasMap(aliasMap: Props, name?: string) {
-    return this.q.mergeAliasMap(aliasMap, name);
+    return this.queryBuilder.mergeAliasMap(aliasMap, name);
   }
 }

@@ -1,6 +1,8 @@
 import { IQueryBuilder } from "../..";
-import { ClauseBuilder, IClauseBuilder } from "../../clause";
+import { ClauseBuilder, IClauseBuilder } from "../../clause-builder";
+import { WhereBuilderMap } from "../../map";
 import { IOrExprBuilder, IAndExprBuilder, INotExprBuilder } from "./boolean";
+import { IWhereSelectAliasExprBuilder } from "./select-alias-expr-builder";
 
 export type NodeMatchFn = (node: any) => boolean;
 
@@ -8,27 +10,20 @@ export const createWhereBuilder = (q: IQueryBuilder, config: any) =>
   new WhereClauseBuilder(q).config(config);
 
 export interface IWhereClauseBuilder extends IClauseBuilder {
-  or: IOrExprBuilder;
-  and: IAndExprBuilder;
-  not: INotExprBuilder;
+  get where(): WhereBuilderMap;
 }
 
-export class WhereClauseBuilder extends ClauseBuilder {
+export class WhereClauseBuilder
+  extends ClauseBuilder
+  implements IWhereClauseBuilder
+{
   nodeMatches(fn: NodeMatchFn) {}
 
-  protected get where() {
+  get where() {
     return this.builderMap.where;
   }
 
-  get or(): IOrExprBuilder {
-    return this.where.or(this, this.configObj);
-  }
-
-  get and(): IAndExprBuilder {
-    return this.where.and(this, this.configObj);
-  }
-
-  get not(): INotExprBuilder {
-    return this.where.not(this, this.configObj);
+  obj(alias: string): IWhereSelectAliasExprBuilder {
+    return this.where.obj(this, alias);
   }
 }

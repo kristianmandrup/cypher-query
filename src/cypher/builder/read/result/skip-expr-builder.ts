@@ -2,10 +2,10 @@ import {
   IResultNumberExprBuilder,
   ResultNumberExprBuilder,
 } from "./result-number-expr-builder";
-import { IQueryBuilder } from "../..";
+import { IResultClauseBuilder } from "./result-clause-builder";
 
-export const createSkipExprBuilder = (q: IQueryBuilder, config: any) =>
-  new SkipExprBuilder(q).config(config);
+export const createSkipExprBuilder = (cb: IResultClauseBuilder, config: any) =>
+  new SkipExprBuilder(cb).config(config);
 
 export interface ISkipExprBuilder extends IResultNumberExprBuilder {}
 
