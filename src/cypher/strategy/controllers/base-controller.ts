@@ -9,13 +9,24 @@ import { StrategyHandler } from "../strategy-handler";
 
 export interface IBaseController {
   clauses: IQueryClauses;
+  currentClause: IQueryClause;
+  latestExpr: IFilterExpr;
   setAliasFilterExpr(aliasFilterExpr: IAliasFilterExpr): IBaseController;
   addExpressions(...expressions: IFilterExpr[]): IBaseController;
+  addAsExpression(key: string, config: any): IBaseController;
   map: any;
 }
 
 export class BaseController extends StrategyHandler implements IBaseController {
   clauses: IQueryClauses = new QueryClauses(this.strategy);
+
+  get currentClause(): IQueryClause {
+    return this.clauses.current;
+  }
+
+  get latestExpr(): IFilterExpr {
+    return this.currentClause.latestExpr;
+  }
 
   get map() {
     return {};
@@ -23,6 +34,11 @@ export class BaseController extends StrategyHandler implements IBaseController {
 
   addClause(clause: IQueryClause) {
     this.clauses.addClause(clause);
+  }
+
+  addAsExpression(key: string, config: any): IBaseController {
+    this.currentClause.addAsExpression(key, config);
+    return this;
   }
 
   addExpressions(...expressions: IFilterExpr[]) {

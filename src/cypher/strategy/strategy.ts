@@ -1,5 +1,5 @@
 import { Handler } from "..";
-import { IGraphApi, IGraphObjApi } from "../..";
+import { IFilterExpr, IGraphApi, IGraphObjApi } from "../..";
 import { GraphObjDef, IQueryResult } from "../cypher-types";
 import {
   IQueryController,
@@ -7,7 +7,9 @@ import {
   IMatchController,
   IWhereController,
   IReturnController,
+  IResultController,
 } from "./controllers";
+import { IBaseController } from "./controllers/base-controller";
 import { defaultStrategyMap } from "./defaults";
 import { IStrategyMap } from "./map";
 
@@ -19,7 +21,14 @@ export interface ICypherStrategy {
   match: IMatchController;
   where: IWhereController;
   return: IReturnController;
+  result: IResultController;
 
+  latestExpr?: IFilterExpr;
+  addAsExpression(
+    clauseName: string,
+    key: string,
+    config: any
+  ): ICypherStrategy;
   setGraphApi(graphApi: IGraphApi): ICypherStrategy;
   configure(config: any): ICypherStrategy;
   run(objs: GraphObjDef[]): IQueryResult;
@@ -31,16 +40,38 @@ export class CypherStrategy extends Handler implements ICypherStrategy {
   queryController: IQueryController = new QueryController(this);
   strategyMap: IStrategyMap = defaultStrategyMap();
 
+  get latestExpr() {
+    return this.queryController.latestExpr;
+  }
+
+  get controllers() {
+    return this.queryController.controllers;
+  }
+
   get match() {
-    return this.queryController.match;
+    return this.controllers["match"];
   }
 
   get where() {
-    return this.queryController.where;
+    return this.controllers["where"];
   }
 
   get return() {
-    return this.queryController.return;
+    return this.controllers["return"];
+  }
+
+  get result() {
+    return this.controllers["result"];
+  }
+
+  addAsExpression(
+    clauseName: string,
+    key: string,
+    config: any
+  ): ICypherStrategy {
+    const controller: IBaseController = this.controllers[clauseName];
+    controller.addAsExpression(key, config);
+    return this;
   }
 
   setGraphApi(api: IGraphApi) {

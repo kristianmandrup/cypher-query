@@ -1,6 +1,7 @@
 import { AndExprBuilder, OrExprBuilder } from ".";
 import { IWhereClauseBuilder } from "..";
 import { ClauseBuilder } from "../../../clause";
+import { ExprBuilder } from "../../expr-builder";
 
 type ExprFn = () => boolean;
 
@@ -16,12 +17,22 @@ export interface IBaseExprBuilder {
   matches(expr: any): any;
 }
 
-export class BaseExprBuilder extends ClauseBuilder {
-  whereExpr: IWhereClauseBuilder;
+export class BooleanExprBuilder extends ExprBuilder {
+  whereClauseBuilder: IWhereClauseBuilder;
 
-  constructor(whereExpr: IWhereClauseBuilder) {
-    super(whereExpr.q);
-    this.whereExpr = whereExpr;
+  constructor(whereClauseBuilder: IWhereClauseBuilder) {
+    super(whereClauseBuilder.q);
+    this.whereClauseBuilder = whereClauseBuilder;
+  }
+
+  get strategy() {
+    return this.whereClauseBuilder.strategy;
+  }
+
+  addAsExpression(name: string, config: any) {
+    // Note: the create and add could both be encapsulated under the addExpression method
+    // createExpression uses strategyMap
+    return this.strategy.addAsExpression("where", name, config);
   }
 
   matches(expr: any) {

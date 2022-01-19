@@ -7,6 +7,7 @@ import { IQueryClause } from "./query-clause";
 export interface IQueryClauses {
   addClause(clause: IQueryClause): IQueryClauses;
   addExpressions(...expressions: IFilterExpr[]): IQueryClauses;
+  addAsExpression(key: string, config: any): IQueryClauses;
   current: IQueryClause;
   count: number;
   map: any;
@@ -31,6 +32,11 @@ export class QueryClauses extends StrategyHandler {
 
   get current(): IQueryClause {
     return this.list[this.list.length - 1];
+  }
+
+  addAsExpression(key: string, config: any): IQueryClauses {
+    this.current.addAsExpression(key, config);
+    return this;
   }
 
   addClause(clause: IQueryClause) {

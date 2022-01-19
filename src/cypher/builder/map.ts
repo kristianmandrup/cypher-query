@@ -22,7 +22,7 @@ import {
 import { ClauseBuilder } from "./clause";
 import { createResultClauseBuilder } from "./read/result/result-clause-builder";
 import { createReturnAggregationExprBuilder } from "./read/return/aggregation-expr-builder";
-import { createReturnPropExprBuilder } from "./read/return/prop-expr-builder";
+import { createReturnPropExprBuilder } from "./read/where/prop-expr-builder";
 import { createReturnClauseBuilder } from "./read/return/return-clause-builder";
 import { BaseExprBuilder } from "./read/where/boolean/boolean-expr-builder";
 

@@ -7,6 +7,8 @@ export interface IQueryClause {
   subtype: WhereFilterType;
   type: ClauseType;
   current: IFilterExpr;
+  latestExpr: IFilterExpr;
+
   setContainer(container: IQueryClauses): IQueryClause;
   createExpression(key: string, config: any): IFilterExpr | undefined;
   addAsExpression(key: string, config: any): IQueryClause;
@@ -31,6 +33,10 @@ export class QueryClause extends StrategyHandler implements IQueryClause {
 
   get current(): IFilterExpr {
     return this.expressions[this.expressions.length - 1];
+  }
+
+  get latestExpr(): IFilterExpr {
+    return this.current;
   }
 
   setContainer(container: IQueryClauses) {
