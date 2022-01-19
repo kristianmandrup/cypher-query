@@ -1,13 +1,9 @@
 import { Handler, IQueryBuilder } from "..";
-import { IStrategyResult } from "../../cypher-types";
 
-export interface IExprBuilder {
-  result?: IStrategyResult;
-}
+export interface IExprBuilder {}
 
 export class ExprBuilder extends Handler implements IExprBuilder {
   q: IQueryBuilder;
-  result?: IStrategyResult;
 
   constructor(q: IQueryBuilder) {
     super();

@@ -1,10 +1,9 @@
-import { IReturnExprBuilder } from "../return";
+import { IResultExprBuilder, ResultExprBuilder } from ".";
 import { IQueryBuilder } from "../..";
-import { ReturnExprBuilder } from "../return/return-expr-builder";
 
 export const createUnionExprBuilder = (q: IQueryBuilder, config: any) =>
   new UnionExprBuilder(q).config(config);
 
-export interface IUnionExprBuilder extends IReturnExprBuilder {}
+export interface IUnionExprBuilder extends IResultExprBuilder {}
 
-export class UnionExprBuilder extends ReturnExprBuilder {}
+export class UnionExprBuilder extends ResultExprBuilder {}

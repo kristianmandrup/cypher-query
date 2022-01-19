@@ -1,4 +1,7 @@
-import { IResultNumberExprBuilder, ResultNumberExprBuilder } from "../return";
+import {
+  IResultNumberExprBuilder,
+  ResultNumberExprBuilder,
+} from "./result-number-expr-builder";
 import { IQueryBuilder } from "../..";
 
 export const createSkipExprBuilder = (q: IQueryBuilder, config: any) =>

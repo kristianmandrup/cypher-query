@@ -1,4 +1,8 @@
-import { ExprBuilder } from "../expr-builder";
+import { ExprBuilder, IExprBuilder } from "../expr-builder";
+
+export interface INumberExprBuilder extends IExprBuilder {
+  number(num: number): INumberExprBuilder;
+}
 
 export class NumberExprBuilder extends ExprBuilder {
   protected isValidNumber(num: number) {

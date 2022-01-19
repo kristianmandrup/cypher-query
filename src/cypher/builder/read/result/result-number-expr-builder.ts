@@ -1,4 +1,4 @@
-import { IResultExprBuilder, ResultExprBuilder } from ".";
+import { IResultExprBuilder } from ".";
 import { IStrategyResult } from "../../..";
 import { NumberExprBuilder } from "../generic";
 

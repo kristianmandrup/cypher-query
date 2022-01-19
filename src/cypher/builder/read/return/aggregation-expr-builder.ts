@@ -1,7 +1,6 @@
-import { IReturnExprBuilder, ResultNumberExprBuilder } from ".";
+import { IReturnExprBuilder } from ".";
 import { IQueryBuilder } from "../..";
 import { NumberExprBuilder } from "../generic";
-import { IResultNumberExprBuilder } from "../result/result-number-expr-builder";
 
 export const createReturnAggregationExprBuilder = (
   q: IQueryBuilder,

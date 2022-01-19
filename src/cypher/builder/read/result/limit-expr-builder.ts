@@ -1,5 +1,5 @@
-import { IResultNumberExprBuilder } from "../return";
 import { IQueryBuilder } from "../..";
+import { IResultNumberExprBuilder } from "./result-number-expr-builder";
 import { ResultNumberExprBuilder } from "./result-number-expr-builder";
 
 export const createŸLimitExprBuilder = (q: IQueryBuilder, config: any) =>
