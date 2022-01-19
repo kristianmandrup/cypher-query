@@ -9,4 +9,6 @@ export const createSkipExprBuilder = (q: IQueryBuilder, config: any) =>
 
 export interface ISkipExprBuilder extends IResultNumberExprBuilder {}
 
-export class SkipExprBuilder extends ResultNumberExprBuilder {}
+export class SkipExprBuilder extends ResultNumberExprBuilder {
+  exprName: string = "skip";
+}

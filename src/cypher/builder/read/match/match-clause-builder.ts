@@ -1,6 +1,9 @@
 import { ClauseBuilder } from "../../clause";
 import { IQueryBuilder } from "../..";
-import { IMatchObjExprBuilder, MatchObjExprBuilder } from "./match-obj-builder";
+import {
+  IMatchObjExprBuilder,
+  MatchObjExprBuilder,
+} from "./match-obj-expr-builder";
 
 export const createMatchClauseBuilder = (q: IQueryBuilder, config: any) =>
   new MatchClauseBuilder(q).config(config);

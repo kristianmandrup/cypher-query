@@ -6,15 +6,16 @@ import {
 const context = describe;
 
 describe("CountExprBuilder", () => {
-  let strategy, expr;
+  let strategy, exprBuilder, expr;
   beforeEach(() => {
     strategy = new CypherStrategy();
-    expr = createReturnCountExprBuilder(strategy, {});
+    exprBuilder = createReturnCountExprBuilder(strategy, { alias: "animals" });
+    expr = exprBuilder.expr;
   });
 
   describe("distinct", () => {
     it("count distinct animals", () => {
-      expr.distinct();
+      exprBuilder.distinct();
       expect(expr).toBeDefined();
     });
   });

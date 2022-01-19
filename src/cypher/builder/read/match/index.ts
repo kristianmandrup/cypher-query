@@ -1,2 +1,2 @@
-export * from "./match-obj-builder";
+export * from "./match-obj-expr-builder";
 export * from "./match-clause-builder";

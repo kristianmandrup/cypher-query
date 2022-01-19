@@ -8,5 +8,5 @@ export const createLabelExprBuilder = (w: IWhereClauseBuilder, config: any) =>
   new LabelExprBuilder(w).config(config);
 
 export class LabelExprBuilder extends WhereExprBuilder {
-  exprName: string = "or";
+  exprName: string = "label";
 }

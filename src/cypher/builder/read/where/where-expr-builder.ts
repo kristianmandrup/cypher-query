@@ -9,7 +9,6 @@ export interface IWhereExprBuilder {
 
 export class WhereExprBuilder extends ExprBuilder {
   whereClauseBuilder: IWhereClauseBuilder;
-  exprName: string = "";
   expr?: IFilterExpr;
 
   constructor(whereClauseBuilder: IWhereClauseBuilder) {
@@ -24,9 +23,11 @@ export class WhereExprBuilder extends ExprBuilder {
   setExpression(config: any = {}) {
     // Note: the create and add could both be encapsulated under the addExpression method
     // createExpression uses strategyMap
-    const expr = this.addAsExpression(this.exprName, config);
+    this.addAsExpression(this.exprName, config);
+    const expr = this.strategy.latestExpr;
+    if (!expr) return this;
     // based on the expr figures out which controller and clause to add it to
-    this.expr = this.strategy.latestExpr as IFilterExpr;
+    this.expr = expr;
   }
   addAsExpression(name: string, config: any) {
     // Note: the create and add could both be encapsulated under the addExpression method

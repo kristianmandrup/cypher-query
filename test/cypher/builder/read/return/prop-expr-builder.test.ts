@@ -6,15 +6,16 @@ import {
 const context = describe;
 
 describe("PropExprBuilder", () => {
-  let strategy, expr;
+  let strategy, exprBuilder, expr;
   beforeEach(() => {
     strategy = new CypherStrategy();
-    expr = createReturnPropExprBuilder(strategy, {});
+    exprBuilder = createReturnPropExprBuilder(strategy, {});
+    expr = exprBuilder.expr;
   });
 
   describe("city", () => {
     it("city", () => {
-      expr.prop("city");
+      exprBuilder.prop("city");
       expect(expr).toBeDefined();
     });
   });

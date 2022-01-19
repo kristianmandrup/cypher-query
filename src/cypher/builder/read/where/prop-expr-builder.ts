@@ -8,5 +8,5 @@ export const createPropExprBuilder = (w: IWhereClauseBuilder, config: any) =>
   new PropExprBuilder(w).config(config);
 
 export class PropExprBuilder extends WhereExprBuilder {
-  exprName: string = "or";
+  exprName: string = "prop";
 }

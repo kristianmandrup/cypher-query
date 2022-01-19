@@ -6,4 +6,6 @@ export const createUnionExprBuilder = (q: IQueryBuilder, config: any) =>
 
 export interface IUnionExprBuilder extends IResultExprBuilder {}
 
-export class UnionExprBuilder extends ResultExprBuilder {}
+export class UnionExprBuilder extends ResultExprBuilder {
+  exprName: string = "union";
+}

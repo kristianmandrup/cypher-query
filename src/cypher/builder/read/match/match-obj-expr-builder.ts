@@ -13,7 +13,7 @@ export interface IMatchObjExprBuilder {
   matches(config: MatchObjConfig): any;
 }
 
-export const createMatchObjBuilder = (q: IQueryBuilder, config: any) =>
+export const createMatchObjExprBuilder = (q: IQueryBuilder, config: any) =>
   new MatchObjExprBuilder(q).config(config);
 
 export class MatchObjExprBuilder
@@ -22,6 +22,7 @@ export class MatchObjExprBuilder
 {
   alias: string = "_";
   $optional: boolean = false;
+  exprName: string = "obj";
 
   config(config: MatchObjConfig) {
     this.setAlias(config.alias);
