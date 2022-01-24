@@ -15,6 +15,8 @@ export class OrCompositeFilterResult extends CompositeFilterResult {
 export interface IOrFilterExpr extends ICompositeFilterExpr {}
 
 export class OrFilterExpr extends CompositeFilterExpr {
+  name: string = "or";
+
   createReduceComposed(objs: GraphObjDef[]): any {
     return (acc: OrCompositeFilterResult, filter: IFilterExpr) => {
       let results = filter.runAll(objs);

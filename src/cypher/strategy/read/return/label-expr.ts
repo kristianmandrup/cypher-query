@@ -3,6 +3,8 @@ import { GraphObjDef } from "../../../cypher-types";
 import { ReturnObjValueExpr } from "./return-obj-value-expr";
 
 export class ReturnLabelExpr extends ReturnObjValueExpr {
+  name: string = "label";
+
   label: string = "";
 
   mapObj(obj: GraphObjDef): any {

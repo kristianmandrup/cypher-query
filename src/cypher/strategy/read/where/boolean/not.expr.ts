@@ -14,6 +14,8 @@ export class NotCompositeFilterResult extends CompositeFilterResult {
 export interface INotFilterExpr extends IComposeOneFilterExpr {}
 
 export class NotFilterExpr extends ComposeOneFilterExpr {
+  name: string = "not";
+
   createCompositeResult() {
     return new NotCompositeFilterResult();
   }

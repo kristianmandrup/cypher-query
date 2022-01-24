@@ -4,6 +4,8 @@ export const createCountExpr = (config?: any) =>
   new ReturnCountExpr().config(config);
 
 export class ReturnCountExpr extends ReturnExpr {
+  name: string = "count";
+
   key: string = "*";
 
   run() {

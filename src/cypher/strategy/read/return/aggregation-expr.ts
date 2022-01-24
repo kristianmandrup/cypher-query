@@ -9,6 +9,8 @@ export class ReturnAggregationExpr extends ReturnExpr {
   key: string = "";
   propName: string = "";
 
+  name: string = "aggregation";
+
   functionMap: any = {
     sum: (acc: number, value: number) => (acc += value),
   };

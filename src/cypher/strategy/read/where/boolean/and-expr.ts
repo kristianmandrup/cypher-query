@@ -21,6 +21,8 @@ export class AndCompositeFilterResult extends CompositeFilterResult {
 export interface IAndFilterExpr extends ICompositeFilterExpr {}
 
 export class AndFilterExpr extends CompositeFilterExpr {
+  name: string = "and";
+
   createCompositeResult() {
     return new AndCompositeFilterResult();
   }
